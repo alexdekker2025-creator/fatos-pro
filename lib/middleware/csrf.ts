@@ -23,6 +23,16 @@ function isTrustedOrigin(origin: string | null, allowedOrigins: string[]): boole
   // Проверяем точное совпадение
   if (allowedOrigins.includes(origin)) return true;
   
+  // Проверяем Vercel domains (*.vercel.app)
+  try {
+    const url = new URL(origin);
+    if (url.hostname.endsWith('.vercel.app') || url.hostname === 'vercel.app') {
+      return true;
+    }
+  } catch {
+    // Ignore invalid URLs
+  }
+  
   // Проверяем localhost для разработки
   if (process.env.NODE_ENV === 'development') {
     try {
