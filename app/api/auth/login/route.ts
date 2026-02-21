@@ -5,6 +5,8 @@ import { sanitizeEmail } from '@/lib/validation/sanitization';
 import { withSecurityMiddleware, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit';
 import { ZodError } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const authService = new AuthService();
 
 /**

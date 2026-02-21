@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { PaymentFactory } from '@/lib/services/payment';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * POST /api/webhooks/yukassa
  * 

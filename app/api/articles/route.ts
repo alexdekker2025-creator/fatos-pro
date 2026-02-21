@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ArticleService } from '@/lib/services/articles';
 
+export const dynamic = 'force-dynamic';
+
 const articleService = new ArticleService();
 
 /**
