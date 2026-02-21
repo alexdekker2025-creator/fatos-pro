@@ -65,7 +65,7 @@ export default function CalculationCard({ calculation }: CalculationCardProps) {
       </div>
 
       {/* Working Numbers */}
-      {calculation.results.workingNumbers && (
+      {calculation.results?.workingNumbers && (
         <div className="mb-4">
           <h4 className="text-white font-semibold mb-2 text-sm sm:text-base">
             {t('workingNumbers')}
@@ -87,7 +87,7 @@ export default function CalculationCard({ calculation }: CalculationCardProps) {
       )}
 
       {/* Destiny Number */}
-      {calculation.results.destinyNumber && (
+      {calculation.results?.destinyNumber && (
         <div className="mb-4">
           <h4 className="text-white font-semibold mb-2 text-sm sm:text-base">
             {t('destinyNumber')}
