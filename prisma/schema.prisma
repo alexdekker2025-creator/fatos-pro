@@ -1,0 +1,170 @@
+// Prisma Schema для FATOS.pro
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String        @id @default(cuid())
+  email           String        @unique
+  name            String
+  passwordHash    String
+  preferredLang   String        @default("ru")
+  isAdmin         Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  calculations    Calculation[]
+  orders          Order[]
+  adminLogs       AdminLog[]
+  collectedArcana CollectedArcana[]
+  purchases       Purchase[]
+  sessions        Session[]
+  
+  @@index([email])
+}
+
+model Session {
+  id              String        @id @default(cuid())
+  userId          String
+  expiresAt       DateTime
+  createdAt       DateTime      @default(now())
+  
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Calculation {
+  id              String        @id @default(cuid())
+  userId          String?
+  birthDay        Int
+  birthMonth      Int
+  birthYear       Int
+  workingNumbers  Json
+  square          Json
+  destinyNumber   Json
+  matrix          Json?
+  createdAt       DateTime      @default(now())
+  
+  user            User?         @relation(fields: [userId], references: [id])
+  
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Order {
+  id              String        @id @default(cuid())
+  userId          String
+  amount          Decimal       @db.Decimal(10, 2)
+  currency        String        @db.VarChar(3)
+  status          OrderStatus   @default(PENDING)
+  paymentProvider String
+  externalId      String?
+  serviceId       String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  user            User          @relation(fields: [userId], references: [id])
+  purchase        Purchase?
+  
+  @@index([userId])
+  @@index([status])
+  @@index([externalId])
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model Article {
+  id              String        @id @default(cuid())
+  title           String
+  content         String        @db.Text
+  category        String
+  language        String        @db.VarChar(2)
+  relatedValue    String?
+  publishedAt     DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  @@index([category, language])
+  @@index([relatedValue])
+}
+
+model AdminLog {
+  id              String        @id @default(cuid())
+  adminId         String
+  action          String
+  details         Json?
+  createdAt       DateTime      @default(now())
+  
+  admin           User          @relation(fields: [adminId], references: [id])
+  
+  @@index([adminId])
+  @@index([createdAt])
+}
+
+model CollectedArcana {
+  id              String        @id @default(cuid())
+  userId          String
+  arcanaNumber    Int
+  firstSeenAt     DateTime      @default(now())
+  
+  user            User          @relation(fields: [userId], references: [id])
+  
+  @@unique([userId, arcanaNumber])
+  @@index([userId])
+}
+
+model Purchase {
+  id        String   @id @default(cuid())
+  userId    String
+  serviceId String
+  orderId   String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime?
+  
+  user      User     @relation(fields: [userId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id])
+  
+  @@index([userId])
+  @@index([serviceId])
+  @@unique([userId, serviceId])
+}
+
+model PremiumService {
+  id              String   @id @default(cuid())
+  serviceId       String   @unique
+  titleRu         String
+  titleEn         String
+  descriptionRu   String   @db.Text
+  descriptionEn   String   @db.Text
+  hookRu          String
+  hookEn          String
+  priceBasicRUB   Int
+  priceBasicUSD   Int
+  priceFullRUB    Int?
+  priceFullUSD    Int?
+  icon            String
+  color           String
+  featuresBasic   Json
+  featuresFull    Json?
+  buttonTextRu    String
+  buttonTextEn    String
+  isActive        Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([isActive])
+  @@index([sortOrder])
+}
