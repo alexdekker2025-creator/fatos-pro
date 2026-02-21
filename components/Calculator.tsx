@@ -390,7 +390,7 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
           <div className="animate-fade-in-up animation-delay-200">
             <ResultSection title={t('workingNumbers')}>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                {Object.entries(state.results.workingNumbers).map(([key, value]) => {
+                {state.results.workingNumbers && Object.entries(state.results.workingNumbers).map(([key, value]) => {
                   // Русские названия для рабочих чисел
                   const workingNumberNames: Record<string, string> = {
                     first: locale === 'ru' ? 'Первое рабочее число' : 'First Working Number',
