@@ -47,7 +47,7 @@ export function useCalculations() {
 
       const data: CalculationsResponse = await response.json();
 
-      if (data.success) {
+      if (data.success && data.calculations) {
         // Transform API response to match expected format
         const transformedCalculations = data.calculations.map((calc: any) => ({
           id: calc.id,
@@ -64,8 +64,10 @@ export function useCalculations() {
         }));
         
         setCalculations(transformedCalculations);
-        setTotal(data.total);
+        setTotal(data.total || 0);
       } else {
+        setCalculations([]);
+        setTotal(0);
         setError(data.error || 'Failed to load calculations');
       }
     } catch (err) {
