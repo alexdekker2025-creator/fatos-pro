@@ -382,7 +382,7 @@ export default function ServiceManager() {
 
                 <div className="mt-4">
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Хук (RU):</p>
-                  <p className="italic">"{service.hookRu}"</p>
+                  <p className="italic">&ldquo;{service.hookRu}&rdquo;</p>
                 </div>
 
                 <div className="mt-2">

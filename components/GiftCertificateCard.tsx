@@ -80,7 +80,7 @@ export default function GiftCertificateCard({
             <div className="mb-8 px-4">
               <div className="glass-strong rounded-lg p-6 border border-purple-400/30">
                 <p className="text-purple-200 italic text-sm sm:text-base leading-relaxed">
-                  "{message}"
+                  &ldquo;{message}&rdquo;
                 </p>
                 <p className="text-purple-300 text-sm mt-4">
                   — {senderName}

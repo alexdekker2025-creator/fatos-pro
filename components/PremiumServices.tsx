@@ -483,7 +483,7 @@ export default function PremiumServices() {
 
             {/* Hook */}
             <p className="text-purple-300 italic text-center mb-4 min-h-[48px] text-sm">
-              "{locale === 'ru' ? service.hookRu : service.hookEn}"
+              &ldquo;{locale === 'ru' ? service.hookRu : service.hookEn}&rdquo;
             </p>
 
             {/* Service Description */}
