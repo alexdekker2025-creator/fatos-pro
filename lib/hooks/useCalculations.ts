@@ -48,7 +48,22 @@ export function useCalculations() {
       const data: CalculationsResponse = await response.json();
 
       if (data.success) {
-        setCalculations(data.calculations);
+        // Transform API response to match expected format
+        const transformedCalculations = data.calculations.map((calc: any) => ({
+          id: calc.id,
+          birthDate: `${calc.birthDay}/${calc.birthMonth}/${calc.birthYear}`,
+          calculationType: 'all',
+          results: {
+            workingNumbers: calc.workingNumbers,
+            square: calc.square,
+            pythagoreanSquare: calc.square, // Alias for compatibility
+            destinyNumber: calc.destinyNumber,
+            matrix: calc.matrix,
+          },
+          createdAt: calc.createdAt,
+        }));
+        
+        setCalculations(transformedCalculations);
         setTotal(data.total);
       } else {
         setError(data.error || 'Failed to load calculations');
