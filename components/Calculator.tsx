@@ -454,14 +454,16 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
           )}
 
           {/* Destiny Matrix */}
-          <div className="animate-fade-in-up animation-delay-500">
-            <ResultSection title={t('destinyMatrix')}>
-              <DestinyMatrixDisplay 
-                matrix={state.results.matrix} 
-                articles={state.articles?.matrixArticles}
-              />
-            </ResultSection>
-          </div>
+          {state.results.matrix && (
+            <div className="animate-fade-in-up animation-delay-500">
+              <ResultSection title={t('destinyMatrix')}>
+                <DestinyMatrixDisplay 
+                  matrix={state.results.matrix} 
+                  articles={state.articles?.matrixArticles}
+                />
+              </ResultSection>
+            </div>
+          )}
         </div>
       )}
     </div>
