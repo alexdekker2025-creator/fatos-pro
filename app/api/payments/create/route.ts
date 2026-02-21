@@ -5,6 +5,8 @@ import { PaymentFactory } from '@/lib/services/payment';
 import { withSecurityMiddleware, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const authService = new AuthService();
 
 /**

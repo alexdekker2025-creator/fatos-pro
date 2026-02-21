@@ -7,6 +7,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { AdminService } from '@/lib/services/admin';
 import { AuthService } from '@/lib/services/auth';
 
+export const dynamic = 'force-dynamic';
+
 const adminService = new AdminService();
 const authService = new AuthService();
 

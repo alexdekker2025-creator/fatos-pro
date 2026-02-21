@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { AuthService } from '@/lib/services/auth/AuthService';
 
+export const dynamic = 'force-dynamic';
+
 const authService = new AuthService();
 
 /**
