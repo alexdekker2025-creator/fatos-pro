@@ -104,7 +104,7 @@ export default function CalculationCard({ calculation }: CalculationCardProps) {
       )}
 
       {/* Pythagorean Square */}
-      {calculation.results.pythagoreanSquare && (
+      {calculation.results?.pythagoreanSquare?.cells && (
         <div className="mb-4">
           <h4 className="text-white font-semibold mb-2 text-sm sm:text-base">
             {t('pythagoreanSquare')}
