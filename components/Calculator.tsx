@@ -387,10 +387,11 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
           </div>
 
           {/* Working Numbers */}
-          <div className="animate-fade-in-up animation-delay-200">
-            <ResultSection title={t('workingNumbers')}>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                {state.results.workingNumbers && Object.entries(state.results.workingNumbers).map(([key, value]) => {
+          {state.results.workingNumbers && (
+            <div className="animate-fade-in-up animation-delay-200">
+              <ResultSection title={t('workingNumbers')}>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                  {Object.entries(state.results.workingNumbers).map(([key, value]) => {
                   // Русские названия для рабочих чисел
                   const workingNumberNames: Record<string, string> = {
                     first: locale === 'ru' ? 'Первое рабочее число' : 'First Working Number',
@@ -408,44 +409,49 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
                 })}
               </div>
             </ResultSection>
-          </div>
+            </div>
+          )}
 
           {/* Pythagorean Square */}
-          <div className="animate-fade-in-up animation-delay-300">
-            <ResultSection title={t('pythagoreanSquare')}>
-              <PythagoreanSquareDisplay 
-                square={state.results.square.cells.flat()}
-                squareData={state.results.square}
-                articles={state.articles?.squareArticles}
-              />
-            </ResultSection>
-          </div>
+          {state.results.square && (
+            <div className="animate-fade-in-up animation-delay-300">
+              <ResultSection title={t('pythagoreanSquare')}>
+                <PythagoreanSquareDisplay 
+                  square={state.results.square.cells.flat()}
+                  squareData={state.results.square}
+                  articles={state.articles?.squareArticles}
+                />
+              </ResultSection>
+            </div>
+          )}
 
           {/* Destiny Number */}
-          <div className="animate-fade-in-up animation-delay-400">
-            <ResultSection title={t('destinyNumber')}>
-              <div className="text-center">
-                <div className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#FFD700] mb-2 animate-pulse-slow drop-shadow-[0_0_20px_rgba(255,215,0,0.5)]">
-                  {state.results.destinyNumber.value}
-                </div>
-                {state.results.destinyNumber.isMasterNumber && (
-                  <div className="text-purple-300 text-sm sm:text-base animate-glow">Мастер-число</div>
-                )}
-              </div>
-              
-              {/* Destiny Number Article */}
-              {state.articles?.destinyArticle && (
-                <div className="mt-6 p-4 glass rounded-lg border border-purple-400/20">
-                  <h3 className="text-lg sm:text-xl font-semibold text-[#FFD700] mb-3">
-                    {state.articles.destinyArticle.title}
-                  </h3>
-                  <div className="text-sm sm:text-base text-gray-200 whitespace-pre-wrap">
-                    {state.articles.destinyArticle.content}
+          {state.results.destinyNumber && (
+            <div className="animate-fade-in-up animation-delay-400">
+              <ResultSection title={t('destinyNumber')}>
+                <div className="text-center">
+                  <div className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#FFD700] mb-2 animate-pulse-slow drop-shadow-[0_0_20px_rgba(255,215,0,0.5)]">
+                    {state.results.destinyNumber.value}
                   </div>
+                  {state.results.destinyNumber.isMasterNumber && (
+                    <div className="text-purple-300 text-sm sm:text-base animate-glow">Мастер-число</div>
+                  )}
                 </div>
-              )}
-            </ResultSection>
-          </div>
+                
+                {/* Destiny Number Article */}
+                {state.articles?.destinyArticle && (
+                  <div className="mt-6 p-4 glass rounded-lg border border-purple-400/20">
+                    <h3 className="text-lg sm:text-xl font-semibold text-[#FFD700] mb-3">
+                      {state.articles.destinyArticle.title}
+                    </h3>
+                    <div className="text-sm sm:text-base text-gray-200 whitespace-pre-wrap">
+                      {state.articles.destinyArticle.content}
+                    </div>
+                  </div>
+                )}
+              </ResultSection>
+            </div>
+          )}
 
           {/* Destiny Matrix */}
           <div className="animate-fade-in-up animation-delay-500">
