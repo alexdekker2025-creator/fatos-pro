@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
 
     // Парсим тело запроса
     const body = await request.json();
-    const { birthDate, calculationType, results } = body;
+    const { birthDate, results } = body;
 
     // Валидация данных
     if (!birthDate || !birthDate.day || !birthDate.month || !birthDate.year) {
@@ -63,16 +63,6 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: 'Birth date is required',
-        },
-        { status: 400 }
-      );
-    }
-
-    if (!calculationType) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Calculation type is required',
         },
         { status: 400 }
       );
