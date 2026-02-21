@@ -99,9 +99,13 @@ export async function POST(request: NextRequest) {
     const calculation = await prisma.calculation.create({
       data: {
         userId: user.id,
-        birthDate: birthDateObj,
-        calculationType,
-        results,
+        birthDay: birthDate.day,
+        birthMonth: birthDate.month,
+        birthYear: birthDate.year,
+        workingNumbers: results.workingNumbers || {},
+        square: results.square || {},
+        destinyNumber: results.destinyNumber || {},
+        matrix: results.matrix || null,
       },
     });
 
