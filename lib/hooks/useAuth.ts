@@ -11,6 +11,8 @@ interface User {
 interface AuthResult {
   success: boolean;
   error?: string;
+  requiresTwoFactor?: boolean;
+  userId?: string;
 }
 
 export function useAuth() {
@@ -85,6 +87,15 @@ export function useAuth() {
       });
 
       const data = await response.json();
+
+      // Check if 2FA is required
+      if (data.requiresTwoFactor) {
+        return { 
+          success: false, 
+          requiresTwoFactor: true, 
+          userId: data.userId 
+        };
+      }
 
       if (data.success) {
         localStorage.setItem('sessionId', data.session.id);
