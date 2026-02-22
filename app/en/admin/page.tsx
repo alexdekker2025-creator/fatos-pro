@@ -13,8 +13,9 @@ import ArticleManager from '@/components/admin/ArticleManager';
 import StatisticsDashboard from '@/components/admin/StatisticsDashboard';
 import AdminLogs from '@/components/admin/AdminLogs';
 import ServiceManager from '@/components/admin/ServiceManager';
+import UserManagement from '@/components/admin/UserManagement';
 
-type Tab = 'articles' | 'statistics' | 'logs' | 'services';
+type Tab = 'articles' | 'statistics' | 'logs' | 'services' | 'users';
 
 export default function AdminPage() {
   const { user, loading } = useAuth();
@@ -79,10 +80,10 @@ export default function AdminPage() {
 
         {/* Tab Navigation */}
         <div className="mb-6">
-          <div className="flex space-x-2 bg-white/10 backdrop-blur-sm rounded-lg p-1">
+          <div className="flex flex-wrap gap-2 bg-white/10 backdrop-blur-sm rounded-lg p-1">
             <button
               onClick={() => setActiveTab('articles')}
-              className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all ${
+              className={`flex-1 min-w-[120px] py-3 px-6 rounded-lg font-medium transition-all ${
                 activeTab === 'articles'
                   ? 'bg-white text-purple-900 shadow-lg'
                   : 'text-white hover:bg-white/10'
@@ -91,8 +92,18 @@ export default function AdminPage() {
               {t('tabs.articles')}
             </button>
             <button
+              onClick={() => setActiveTab('users')}
+              className={`flex-1 min-w-[120px] py-3 px-6 rounded-lg font-medium transition-all ${
+                activeTab === 'users'
+                  ? 'bg-white text-purple-900 shadow-lg'
+                  : 'text-white hover:bg-white/10'
+              }`}
+            >
+              Users
+            </button>
+            <button
               onClick={() => setActiveTab('services')}
-              className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all ${
+              className={`flex-1 min-w-[120px] py-3 px-6 rounded-lg font-medium transition-all ${
                 activeTab === 'services'
                   ? 'bg-white text-purple-900 shadow-lg'
                   : 'text-white hover:bg-white/10'
@@ -102,7 +113,7 @@ export default function AdminPage() {
             </button>
             <button
               onClick={() => setActiveTab('statistics')}
-              className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all ${
+              className={`flex-1 min-w-[120px] py-3 px-6 rounded-lg font-medium transition-all ${
                 activeTab === 'statistics'
                   ? 'bg-white text-purple-900 shadow-lg'
                   : 'text-white hover:bg-white/10'
@@ -112,7 +123,7 @@ export default function AdminPage() {
             </button>
             <button
               onClick={() => setActiveTab('logs')}
-              className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all ${
+              className={`flex-1 min-w-[120px] py-3 px-6 rounded-lg font-medium transition-all ${
                 activeTab === 'logs'
                   ? 'bg-white text-purple-900 shadow-lg'
                   : 'text-white hover:bg-white/10'
@@ -126,6 +137,7 @@ export default function AdminPage() {
         {/* Tab Content */}
         <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
           {activeTab === 'articles' && <ArticleManager />}
+          {activeTab === 'users' && <UserManagement locale="en" />}
           {activeTab === 'services' && <ServiceManager />}
           {activeTab === 'statistics' && <StatisticsDashboard />}
           {activeTab === 'logs' && <AdminLogs />}

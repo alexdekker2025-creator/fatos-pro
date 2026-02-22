@@ -83,6 +83,11 @@ export class AuthService {
       throw new Error('Invalid email or password');
     }
 
+    // Проверка блокировки аккаунта
+    if (user.isBlocked) {
+      throw new Error('Account is blocked. Please contact support.');
+    }
+
     // Проверка 2FA
     if (user.twoFactorEnabled) {
       return {
@@ -692,11 +697,16 @@ export class AuthService {
         name: true,
         preferredLang: true,
         twoFactorEnabled: true,
+        isBlocked: true,
       },
     });
 
     if (!user) {
       throw new Error('User not found');
+    }
+
+    if (user.isBlocked) {
+      throw new Error('Account is blocked. Please contact support.');
     }
 
     if (!user.twoFactorEnabled) {

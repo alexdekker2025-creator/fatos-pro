@@ -1,119 +1,165 @@
+/**
+ * Admin Users API
+ * GET /api/admin/users - List users with pagination and filters
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
-import { authService } from '@/lib/services/auth/AuthService';
 import { prisma } from '@/lib/prisma';
+import { verifyAdminSession } from '@/lib/auth/adminAuth';
+import { checkRateLimit } from '@/lib/utils/rateLimit';
 
 export const dynamic = 'force-dynamic';
 
-/**
- * GET /api/admin/users
- * 
- * Получение списка пользователей с authentication статусом
- * Требует admin прав
- * 
- * Query параметры:
- * - page: номер страницы (default: 1)
- * - limit: количество на странице (default: 50, max: 100)
- * - search: поиск по email или имени
- */
 export async function GET(request: NextRequest) {
   try {
-    // Извлечение sessionId из cookies
-    const sessionId = request.cookies.get('sessionId')?.value;
-
-    if (!sessionId) {
+    // Verify admin session
+    const session = await verifyAdminSession(request);
+    if (!session) {
       return NextResponse.json(
-        { error: 'No session found' },
+        { error: 'UNAUTHORIZED', message: 'Invalid or expired session' },
         { status: 401 }
       );
     }
 
-    // Проверка валидности сессии
-    const user = await authService.verifySession(sessionId);
-
-    if (!user) {
+    // Check rate limit
+    if (!checkRateLimit(session.userId, 100)) {
       return NextResponse.json(
-        { error: 'Invalid or expired session' },
-        { status: 401 }
+        { error: 'RATE_LIMIT_EXCEEDED', message: 'Too many requests', retryAfter: 60 },
+        { status: 429 }
       );
     }
 
-    // Проверка admin прав
-    if (!user.isAdmin) {
-      return NextResponse.json(
-        { error: 'Admin access required' },
-        { status: 403 }
-      );
-    }
-
-    // Парсинг query параметров
+    // Parse query parameters
     const { searchParams } = new URL(request.url);
-    const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
-    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '50')));
+    const page = parseInt(searchParams.get('page') || '1');
+    const pageSize = parseInt(searchParams.get('pageSize') || '25');
     const search = searchParams.get('search') || '';
+    const emailVerified = searchParams.get('emailVerified');
+    const twoFactorEnabled = searchParams.get('twoFactorEnabled');
+    const isBlocked = searchParams.get('isBlocked');
+    const dateFrom = searchParams.get('dateFrom');
+    const dateTo = searchParams.get('dateTo');
+    const sortBy = searchParams.get('sortBy') || 'createdAt';
+    const sortOrder = searchParams.get('sortOrder') || 'desc';
 
-    // Построение where условия для поиска
-    const where = search
-      ? {
-          OR: [
-            { email: { contains: search, mode: 'insensitive' as const } },
-            { name: { contains: search, mode: 'insensitive' as const } },
-          ],
-        }
-      : {};
+    // Build where clause
+    const where: any = {};
 
-    // Получение пользователей с пагинацией
-    const [users, totalCount] = await Promise.all([
+    // Search filter
+    if (search) {
+      where.OR = [
+        { email: { contains: search, mode: 'insensitive' } },
+        { name: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    // Boolean filters
+    if (emailVerified !== null && emailVerified !== undefined && emailVerified !== '') {
+      where.emailVerified = emailVerified === 'true';
+    }
+    if (twoFactorEnabled !== null && twoFactorEnabled !== undefined && twoFactorEnabled !== '') {
+      where.twoFactorEnabled = twoFactorEnabled === 'true';
+    }
+    if (isBlocked !== null && isBlocked !== undefined && isBlocked !== '') {
+      where.isBlocked = isBlocked === 'true';
+    }
+
+    // Date range filter
+    if (dateFrom || dateTo) {
+      where.createdAt = {};
+      if (dateFrom) {
+        where.createdAt.gte = new Date(dateFrom);
+      }
+      if (dateTo) {
+        where.createdAt.lte = new Date(dateTo);
+      }
+    }
+
+    // Calculate skip for pagination
+    const skip = (page - 1) * pageSize;
+
+    // Build orderBy
+    const orderBy: any = {};
+    if (sortBy === 'email' || sortBy === 'createdAt') {
+      orderBy[sortBy] = sortOrder;
+    }
+
+    // Fetch users with counts
+    const [users, total] = await Promise.all([
       prisma.user.findMany({
         where,
+        skip,
+        take: pageSize,
+        orderBy,
         select: {
           id: true,
           email: true,
           name: true,
-          preferredLang: true,
+          isAdmin: true,
           emailVerified: true,
           twoFactorEnabled: true,
-          isAdmin: true,
+          isBlocked: true,
           createdAt: true,
+          _count: {
+            select: {
+              calculations: true,
+              purchases: true,
+            }
+          },
           oauthProviders: {
             select: {
               provider: true,
-            },
+            }
           },
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-        skip: (page - 1) * limit,
-        take: limit,
+          sessions: {
+            where: {
+              expiresAt: {
+                gte: new Date(),
+              }
+            },
+            orderBy: {
+              createdAt: 'desc',
+            },
+            take: 1,
+            select: {
+              createdAt: true,
+            }
+          }
+        }
       }),
-      prisma.user.count({ where }),
+      prisma.user.count({ where })
     ]);
 
-    // Форматирование данных
-    const formattedUsers = users.map(u => ({
-      ...u,
-      linkedProviders: u.oauthProviders.map(p => p.provider),
-      oauthProviders: undefined,
+    // Format response
+    const formattedUsers = users.map(user => ({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      isAdmin: user.isAdmin,
+      emailVerified: user.emailVerified,
+      twoFactorEnabled: user.twoFactorEnabled,
+      isBlocked: user.isBlocked,
+      createdAt: user.createdAt.toISOString(),
+      lastLogin: user.sessions[0]?.createdAt.toISOString() || null,
+      calculationsCount: user._count.calculations,
+      purchasesCount: user._count.purchases,
+      oauthProviders: user.oauthProviders.map(p => p.provider),
     }));
 
+    const totalPages = Math.ceil(total / pageSize);
+
     return NextResponse.json({
-      success: true,
       users: formattedUsers,
-      pagination: {
-        page,
-        limit,
-        total: totalCount,
-        totalPages: Math.ceil(totalCount / limit),
-      },
+      total,
+      page,
+      pageSize,
+      totalPages,
     });
 
   } catch (error) {
     console.error('Error fetching users:', error);
-    
     return NextResponse.json(
-      { 
-        error: error instanceof Error ? error.message : 'Failed to fetch users' 
-      },
+      { error: 'DATABASE_ERROR', message: 'Failed to fetch users' },
       { status: 500 }
     );
   }
