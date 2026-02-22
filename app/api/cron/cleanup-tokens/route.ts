@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { TokenService } from '@/lib/services/auth/TokenService';
+import { getTokenService } from '@/lib/services/auth/TokenService';
 
 // Vercel Cron Job endpoint для очистки expired токенов
 // Настройте в vercel.json:
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const tokenService = TokenService.getInstance();
+    const tokenService = getTokenService();
     const result = await tokenService.cleanupExpiredTokens();
 
     console.log('[Token Cleanup] Completed:', {
