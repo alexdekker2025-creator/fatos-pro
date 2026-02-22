@@ -12,6 +12,10 @@ export interface MysticalInputProps {
   className?: string;
   id?: string;
   name?: string;
+  maxLength?: number;
+  minLength?: number;
+  pattern?: string;
+  autoComplete?: string;
 }
 
 export const MysticalInput: React.FC<MysticalInputProps> = ({
@@ -26,6 +30,10 @@ export const MysticalInput: React.FC<MysticalInputProps> = ({
   className = '',
   id,
   name,
+  maxLength,
+  minLength,
+  pattern,
+  autoComplete,
 }) => {
   const inputId = id || name || `input-${Math.random().toString(36).substr(2, 9)}`;
   
@@ -56,6 +64,10 @@ export const MysticalInput: React.FC<MysticalInputProps> = ({
         placeholder={placeholder}
         disabled={disabled}
         required={required}
+        maxLength={maxLength}
+        minLength={minLength}
+        pattern={pattern}
+        autoComplete={autoComplete}
         className={`${baseStyles} ${stateStyles}`}
         aria-invalid={!!error}
         aria-describedby={error ? `${inputId}-error` : undefined}
