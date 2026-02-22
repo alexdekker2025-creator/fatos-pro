@@ -30,10 +30,13 @@ export default function StatisticsDashboard() {
   const loadStatistics = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/statistics');
+      const sessionId = localStorage.getItem('sessionId');
+      const response = await fetch(`/api/admin/statistics?sessionId=${sessionId}`);
       if (response.ok) {
         const data = await response.json();
         setStats(data);
+      } else {
+        console.error('Failed to load statistics:', response.status, response.statusText);
       }
     } catch (error) {
       console.error('Error loading statistics:', error);
