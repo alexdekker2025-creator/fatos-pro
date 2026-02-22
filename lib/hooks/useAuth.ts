@@ -6,6 +6,9 @@ interface User {
   id: string;
   email: string;
   name: string;
+  createdAt?: string;
+  emailVerified?: boolean;
+  twoFactorEnabled?: boolean;
 }
 
 interface AuthResult {
