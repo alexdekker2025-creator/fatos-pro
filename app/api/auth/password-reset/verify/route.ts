@@ -6,6 +6,9 @@ const verifySchema = z.object({
   token: z.string().min(1, 'Token is required'),
 });
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     // Get token from query parameters

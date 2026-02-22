@@ -9,6 +9,9 @@ const confirmSchema = z.object({
   currentSessionId: z.string().optional(),
 });
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     // Parse and validate request body

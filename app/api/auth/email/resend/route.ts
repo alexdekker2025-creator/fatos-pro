@@ -13,6 +13,9 @@ async function getUserIdFromSession(request: NextRequest): Promise<string | null
   return user?.id || null;
 }
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     // Require authentication

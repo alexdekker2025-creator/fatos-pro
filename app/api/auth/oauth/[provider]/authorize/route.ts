@@ -7,6 +7,9 @@ function isValidProvider(provider: string): provider is Provider {
   return provider === 'google' || provider === 'facebook';
 }
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { provider: string } }

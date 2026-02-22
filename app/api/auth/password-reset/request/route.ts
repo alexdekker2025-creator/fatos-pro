@@ -31,6 +31,9 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     // Get client IP for rate limiting

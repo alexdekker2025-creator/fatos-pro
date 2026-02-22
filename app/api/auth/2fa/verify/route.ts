@@ -32,6 +32,9 @@ function checkRateLimit(userId: string): boolean {
   return true;
 }
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     // Parse and validate request body
