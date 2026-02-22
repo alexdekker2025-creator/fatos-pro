@@ -56,8 +56,8 @@ async function registerHandler(request: NextRequest) {
       name: validatedData.name,
     });
 
-    // Возвращаем успешный ответ
-    return NextResponse.json(
+    // Создаем ответ с установкой cookie сессии
+    const response = NextResponse.json(
       {
         success: true,
         user: {
@@ -72,6 +72,17 @@ async function registerHandler(request: NextRequest) {
       },
       { status: 201 }
     );
+
+    // Устанавливаем cookie сессии
+    response.cookies.set('session', result.session.id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      expires: result.session.expiresAt,
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     // Обработка ошибок валидации Zod
     if (error instanceof ZodError) {
