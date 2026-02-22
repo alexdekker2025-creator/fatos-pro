@@ -126,6 +126,7 @@ export class AuthService {
     email: string;
     name: string;
     preferredLang: string;
+    isAdmin: boolean;
   } | null> {
     const session = await this.getSession(sessionId);
 
@@ -147,6 +148,7 @@ export class AuthService {
         email: true,
         name: true,
         preferredLang: true,
+        isAdmin: true,
       },
     });
 
