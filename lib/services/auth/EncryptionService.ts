@@ -36,8 +36,8 @@ export class EncryptionService {
     // Generate random IV
     const iv = crypto.randomBytes(this.ivLength);
     
-    // Create cipher
-    const cipher = crypto.createCipheriv(this.algorithm, this.encryptionKey, iv);
+    // Create cipher (cast to CipherGCM for getAuthTag method)
+    const cipher = crypto.createCipheriv(this.algorithm, this.encryptionKey, iv) as crypto.CipherGCM;
     
     // Encrypt
     let ciphertext = cipher.update(plaintext, 'utf8', 'base64');
@@ -66,8 +66,8 @@ export class EncryptionService {
       const authTag = Buffer.from(parts[1], 'base64');
       const ciphertext = parts[2];
 
-      // Create decipher
-      const decipher = crypto.createDecipheriv(this.algorithm, this.encryptionKey, iv);
+      // Create decipher (cast to DecipherGCM for setAuthTag method)
+      const decipher = crypto.createDecipheriv(this.algorithm, this.encryptionKey, iv) as crypto.DecipherGCM;
       decipher.setAuthTag(authTag);
 
       // Decrypt
