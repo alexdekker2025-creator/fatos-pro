@@ -84,6 +84,8 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
         setPassword('');
         setName('');
         onClose();
+        // Reload page to update user state
+        window.location.reload();
       } else {
         setError(result.error || t('error'));
       }
@@ -121,6 +123,8 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
               setShow2FA(false);
               setTwoFactorUserId('');
               onClose();
+              // Reload page to update user state
+              window.location.reload();
             }}
             onCancel={() => {
               setShow2FA(false);
