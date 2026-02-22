@@ -5,6 +5,9 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui';
 import { MysticalInput } from '@/components/ui/MysticalInput';
 import { useAuth } from '@/lib/hooks/useAuth';
+import OAuthButtons from './auth/OAuthButtons';
+import PasswordResetModal from './auth/PasswordResetModal';
+import TwoFactorVerify from './auth/TwoFactorVerify';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -22,6 +25,9 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
+  const [show2FA, setShow2FA] = useState(false);
+  const [twoFactorUserId, setTwoFactorUserId] = useState('');
 
   useEffect(() => {
     if (isOpen) {
@@ -56,6 +62,14 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
       
       if (mode === 'login') {
         result = await login(email, password);
+        
+        // Check if 2FA is required
+        if (result.requiresTwoFactor && result.userId) {
+          setTwoFactorUserId(result.userId);
+          setShow2FA(true);
+          setLoading(false);
+          return;
+        }
       } else {
         if (!name.trim()) {
           setError(t('nameRequired'));
@@ -92,6 +106,41 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
   };
 
   if (!isOpen) return null;
+
+  // Show 2FA verification if required
+  if (show2FA && twoFactorUserId) {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+        onClick={handleOverlayClick}
+      >
+        <div className="w-full max-w-md">
+          <TwoFactorVerify
+            userId={twoFactorUserId}
+            onSuccess={() => {
+              setShow2FA(false);
+              setTwoFactorUserId('');
+              onClose();
+            }}
+            onCancel={() => {
+              setShow2FA(false);
+              setTwoFactorUserId('');
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Show password reset modal
+  if (showPasswordReset) {
+    return (
+      <PasswordResetModal
+        isOpen={showPasswordReset}
+        onClose={() => setShowPasswordReset(false)}
+      />
+    );
+  }
 
   return (
     <div
@@ -151,8 +200,9 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
           {/* Кнопка закрытия */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 text-amber-400 hover:text-amber-300 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-lg p-2"
+            className="absolute top-4 right-4 z-50 text-amber-400 hover:text-amber-300 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-lg p-2 bg-purple-950/80 hover:bg-purple-900/90"
             aria-label="Close modal"
+            type="button"
           >
             <svg
               className="w-6 h-6"
@@ -240,7 +290,21 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
                   ? t('loginButton')
                   : t('registerButton')}
               </Button>
+
+              {mode === 'login' && (
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordReset(true)}
+                  className="text-purple-300 hover:text-amber-400 text-sm transition-colors text-center w-full"
+                  disabled={loading}
+                >
+                  {t('forgotPassword')}
+                </button>
+              )}
             </form>
+
+            {/* OAuth Buttons */}
+            <OAuthButtons disabled={loading} />
 
             {/* Декоративная линия перед переключателем */}
             <div className="flex items-center justify-center my-6">
