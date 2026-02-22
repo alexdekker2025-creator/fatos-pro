@@ -30,16 +30,16 @@ export async function GET(request: NextRequest) {
     const result = await tokenService.cleanupExpiredTokens();
 
     console.log('[Token Cleanup] Completed:', {
-      passwordResetTokens: result.passwordResetTokens,
-      emailVerificationTokens: result.emailVerificationTokens,
+      passwordResetTokens: result.passwordResetTokensDeleted,
+      emailVerificationTokens: result.emailVerificationTokensDeleted,
       timestamp: new Date().toISOString(),
     });
 
     return NextResponse.json({
       success: true,
       deleted: {
-        passwordResetTokens: result.passwordResetTokens,
-        emailVerificationTokens: result.emailVerificationTokens,
+        passwordResetTokens: result.passwordResetTokensDeleted,
+        emailVerificationTokens: result.emailVerificationTokensDeleted,
       },
       timestamp: new Date().toISOString(),
     });
