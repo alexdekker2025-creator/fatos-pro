@@ -1,5 +1,6 @@
 import './globals.css';
 import { Inter, Playfair_Display } from 'next/font/google';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const inter = Inter({ 
   subsets: ['latin', 'cyrillic'],
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable} ${playfair.variable}`}>
       <body className={inter.className}>
+        <GoogleAnalytics />
         {children}
       </body>
     </html>

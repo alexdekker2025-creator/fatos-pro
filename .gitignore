@@ -39,3 +39,11 @@ next-env.d.ts
 
 # prisma
 prisma/migrations/
+
+# backups
+backups/
+*.sql
+*.sql.gz
+
+# sentry
+.sentryclirc
