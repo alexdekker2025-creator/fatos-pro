@@ -10,8 +10,8 @@ interface SecuritySettingsProps {
   user: {
     id: string;
     email: string;
-    emailVerified: boolean;
-    twoFactorEnabled: boolean;
+    emailVerified?: boolean;
+    twoFactorEnabled?: boolean;
     linkedProviders?: string[];
   };
 }
@@ -20,8 +20,8 @@ export default function SecuritySettings({ user }: SecuritySettingsProps) {
   const t = useTranslations('auth');
   
   const [show2FASetup, setShow2FASetup] = useState(false);
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(user.twoFactorEnabled);
-  const [emailVerified, setEmailVerified] = useState(user.emailVerified);
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(user.twoFactorEnabled || false);
+  const [emailVerified, setEmailVerified] = useState(user.emailVerified || false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
