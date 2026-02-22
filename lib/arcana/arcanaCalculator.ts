@@ -1,12 +1,13 @@
 /**
- * Калькулятор арканов дня
+ * Калькулятор арканов дня (ИСПРАВЛЕННЫЙ АЛГОРИТМ)
  * 
  * Вычисляет 4 аркана дня на основе даты рождения, текущей даты и имени:
- * - Утро (Morning): основан на дне рождения
- * - День (Day): основан на текущей дате
- * - Вечер (Evening): сумма имени + утро + день
- * - Ночь (Night): день + вечер
+ * - Утро (Morning): (сумма даты рождения + сумма текущей даты) mod 22
+ * - День (Day): (сумма даты рождения × сумма текущей даты) mod 22
+ * - Вечер (Evening): (сумма имени + сумма текущей даты) mod 22
+ * - Ночь (Night): (утро + день + вечер) mod 22
  * 
+ * ВАЖНО: Мастер-числа 11 и 22 НЕ сводятся дальше при расчете сумм дат
  * Все значения приводятся к диапазону 1-22 (22 аркана Таро)
  */
 
@@ -41,34 +42,27 @@ function reduceToArcana(num: number): number {
 }
 
 /**
- * Вычисляет аркан утра на основе дня рождения
+ * Вычисляет сумму цифр даты с учетом мастер-чисел (11, 22)
  * 
- * @param birthDay - День рождения (1-31)
- * @returns Аркан утра (1-22)
+ * Правила:
+ * 1. Суммируем все цифры даты (DD + MM + YYYY)
+ * 2. Сводим к однозначному числу путем повторного суммирования
+ * 3. ИСКЛЮЧЕНИЕ: Если результат 11 или 22, ОСТАНАВЛИВАЕМСЯ (мастер-числа)
  * 
- * @example
- * calculateMorning(15) // 15
- * calculateMorning(25) // 3 (25 - 22 = 3)
- */
-export function calculateMorning(birthDay: number): number {
-  return reduceToArcana(birthDay);
-}
-
-/**
- * Вычисляет аркан дня на основе текущей даты
- * 
- * Суммирует все цифры текущей даты (день + месяц + год) и приводит к 1-22
- * 
- * @param currentDate - Текущая дата
- * @returns Аркан дня (1-22)
+ * @param date - Дата для расчета
+ * @returns Сумма цифр (может быть 11 или 22 как мастер-числа, иначе 1-9)
  * 
  * @example
- * calculateDay(new Date(2024, 0, 15)) // 15 + 1 + 2 + 0 + 2 + 4 = 24 -> 2 (24 - 22 = 2)
+ * calculateDateSum(new Date(1984, 11, 13)) // 13.12.1984
+ * // 1+3+1+2+1+9+8+4 = 29 -> 2+9 = 11 (СТОП, мастер-число)
+ * 
+ * calculateDateSum(new Date(2026, 1, 20)) // 20.02.2026
+ * // 2+0+0+2+2+0+2+6 = 14 -> 1+4 = 5
  */
-export function calculateDay(currentDate: Date): number {
-  const day = currentDate.getDate();
-  const month = currentDate.getMonth() + 1; // getMonth() возвращает 0-11
-  const year = currentDate.getFullYear();
+export function calculateDateSum(date: Date): number {
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // getMonth() возвращает 0-11
+  const year = date.getFullYear();
   
   // Суммируем все цифры даты
   const dateString = `${day}${month}${year}`;
@@ -78,41 +72,108 @@ export function calculateDay(currentDate: Date): number {
     sum += parseInt(char, 10);
   }
   
-  return reduceToArcana(sum);
+  // Сводим к однозначному числу, но останавливаемся на мастер-числах
+  while (sum > 22) {
+    const digits = sum.toString().split('');
+    sum = digits.reduce((acc, digit) => acc + parseInt(digit, 10), 0);
+    
+    // Проверка на мастер-числа
+    if (sum === 11 || sum === 22) {
+      return sum;
+    }
+  }
+  
+  // Если sum <= 22 и не мастер-число, продолжаем сводить до однозначного
+  while (sum > 9 && sum !== 11 && sum !== 22) {
+    const digits = sum.toString().split('');
+    sum = digits.reduce((acc, digit) => acc + parseInt(digit, 10), 0);
+  }
+  
+  return sum;
 }
 
 /**
- * Вычисляет аркан вечера
+ * Вычисляет аркан утра (НОВЫЙ АЛГОРИТМ)
  * 
- * Формула: сумма имени + утро + день, приведенная к 1-22
+ * Формула: (сумма даты рождения + сумма текущей даты) mod 22
  * 
- * @param nameSum - Сумма букв имени (из sumNameLetters)
- * @param morning - Аркан утра
- * @param day - Аркан дня
+ * @param birthDate - Дата рождения
+ * @param currentDate - Текущая дата
+ * @returns Аркан утра (1-22)
+ * 
+ * @example
+ * // Дата рождения: 13.12.1984 (сумма = 11)
+ * // Текущая дата: 20.02.2026 (сумма = 5)
+ * calculateMorning(new Date(1984, 11, 13), new Date(2026, 1, 20))
+ * // 11 + 5 = 16 -> Аркан 16 (Башня)
+ */
+export function calculateMorning(birthDate: Date, currentDate: Date): number {
+  const birthDateSum = calculateDateSum(birthDate);
+  const currentDateSum = calculateDateSum(currentDate);
+  
+  return reduceToArcana(birthDateSum + currentDateSum);
+}
+
+/**
+ * Вычисляет аркан дня (НОВЫЙ АЛГОРИТМ)
+ * 
+ * Формула: (сумма даты рождения × сумма текущей даты) mod 22
+ * 
+ * @param birthDate - Дата рождения
+ * @param currentDate - Текущая дата
+ * @returns Аркан дня (1-22)
+ * 
+ * @example
+ * // Дата рождения: 13.12.1984 (сумма = 11)
+ * // Текущая дата: 20.02.2026 (сумма = 5)
+ * calculateDay(new Date(1984, 11, 13), new Date(2026, 1, 20))
+ * // 11 × 5 = 55 -> 55-22=33 -> 33-22=11 -> Аркан 11 (Справедливость)
+ */
+export function calculateDay(birthDate: Date, currentDate: Date): number {
+  const birthDateSum = calculateDateSum(birthDate);
+  const currentDateSum = calculateDateSum(currentDate);
+  
+  return reduceToArcana(birthDateSum * currentDateSum);
+}
+
+/**
+ * Вычисляет аркан вечера (НОВЫЙ АЛГОРИТМ)
+ * 
+ * Формула: (сумма имени + сумма текущей даты) mod 22
+ * 
+ * @param nameSum - Сумма букв имени (всегда однозначное число 1-9)
+ * @param currentDate - Текущая дата
  * @returns Аркан вечера (1-22)
  * 
  * @example
- * calculateEvening(32, 15, 2) // 32 + 15 + 2 = 49 -> 5 (49 - 22 - 22 = 5)
+ * // Имя: Алексей (сумма = 5)
+ * // Текущая дата: 20.02.2026 (сумма = 5)
+ * calculateEvening(5, new Date(2026, 1, 20))
+ * // 5 + 5 = 10 -> Аркан 10 (Колесо Фортуны)
  */
-export function calculateEvening(nameSum: number, morning: number, day: number): number {
-  const sum = nameSum + morning + day;
-  return reduceToArcana(sum);
+export function calculateEvening(nameSum: number, currentDate: Date): number {
+  const currentDateSum = calculateDateSum(currentDate);
+  
+  return reduceToArcana(nameSum + currentDateSum);
 }
 
 /**
- * Вычисляет аркан ночи
+ * Вычисляет аркан ночи (НОВЫЙ АЛГОРИТМ)
  * 
- * Формула: день + вечер, приведенная к 1-22
+ * Формула: (утро + день + вечер) mod 22
  * 
+ * @param morning - Аркан утра
  * @param day - Аркан дня
  * @param evening - Аркан вечера
  * @returns Аркан ночи (1-22)
  * 
  * @example
- * calculateNight(2, 5) // 2 + 5 = 7
+ * // Утро: 16, День: 11, Вечер: 10
+ * calculateNight(16, 11, 10)
+ * // 16 + 11 + 10 = 37 -> 37-22=15 -> Аркан 15 (Дьявол)
  */
-export function calculateNight(day: number, evening: number): number {
-  const sum = day + evening;
+export function calculateNight(morning: number, day: number, evening: number): number {
+  const sum = morning + day + evening;
   return reduceToArcana(sum);
 }
 
@@ -127,25 +188,27 @@ export interface DayCardResult {
 }
 
 /**
- * Вычисляет все 4 аркана дня
+ * Вычисляет все 4 аркана дня (НОВЫЙ АЛГОРИТМ)
  * 
- * @param birthDay - День рождения (1-31)
- * @param nameSum - Сумма букв имени
+ * @param birthDate - Дата рождения
+ * @param nameSum - Сумма букв имени (однозначное число 1-9)
  * @param currentDate - Текущая дата (по умолчанию - сегодня)
  * @returns Объект с 4 арканами дня
  * 
  * @example
- * calculateDayCard(15, 32) // { morning: 15, day: 2, evening: 5, night: 7 }
+ * // Дата рождения: 13.12.1984, Имя: Алексей (сумма=5), Дата: 20.02.2026
+ * calculateDayCard(new Date(1984, 11, 13), 5, new Date(2026, 1, 20))
+ * // { morning: 16, day: 11, evening: 10, night: 15 }
  */
 export function calculateDayCard(
-  birthDay: number,
+  birthDate: Date,
   nameSum: number,
   currentDate: Date = new Date()
 ): DayCardResult {
-  const morning = calculateMorning(birthDay);
-  const day = calculateDay(currentDate);
-  const evening = calculateEvening(nameSum, morning, day);
-  const night = calculateNight(day, evening);
+  const morning = calculateMorning(birthDate, currentDate);
+  const day = calculateDay(birthDate, currentDate);
+  const evening = calculateEvening(nameSum, currentDate);
+  const night = calculateNight(morning, day, evening);
   
   return {
     morning,
@@ -157,46 +220,53 @@ export function calculateDayCard(
 
 
 /**
- * Класс-обертка для функций расчета арканов
+ * Класс-обертка для функций расчета арканов (НОВЫЙ АЛГОРИТМ)
  * Предоставляет объектно-ориентированный интерфейс
  */
 export class ArcanaCalculator {
   /**
-   * Вычисляет аркан утра на основе дня рождения
+   * Вычисляет аркан утра
    */
-  calculateMorning(birthDay: number): number {
-    return calculateMorning(birthDay);
+  calculateMorning(birthDate: Date, currentDate: Date): number {
+    return calculateMorning(birthDate, currentDate);
   }
 
   /**
-   * Вычисляет аркан дня на основе текущей даты
+   * Вычисляет аркан дня
    */
-  calculateDay(currentDate: Date): number {
-    return calculateDay(currentDate);
+  calculateDay(birthDate: Date, currentDate: Date): number {
+    return calculateDay(birthDate, currentDate);
   }
 
   /**
    * Вычисляет аркан вечера
    */
-  calculateEvening(nameSum: number, morning: number, day: number): number {
-    return calculateEvening(nameSum, morning, day);
+  calculateEvening(nameSum: number, currentDate: Date): number {
+    return calculateEvening(nameSum, currentDate);
   }
 
   /**
    * Вычисляет аркан ночи
    */
-  calculateNight(day: number, evening: number): number {
-    return calculateNight(day, evening);
+  calculateNight(morning: number, day: number, evening: number): number {
+    return calculateNight(morning, day, evening);
   }
 
   /**
    * Вычисляет все 4 аркана дня
    */
   calculateDayCard(
-    birthDay: number,
+    birthDate: Date,
     nameSum: number,
     currentDate: Date = new Date()
   ): DayCardResult {
-    return calculateDayCard(birthDay, nameSum, currentDate);
+    return calculateDayCard(birthDate, nameSum, currentDate);
+  }
+  
+  /**
+   * Вычисляет сумму цифр даты с учетом мастер-чисел
+   */
+  calculateDateSum(date: Date): number {
+    return calculateDateSum(date);
   }
 }

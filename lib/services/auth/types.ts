@@ -26,3 +26,13 @@ export interface AuthResult {
   };
   session: Session;
 }
+
+export interface TwoFactorRequiredResult {
+  requiresTwoFactor: true;
+  userId: string;
+}
+
+export interface TwoFactorVerificationResult {
+  success: true;
+  session: Session;
+}

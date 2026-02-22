@@ -1,0 +1,66 @@
+═══════════════════════════════════════════════════════════
+  VERCEL ENVIRONMENT VARIABLES - QUICK COPY/PASTE
+═══════════════════════════════════════════════════════════
+
+📍 Vercel Dashboard → Settings → Environment Variables → Add New
+
+═══════════════════════════════════════════════════════════
+  ОБЯЗАТЕЛЬНЫЕ ПЕРЕМЕННЫЕ (8 штук)
+═══════════════════════════════════════════════════════════
+
+1. DATABASE_URL
+   Value: <скопируйте из .env файла>
+   Environment: Production, Preview, Development
+
+2. ENCRYPTION_SECRET
+   Value: uSDGznWxEdVNBR2gkF5LR88H7jg/RXREOSdQCTQ0Vy0=
+   Environment: Production, Preview, Development
+
+3. SESSION_SECRET
+   Value: 27YdnX8nKIHpkwP73Gs770AhTsOk3PW8TJQBA7q5gKk=
+   Environment: Production, Preview, Development
+
+4. CRON_SECRET
+   Value: r1t4nsXj8Rm7R2/SFuswG+Fj5YFr0al6eMbWhdWtC8U=
+   Environment: Production, Preview, Development
+
+5. RESEND_API_KEY
+   Value: <получите на resend.com>
+   Environment: Production, Preview, Development
+
+6. EMAIL_FROM
+   Value: FATOS.pro <noreply@fatos.pro>
+   Environment: Production, Preview, Development
+
+7. NEXT_PUBLIC_BASE_URL
+   Value (Production): https://fatos.pro
+   Value (Preview): https://preview-fatos-pro.vercel.app
+   Value (Development): http://localhost:3000
+   Environment: Добавьте для каждого окружения отдельно
+
+8. OAUTH_REDIRECT_BASE_URL
+   Value (Production): https://fatos.pro
+   Value (Preview): https://preview-fatos-pro.vercel.app
+   Value (Development): http://localhost:3000
+   Environment: Добавьте для каждого окружения отдельно
+
+═══════════════════════════════════════════════════════════
+  ОПЦИОНАЛЬНЫЕ (OAuth) - добавьте если нужно
+═══════════════════════════════════════════════════════════
+
+GOOGLE_OAUTH_CLIENT_ID
+GOOGLE_OAUTH_CLIENT_SECRET
+FACEBOOK_OAUTH_CLIENT_ID
+FACEBOOK_OAUTH_CLIENT_SECRET
+
+═══════════════════════════════════════════════════════════
+  ЧТО ДЕЛАТЬ ДАЛЬШЕ
+═══════════════════════════════════════════════════════════
+
+1. ✅ Добавьте все 8 обязательных переменных в Vercel
+2. ✅ Получите Resend API key (если еще нет)
+3. ✅ Закоммитьте код: git add . && git commit -m "Add auth"
+4. ✅ Задеплойте: vercel --prod
+5. ✅ Проверьте: curl https://fatos.pro/api/auth/session
+
+═══════════════════════════════════════════════════════════

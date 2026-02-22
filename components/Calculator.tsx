@@ -8,6 +8,8 @@ import { sumNameLetters } from '@/lib/validation/name';
 import { PythagoreanCalculator } from '@/lib/calculators/pythagorean';
 import { DestinyCalculator } from '@/lib/calculators/destiny';
 import { ArcanaCalculator } from '@/lib/arcana/arcanaCalculator';
+import { serializeArcanaData, parseArcanaData } from '@/lib/arcana/serialization';
+import { useMidnightCheck } from '@/lib/hooks/useMidnightCheck';
 import { calculationCache } from '@/lib/services/cache';
 import { useCalculations } from '@/lib/hooks/useCalculations';
 import { useArticles, Article } from '@/lib/hooks/useArticles';
@@ -38,6 +40,7 @@ interface CalculatorState {
     };
   } | null;
   fromCache?: boolean;
+  lastCalculationDate?: string | null; // ISO дата последнего расчета
   articles?: {
     destinyArticle?: Article | null;
     matrixArticles?: Map<string, Article | null>;
@@ -66,11 +69,141 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
 
   // Загрузка сохраненного имени при монтировании
   useEffect(() => {
+    loadUserName();
+  }, []);
+
+  // Функция загрузки имени пользователя
+  const loadUserName = async () => {
+    // Попытка загрузить из сессии для аутентифицированных пользователей
+    if (userId) {
+      try {
+        const response = await fetch('/api/auth/session');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.user && data.user.name) {
+            setState(prev => ({ ...prev, name: data.user.name }));
+            localStorage.setItem('userName', data.user.name);
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load user name from session:', error);
+      }
+    }
+
+    // Fallback к localStorage
     const savedName = localStorage.getItem('userName');
     if (savedName) {
       setState(prev => ({ ...prev, name: savedName }));
     }
-  }, []);
+  };
+
+  // Функция сохранения имени пользователя
+  const saveUserName = async (name: string) => {
+    // Синхронное сохранение в localStorage
+    localStorage.setItem('userName', name.trim());
+
+    // Асинхронное сохранение в БД для аутентифицированных пользователей
+    if (userId) {
+      try {
+        await fetch('/api/user/profile', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: name.trim() }),
+        });
+      } catch (error) {
+        console.error('Failed to save user name to profile:', error);
+        // Не показываем ошибку пользователю, имя уже сохранено в localStorage
+      }
+    }
+  };
+
+  // Функция пересчета арканов при смене даты
+  const recalculateArcana = () => {
+    if (!state.results?.arcana || !state.day || !state.name) {
+      return;
+    }
+
+    try {
+      // Получаем дату рождения из state
+      const birthDate = new Date(
+        parseInt(state.year, 10),
+        parseInt(state.month, 10) - 1, // месяцы в JS начинаются с 0
+        parseInt(state.day, 10)
+      );
+      const nameSum = sumNameLetters(state.name);
+      const arcana = new ArcanaCalculator();
+
+      // Пересчитываем ВСЕ арканы для новой даты (все зависят от текущей даты)
+      const currentDate = new Date();
+      const morning = arcana.calculateMorning(birthDate, currentDate);
+      const dayArcana = arcana.calculateDay(birthDate, currentDate);
+      const evening = arcana.calculateEvening(nameSum, currentDate);
+      const night = arcana.calculateNight(morning, dayArcana, evening);
+
+      // Обновляем state
+      setState(prev => ({
+        ...prev,
+        results: {
+          ...prev.results,
+          arcana: {
+            morning,
+            day: dayArcana,
+            evening,
+            night,
+          },
+        },
+        lastCalculationDate: new Date().toISOString(),
+      }));
+
+      // Сохраняем в localStorage
+      const newDate = new Date().toISOString();
+      localStorage.setItem('lastCalculationDate', newDate);
+      localStorage.setItem('arcanaData', serializeArcanaData({
+        morning,
+        day: dayArcana,
+        evening,
+        night,
+      }));
+
+      console.log('[Calculator] Arcana recalculated at midnight:', {
+        morning,
+        day: dayArcana,
+        evening,
+        night,
+      });
+    } catch (error) {
+      console.error('[Calculator] Failed to recalculate arcana:', error);
+    }
+  };
+
+  // Проверка при открытии страницы после полуночи
+  useEffect(() => {
+    const lastDate = localStorage.getItem('lastCalculationDate');
+    
+    if (lastDate && state.results?.arcana) {
+      const lastCalculation = new Date(lastDate);
+      const now = new Date();
+      
+      // Сравниваем даты (игнорируя время)
+      if (lastCalculation.toDateString() !== now.toDateString()) {
+        console.log('[Calculator] Date changed since last calculation, recalculating...');
+        recalculateArcana();
+      }
+    }
+  }, [state.results?.arcana]);
+
+  // Автообновление в полночь через useMidnightCheck
+  useMidnightCheck({
+    onMidnight: () => {
+      console.log('[Calculator] Midnight reached, recalculating arcana...');
+      recalculateArcana();
+    },
+    enabled: !!state.results?.arcana,
+    checkIntervalMs: 60000, // Проверка каждую минуту
+  });
 
   const collectArcanas = async (arcanaNumbers: number[]) => {
     if (!userId) return;
@@ -175,14 +308,26 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
       
       if (cachedResult) {
         // Результат найден в кеше
+        const birthDate = new Date(year, month - 1, day);
         const nameSum = sumNameLetters(state.name);
         const arcana = new ArcanaCalculator();
         
-        // Пересчитываем только арканы (зависят от имени и текущей даты)
-        const morning = arcana.calculateMorning(day);
-        const dayArcana = arcana.calculateDay(new Date());
-        const evening = arcana.calculateEvening(nameSum, morning, dayArcana);
-        const night = arcana.calculateNight(dayArcana, evening);
+        // Пересчитываем ВСЕ арканы (все зависят от текущей даты)
+        const currentDate = new Date();
+        const morning = arcana.calculateMorning(birthDate, currentDate);
+        const dayArcana = arcana.calculateDay(birthDate, currentDate);
+        const evening = arcana.calculateEvening(nameSum, currentDate);
+        const night = arcana.calculateNight(morning, dayArcana, evening);
+
+        // Сохраняем дату расчета
+        const calculationDate = new Date().toISOString();
+        localStorage.setItem('lastCalculationDate', calculationDate);
+        localStorage.setItem('arcanaData', serializeArcanaData({
+          morning,
+          day: dayArcana,
+          evening,
+          night,
+        }));
 
         setState(prev => ({
           ...prev,
@@ -199,6 +344,7 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
             },
           },
           fromCache: true,
+          lastCalculationDate: calculationDate,
         }));
 
         // Load articles for cached results
@@ -238,16 +384,28 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
         destinyMatrix: matrix,
       });
 
-      // Calculate arcana (Card of the Day)
-      const morning = arcana.calculateMorning(day);
-      const dayArcana = arcana.calculateDay(new Date());
-      const evening = arcana.calculateEvening(nameSum, morning, dayArcana);
-      const night = arcana.calculateNight(dayArcana, evening);
+      // Calculate arcana (Card of the Day) - используем новый алгоритм
+      const birthDate = new Date(year, month - 1, day);
+      const currentDate = new Date();
+      const morning = arcana.calculateMorning(birthDate, currentDate);
+      const dayArcana = arcana.calculateDay(birthDate, currentDate);
+      const evening = arcana.calculateEvening(nameSum, currentDate);
+      const night = arcana.calculateNight(morning, dayArcana, evening);
 
-      // Сохраняем имя пользователя в localStorage
+      // Сохраняем имя пользователя
       if (state.name.trim()) {
-        localStorage.setItem('userName', state.name.trim());
+        await saveUserName(state.name);
       }
+
+      // Сохраняем дату расчета
+      const calculationDate = new Date().toISOString();
+      localStorage.setItem('lastCalculationDate', calculationDate);
+      localStorage.setItem('arcanaData', serializeArcanaData({
+        morning,
+        day: dayArcana,
+        evening,
+        night,
+      }));
 
       setState(prev => ({
         ...prev,
@@ -264,6 +422,7 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
           },
         },
         fromCache: false,
+        lastCalculationDate: calculationDate,
       }));
 
       // Load articles for new results
@@ -325,27 +484,62 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
         </div>
 
         <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4">
-          <Input
-            type="number"
-            value={state.day}
-            onChange={(value) => setState(prev => ({ ...prev, day: value }))}
-            label={t('day')}
-            placeholder="15"
-          />
-          <Input
-            type="number"
-            value={state.month}
-            onChange={(value) => setState(prev => ({ ...prev, month: value }))}
-            label={t('month')}
-            placeholder="8"
-          />
-          <Input
-            type="number"
-            value={state.year}
-            onChange={(value) => setState(prev => ({ ...prev, year: value }))}
-            label={t('year')}
-            placeholder="1990"
-          />
+          {/* Day Select */}
+          <div>
+            <label className="block text-sm font-medium text-purple-200 mb-2">
+              {t('day')}
+            </label>
+            <select
+              value={state.day}
+              onChange={(e) => setState(prev => ({ ...prev, day: e.target.value }))}
+              className="w-full px-3 py-2 bg-[#1a0b2e]/50 border border-purple-400/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#FFD700] focus:border-transparent transition-all"
+            >
+              <option value="">{locale === 'ru' ? 'День' : 'Day'}</option>
+              {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+                <option key={day} value={day.toString().padStart(2, '0')}>
+                  {day.toString().padStart(2, '0')}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Month Select */}
+          <div>
+            <label className="block text-sm font-medium text-purple-200 mb-2">
+              {t('month')}
+            </label>
+            <select
+              value={state.month}
+              onChange={(e) => setState(prev => ({ ...prev, month: e.target.value }))}
+              className="w-full px-3 py-2 bg-[#1a0b2e]/50 border border-purple-400/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#FFD700] focus:border-transparent transition-all"
+            >
+              <option value="">{locale === 'ru' ? 'Месяц' : 'Month'}</option>
+              {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                <option key={month} value={month.toString().padStart(2, '0')}>
+                  {month.toString().padStart(2, '0')}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Year Select */}
+          <div>
+            <label className="block text-sm font-medium text-purple-200 mb-2">
+              {t('year')}
+            </label>
+            <select
+              value={state.year}
+              onChange={(e) => setState(prev => ({ ...prev, year: e.target.value }))}
+              className="w-full px-3 py-2 bg-[#1a0b2e]/50 border border-purple-400/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#FFD700] focus:border-transparent transition-all"
+            >
+              <option value="">{locale === 'ru' ? 'Год' : 'Year'}</option>
+              {Array.from({ length: 125 }, (_, i) => new Date().getFullYear() - i).map(year => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {state.errors.date && (

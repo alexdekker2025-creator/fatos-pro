@@ -180,18 +180,172 @@ export default function ArticleForm({ article, onClose }: ArticleFormProps) {
         </div>
 
         {/* Содержание */}
-        <div>
-          <label className="block text-white mb-2">
-            {t('contentLabel', { default: 'Content' })} *
-          </label>
-          <textarea
-            value={formData.content}
-            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-            placeholder={t('contentPlaceholder', { default: 'Enter article content' })}
-            className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[300px] resize-y"
-            required
-          />
-        </div>
+        {formData.category === 'arcana' ? (
+          // Специальная форма для арканов с 4 полями
+          <div className="space-y-4">
+            <label className="block text-white mb-2 text-lg font-semibold">
+              {t('contentLabel', { default: 'Content' })} * (Карта дня)
+            </label>
+            
+            {/* Утро */}
+            <div>
+              <label className="block text-white mb-2 flex items-center gap-2">
+                🌅 {formData.language === 'ru' ? 'УТРО' : 'MORNING'}
+              </label>
+              <textarea
+                value={(() => {
+                  const match = formData.content.match(/🌅 (?:УТРО|MORNING)\n([\s\S]*?)(?=\n\n(?:☀️|$))/);
+                  return match ? match[1].trim() : '';
+                })()}
+                onChange={(e) => {
+                  const morning = e.target.value;
+                  const dayMatch = formData.content.match(/☀️ (?:ДЕНЬ|DAY)\n([\s\S]*?)(?=\n\n(?:🌇|$))/);
+                  const eveningMatch = formData.content.match(/🌇 (?:ВЕЧЕР|EVENING)\n([\s\S]*?)(?=\n\n(?:🌙|$))/);
+                  const nightMatch = formData.content.match(/🌙 (?:НОЧЬ|NIGHT)\n([\s\S]*?)$/);
+                  
+                  const day = dayMatch ? dayMatch[1].trim() : '';
+                  const evening = eveningMatch ? eveningMatch[1].trim() : '';
+                  const night = nightMatch ? nightMatch[1].trim() : '';
+                  
+                  const morningLabel = formData.language === 'ru' ? 'УТРО' : 'MORNING';
+                  const dayLabel = formData.language === 'ru' ? 'ДЕНЬ' : 'DAY';
+                  const eveningLabel = formData.language === 'ru' ? 'ВЕЧЕР' : 'EVENING';
+                  const nightLabel = formData.language === 'ru' ? 'НОЧЬ' : 'NIGHT';
+                  
+                  setFormData({
+                    ...formData,
+                    content: `🌅 ${morningLabel}\n${morning}\n\n☀️ ${dayLabel}\n${day}\n\n🌇 ${eveningLabel}\n${evening}\n\n🌙 ${nightLabel}\n${night}`
+                  });
+                }}
+                placeholder={formData.language === 'ru' ? 'Описание утра...' : 'Morning description...'}
+                className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[120px] resize-y"
+                required
+              />
+            </div>
+
+            {/* День */}
+            <div>
+              <label className="block text-white mb-2 flex items-center gap-2">
+                ☀️ {formData.language === 'ru' ? 'ДЕНЬ' : 'DAY'}
+              </label>
+              <textarea
+                value={(() => {
+                  const match = formData.content.match(/☀️ (?:ДЕНЬ|DAY)\n([\s\S]*?)(?=\n\n(?:🌇|$))/);
+                  return match ? match[1].trim() : '';
+                })()}
+                onChange={(e) => {
+                  const day = e.target.value;
+                  const morningMatch = formData.content.match(/🌅 (?:УТРО|MORNING)\n([\s\S]*?)(?=\n\n(?:☀️|$))/);
+                  const eveningMatch = formData.content.match(/🌇 (?:ВЕЧЕР|EVENING)\n([\s\S]*?)(?=\n\n(?:🌙|$))/);
+                  const nightMatch = formData.content.match(/🌙 (?:НОЧЬ|NIGHT)\n([\s\S]*?)$/);
+                  
+                  const morning = morningMatch ? morningMatch[1].trim() : '';
+                  const evening = eveningMatch ? eveningMatch[1].trim() : '';
+                  const night = nightMatch ? nightMatch[1].trim() : '';
+                  
+                  const morningLabel = formData.language === 'ru' ? 'УТРО' : 'MORNING';
+                  const dayLabel = formData.language === 'ru' ? 'ДЕНЬ' : 'DAY';
+                  const eveningLabel = formData.language === 'ru' ? 'ВЕЧЕР' : 'EVENING';
+                  const nightLabel = formData.language === 'ru' ? 'НОЧЬ' : 'NIGHT';
+                  
+                  setFormData({
+                    ...formData,
+                    content: `🌅 ${morningLabel}\n${morning}\n\n☀️ ${dayLabel}\n${day}\n\n🌇 ${eveningLabel}\n${evening}\n\n🌙 ${nightLabel}\n${night}`
+                  });
+                }}
+                placeholder={formData.language === 'ru' ? 'Описание дня...' : 'Day description...'}
+                className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[120px] resize-y"
+                required
+              />
+            </div>
+
+            {/* Вечер */}
+            <div>
+              <label className="block text-white mb-2 flex items-center gap-2">
+                🌇 {formData.language === 'ru' ? 'ВЕЧЕР' : 'EVENING'}
+              </label>
+              <textarea
+                value={(() => {
+                  const match = formData.content.match(/🌇 (?:ВЕЧЕР|EVENING)\n([\s\S]*?)(?=\n\n(?:🌙|$))/);
+                  return match ? match[1].trim() : '';
+                })()}
+                onChange={(e) => {
+                  const evening = e.target.value;
+                  const morningMatch = formData.content.match(/🌅 (?:УТРО|MORNING)\n([\s\S]*?)(?=\n\n(?:☀️|$))/);
+                  const dayMatch = formData.content.match(/☀️ (?:ДЕНЬ|DAY)\n([\s\S]*?)(?=\n\n(?:🌇|$))/);
+                  const nightMatch = formData.content.match(/🌙 (?:НОЧЬ|NIGHT)\n([\s\S]*?)$/);
+                  
+                  const morning = morningMatch ? morningMatch[1].trim() : '';
+                  const day = dayMatch ? dayMatch[1].trim() : '';
+                  const night = nightMatch ? nightMatch[1].trim() : '';
+                  
+                  const morningLabel = formData.language === 'ru' ? 'УТРО' : 'MORNING';
+                  const dayLabel = formData.language === 'ru' ? 'ДЕНЬ' : 'DAY';
+                  const eveningLabel = formData.language === 'ru' ? 'ВЕЧЕР' : 'EVENING';
+                  const nightLabel = formData.language === 'ru' ? 'НОЧЬ' : 'NIGHT';
+                  
+                  setFormData({
+                    ...formData,
+                    content: `🌅 ${morningLabel}\n${morning}\n\n☀️ ${dayLabel}\n${day}\n\n🌇 ${eveningLabel}\n${evening}\n\n🌙 ${nightLabel}\n${night}`
+                  });
+                }}
+                placeholder={formData.language === 'ru' ? 'Описание вечера...' : 'Evening description...'}
+                className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[120px] resize-y"
+                required
+              />
+            </div>
+
+            {/* Ночь */}
+            <div>
+              <label className="block text-white mb-2 flex items-center gap-2">
+                🌙 {formData.language === 'ru' ? 'НОЧЬ' : 'NIGHT'}
+              </label>
+              <textarea
+                value={(() => {
+                  const match = formData.content.match(/🌙 (?:НОЧЬ|NIGHT)\n([\s\S]*?)$/);
+                  return match ? match[1].trim() : '';
+                })()}
+                onChange={(e) => {
+                  const night = e.target.value;
+                  const morningMatch = formData.content.match(/🌅 (?:УТРО|MORNING)\n([\s\S]*?)(?=\n\n(?:☀️|$))/);
+                  const dayMatch = formData.content.match(/☀️ (?:ДЕНЬ|DAY)\n([\s\S]*?)(?=\n\n(?:🌇|$))/);
+                  const eveningMatch = formData.content.match(/🌇 (?:ВЕЧЕР|EVENING)\n([\s\S]*?)(?=\n\n(?:🌙|$))/);
+                  
+                  const morning = morningMatch ? morningMatch[1].trim() : '';
+                  const day = dayMatch ? dayMatch[1].trim() : '';
+                  const evening = eveningMatch ? eveningMatch[1].trim() : '';
+                  
+                  const morningLabel = formData.language === 'ru' ? 'УТРО' : 'MORNING';
+                  const dayLabel = formData.language === 'ru' ? 'ДЕНЬ' : 'DAY';
+                  const eveningLabel = formData.language === 'ru' ? 'ВЕЧЕР' : 'EVENING';
+                  const nightLabel = formData.language === 'ru' ? 'НОЧЬ' : 'NIGHT';
+                  
+                  setFormData({
+                    ...formData,
+                    content: `🌅 ${morningLabel}\n${morning}\n\n☀️ ${dayLabel}\n${day}\n\n🌇 ${eveningLabel}\n${evening}\n\n🌙 ${nightLabel}\n${night}`
+                  });
+                }}
+                placeholder={formData.language === 'ru' ? 'Описание ночи...' : 'Night description...'}
+                className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[120px] resize-y"
+                required
+              />
+            </div>
+          </div>
+        ) : (
+          // Обычное поле для других категорий
+          <div>
+            <label className="block text-white mb-2">
+              {t('contentLabel', { default: 'Content' })} *
+            </label>
+            <textarea
+              value={formData.content}
+              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+              placeholder={t('contentPlaceholder', { default: 'Enter article content' })}
+              className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[300px] resize-y"
+              required
+            />
+          </div>
+        )}
 
         {/* Ошибка */}
         {error && (

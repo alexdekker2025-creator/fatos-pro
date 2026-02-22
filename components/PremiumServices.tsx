@@ -33,10 +33,10 @@ const services: PremiumService[] = [
     id: 'destiny_matrix',
     titleRu: 'Матрица судьбы',
     titleEn: 'Destiny Matrix',
-    descriptionRu: 'Кармические задачи, таланты, предназначение',
-    descriptionEn: 'Karmic tasks, talents, life purpose',
-    hookRu: 'Почему вы повторяете одни и те же сценарии?',
-    hookEn: 'Why do you repeat the same patterns?',
+    descriptionRu: 'Всё, чтобы понять главное',
+    descriptionEn: 'Everything to understand the main thing',
+    hookRu: 'Для тех, кто хочет заглянуть в себя',
+    hookEn: 'For those who want to look inside themselves',
     priceBasicRUB: 3500,
     priceBasicUSD: 39,
     priceFullRUB: 5500,
@@ -46,16 +46,16 @@ const services: PremiumService[] = [
     features: {
       basic: [
         'Базовый расчёт матрицы',
-        'Основные арканы',
-        'Кармические задачи',
-        'Таланты и способности'
+        '4 ключевых аркана',
+        'Основные кармические задачи',
+        'Направление развития'
       ],
       full: [
-        'Всё из базового',
-        'Полная расшифровка всех позиций',
-        'Детальный анализ отношений',
-        'Рекомендации по развитию',
-        'Кармические долги'
+        'Всё из тарифа «Старт»',
+        'Полная расшифровка всех арканов (до 12 позиций)',
+        'Детальный разбор теневых зон',
+        'Предназначение по сферам: деньги, отношения, карьера',
+        'Конкретные шаги под вашу дату'
       ]
     },
     buttonTextRu: 'Рассчитать матрицу',
@@ -65,10 +65,10 @@ const services: PremiumService[] = [
     id: 'child_numerology',
     titleRu: 'Детская нумерология',
     titleEn: 'Child Numerology',
-    descriptionRu: 'Таланты, страхи, рекомендации родителям',
-    descriptionEn: 'Talents, fears, recommendations for parents',
-    hookRu: 'Что ваш ребёнок прячет от вас?',
-    hookEn: 'What is your child hiding from you?',
+    descriptionRu: 'Таланты и характер ребёнка',
+    descriptionEn: 'Child talents and character',
+    hookRu: 'Для родителей, которые хотят быть ближе',
+    hookEn: 'For parents who want to be closer',
     priceBasicRUB: 2900,
     priceBasicUSD: 32,
     priceFullRUB: 4900,
@@ -77,17 +77,18 @@ const services: PremiumService[] = [
     color: 'from-pink-500 to-rose-600',
     features: {
       basic: [
-        'Характер ребёнка',
-        'Скрытые таланты',
-        'Основные страхи',
-        'Рекомендации родителям'
+        'Основные черты характера',
+        'Природные способности',
+        'Зоны роста',
+        'Базовые рекомендации'
       ],
       full: [
-        'Всё из базового',
-        'Отношения с родителями',
-        'Выбор профессии',
-        'Здоровье и энергия',
-        'План развития по возрастам'
+        'Всё из тарифа «Старт»',
+        'Детальный разбор страхов и уязвимостей',
+        'Скрытые таланты',
+        'Рекомендации под конкретный возраст',
+        'Как общаться, чтобы ребёнок доверял',
+        'Что делать, если ребёнок закрывается'
       ]
     },
     buttonTextRu: 'Узнать ребёнка',
@@ -97,10 +98,10 @@ const services: PremiumService[] = [
     id: 'compatibility',
     titleRu: 'Совместимость',
     titleEn: 'Compatibility',
-    descriptionRu: 'Отношения, брак, конфликты, кармические связи',
-    descriptionEn: 'Relationships, marriage, conflicts, karmic connections',
-    hookRu: 'Почему вы ссоритесь?',
-    hookEn: 'Why do you argue?',
+    descriptionRu: 'Подходите ли вы друг другу?',
+    descriptionEn: 'Are you compatible?',
+    hookRu: 'Для тех, кто хочет проверить себя и партнёра',
+    hookEn: 'For those who want to check themselves and their partner',
     priceBasicRUB: 3900,
     priceBasicUSD: 43,
     priceFullRUB: 5900,
@@ -109,18 +110,17 @@ const services: PremiumService[] = [
     color: 'from-red-500 to-pink-600',
     features: {
       basic: [
-        'Совместимость по датам',
-        'Сильные стороны пары',
-        'Зоны конфликтов',
-        'Базовые рекомендации'
+        'Общий вывод о совместимости',
+        'Основные зоны конфликтов',
+        'Краткие рекомендации',
+        'Направление отношений'
       ],
       full: [
-        'Всё из базового',
-        'Кармические связи',
-        'Сексуальная совместимость',
-        'Финансовая совместимость',
-        'Прогноз отношений',
-        'Детальные рекомендации'
+        'Всё из тарифа «Старт»',
+        'Детальный анализ по 5 сферам: энергия, интеллект, быт, эмоции, близость',
+        'Прогноз развития отношений',
+        'Пошаговые рекомендации под ваш тип пары',
+        'Кармические задачи, которые вы пришли решать вдвоём'
       ]
     },
     buttonTextRu: 'Проверить совместимость',
@@ -130,10 +130,10 @@ const services: PremiumService[] = [
     id: 'money_numerology',
     titleRu: 'Денежная нумерология',
     titleEn: 'Money Numerology',
-    descriptionRu: 'Денежный код, блоки, кармические долги',
-    descriptionEn: 'Money code, blocks, karmic debts',
-    hookRu: 'Почему деньги приходят, но не задерживаются?',
-    hookEn: 'Why does money come but not stay?',
+    descriptionRu: 'Ваш денежный код',
+    descriptionEn: 'Your money code',
+    hookRu: 'Для тех, кто хочет узнать свой финансовый потенциал',
+    hookEn: 'For those who want to know their financial potential',
     priceBasicRUB: 3900,
     priceBasicUSD: 43,
     priceFullRUB: 5900,
@@ -142,18 +142,18 @@ const services: PremiumService[] = [
     color: 'from-yellow-500 to-amber-600',
     features: {
       basic: [
-        'Расчёт денежного кода',
-        'Основные блоки',
-        'Кармические долги',
-        'Базовые рекомендации'
+        '4 цифры денежного кода',
+        'Базовое значение',
+        'Финансовый потенциал',
+        'Энергия денег'
       ],
       full: [
-        'Всё из базового',
-        'Детальный анализ блоков',
-        'Благоприятные периоды',
-        'Способы активации',
-        'Инвестиционный потенциал',
-        'Персональные практики'
+        'Всё из тарифа «Старт»',
+        'Полная расшифровка финансовых блоков',
+        'Почему деньги утекают',
+        'Кармические долги',
+        'В какой сфере легче всего зарабатывать',
+        'Конкретные шаги по активации кода'
       ]
     },
     buttonTextRu: 'Активировать деньги',
@@ -163,10 +163,10 @@ const services: PremiumService[] = [
     id: 'yearly_forecast',
     titleRu: 'Годовой прогноз',
     titleEn: 'Yearly Forecast',
-    descriptionRu: 'Что ждёт в ближайшие 12 месяцев',
-    descriptionEn: 'What awaits in the next 12 months',
-    hookRu: 'Что принесёт вам этот год?',
-    hookEn: 'What will this year bring you?',
+    descriptionRu: 'Основные тенденции года',
+    descriptionEn: 'Main trends of the year',
+    hookRu: 'Для тех, кто хочет заглянуть в будущее',
+    hookEn: 'For those who want to look into the future',
     priceBasicRUB: 4900,
     priceBasicUSD: 54,
     priceFullRUB: 6900,
@@ -175,18 +175,17 @@ const services: PremiumService[] = [
     color: 'from-blue-500 to-cyan-600',
     features: {
       basic: [
-        'Прогноз на 12 месяцев',
-        'Ключевые события',
-        'Благоприятные периоды',
-        'Предупреждения'
+        'Помесячный прогноз (1-2 предложения)',
+        'Общая энергия года',
+        'Главные события',
+        'Планирование дел'
       ],
       full: [
-        'Всё из базового',
-        'Детальный прогноз по месяцам',
-        'Финансовый прогноз',
-        'Прогноз отношений',
-        'Здоровье и энергия',
-        'Рекомендации по месяцам'
+        'Всё из тарифа «Старт»',
+        'Детальный разбор каждого месяца с акцентом на деньги, отношения и карьеру',
+        'Ключевые даты',
+        'Периоды риска и возможности',
+        'Персонализированные рекомендации'
       ]
     },
     buttonTextRu: 'Узнать будущее',
@@ -196,10 +195,10 @@ const services: PremiumService[] = [
     id: 'pythagorean_full',
     titleRu: 'Квадрат Пифагора',
     titleEn: 'Pythagorean Square',
-    descriptionRu: 'Характер, линии силы, пустые ячейки',
-    descriptionEn: 'Character, power lines, empty cells',
-    hookRu: 'Как цифры управляют вашим характером',
-    hookEn: 'How numbers control your character',
+    descriptionRu: 'Ваш цифровой портрет',
+    descriptionEn: 'Your digital portrait',
+    hookRu: 'Для тех, кто хочет понять себя через цифры',
+    hookEn: 'For those who want to understand themselves through numbers',
     priceBasicRUB: 2900,
     priceBasicUSD: 32,
     priceFullRUB: 4900,
@@ -208,18 +207,18 @@ const services: PremiumService[] = [
     color: 'from-green-500 to-emerald-600',
     features: {
       basic: [
-        'Построение квадрата',
-        'Разбор всех ячеек',
-        'Основные линии',
-        'Характер и темперамент'
+        'Готовая таблица 3×3',
+        'Краткое значение каждой ячейки',
+        'Сильные стороны',
+        'Слабые стороны'
       ],
       full: [
-        'Всё из базового',
-        'Все 8 линий квадрата',
+        'Всё из тарифа «Старт»',
+        'Подробная расшифровка каждой ячейки',
+        'Линии силы (строки, столбцы, диагонали)',
         'Пустые ячейки',
-        'Переизбыток цифр',
-        'Совместимость с другими',
-        'Рекомендации по развитию'
+        'Рекомендации под ваш профиль',
+        'Как усилить то, что дано от природы'
       ]
     },
     buttonTextRu: 'Построить квадрат',
@@ -229,10 +228,10 @@ const services: PremiumService[] = [
     id: 'pro_access',
     titleRu: 'Профи-доступ',
     titleEn: 'Pro Access',
-    descriptionRu: 'Готовые расчёты для работы с клиентами',
-    descriptionEn: 'Ready calculations for client work',
-    hookRu: 'Хватит считать вручную',
-    hookEn: 'Stop calculating manually',
+    descriptionRu: 'Для нумерологов',
+    descriptionEn: 'For numerologists',
+    hookRu: 'Сухие профессиональные данные, минимум воды, только расчёты',
+    hookEn: 'Dry professional data, minimum water, only calculations',
     priceBasicRUB: 500,
     priceBasicUSD: 6,
     priceFullRUB: 2500,
@@ -242,16 +241,16 @@ const services: PremiumService[] = [
     features: {
       basic: [
         'Разовый отчёт',
-        'Все расчёты',
-        'Профессиональный формат',
-        'Без воды'
+        'Для одного клиента',
+        'Готовая основа для консультации',
+        'Экономия времени'
       ],
       full: [
         'До 30 отчётов/месяц',
-        'Все типы расчётов',
-        'White Label (опционально)',
-        'Приоритетная поддержка',
-        'API доступ'
+        'Единый стиль для всех клиентов',
+        'Можно использовать как основу',
+        'Экономия времени',
+        'Профессиональный формат'
       ]
     },
     buttonTextRu: 'Начать работать',
@@ -350,6 +349,14 @@ export default function PremiumServices() {
       const response = await fetch('/api/services');
       if (response.ok) {
         const data = await response.json();
+        
+        // Check if data.services exists and is an array
+        if (!data.services || !Array.isArray(data.services)) {
+          console.warn('API returned invalid data structure, using fallback');
+          setServices(defaultServices);
+          return;
+        }
+        
         // Map database format to component format
         const mappedServices: PremiumService[] = data.services.map((s: any) => ({
           id: s.serviceId,
@@ -366,8 +373,8 @@ export default function PremiumServices() {
           icon: s.icon,
           color: s.color,
           features: {
-            basic: s.featuresBasic,
-            full: s.featuresFull,
+            basic: s.featuresBasic || [],
+            full: s.featuresFull || undefined,
           },
           buttonTextRu: s.buttonTextRu,
           buttonTextEn: s.buttonTextEn,
@@ -465,7 +472,7 @@ export default function PremiumServices() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {services.map((service, index) => (
+          {services && services.length > 0 ? services.map((service, index) => (
           <div
             key={service.id}
             className="glass-strong rounded-xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-fade-in-up border border-purple-400/30 flex flex-col"
@@ -477,27 +484,17 @@ export default function PremiumServices() {
             </div>
 
             {/* Service Title */}
-            <h3 className="text-2xl sm:text-3xl font-bold text-[#FFD700] mb-2 text-center">
+            <h3 className="text-2xl sm:text-3xl font-bold text-[#FFD700] mb-6 text-center">
               {locale === 'ru' ? service.titleRu : service.titleEn}
             </h3>
-
-            {/* Hook */}
-            <p className="text-purple-300 italic text-center mb-4 min-h-[48px] text-sm">
-              &ldquo;{locale === 'ru' ? service.hookRu : service.hookEn}&rdquo;
-            </p>
-
-            {/* Service Description */}
-            <p className="text-purple-200 mb-6 text-center">
-              {locale === 'ru' ? service.descriptionRu : service.descriptionEn}
-            </p>
 
             {/* Pricing Tiers */}
             <div className="space-y-4 mb-6 flex-grow">
               {/* Basic Tier */}
               <div className="glass rounded-lg p-4 border border-purple-400/20">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="font-semibold text-white">
-                    {locale === 'ru' ? 'Базовый' : 'Basic'}
+                  <span className="font-semibold text-white flex items-center gap-1">
+                    🌿 {locale === 'ru' ? 'СТАРТ' : 'START'}
                   </span>
                   <div className="text-right">
                     <div className="text-xl font-bold text-[#FFD700]">
@@ -508,14 +505,26 @@ export default function PremiumServices() {
                     </div>
                   </div>
                 </div>
-                <ul className="space-y-1 mb-3">
-                  {service.features.basic.slice(0, 3).map((feature, i) => (
-                    <li key={i} className="flex items-start text-purple-200 text-sm">
-                      <span className="text-green-400 mr-2 flex-shrink-0">✓</span>
-                      <span>{feature}</span>
-                    </li>
+                
+                {/* Tier Title */}
+                <h4 className="text-white font-semibold mb-2 text-sm">
+                  {locale === 'ru' ? service.descriptionRu : service.descriptionEn}
+                </h4>
+                
+                {/* Tier Description */}
+                <div className="space-y-2 mb-3">
+                  {service.features?.basic && service.features.basic.map((feature, i) => (
+                    <p key={i} className="text-purple-200 text-xs leading-relaxed">
+                      {feature}
+                    </p>
                   ))}
-                </ul>
+                </div>
+                
+                {/* Hook Text */}
+                <p className="text-purple-300 italic text-xs mb-3">
+                  {locale === 'ru' ? service.hookRu : service.hookEn}
+                </p>
+                
                 <button
                   onClick={() => handleBuyClick(service, 'basic')}
                   className={`w-full py-2 px-4 rounded-lg transition-all text-sm font-semibold bg-gradient-to-r ${service.color} hover:opacity-90 text-white`}
@@ -525,14 +534,14 @@ export default function PremiumServices() {
               </div>
 
               {/* Full Tier */}
-              {service.priceFullRUB && (
+              {service.priceFullRUB && service.features.full && (
                 <div className="glass rounded-lg p-4 border-2 border-[#FFD700]/50 relative overflow-hidden">
                   <div className="absolute top-0 right-0 bg-[#FFD700] text-[#2D1B4E] text-xs font-bold px-3 py-1 rounded-bl-lg">
-                    {locale === 'ru' ? 'ПОЛНЫЙ' : 'FULL'}
+                    🔥
                   </div>
                   <div className="flex justify-between items-center mb-3 mt-2">
-                    <span className="font-semibold text-white">
-                      {locale === 'ru' ? 'Полный' : 'Full'}
+                    <span className="font-semibold text-white flex items-center gap-1">
+                      🔥 {locale === 'ru' ? 'ГЛУБОКИЙ' : 'DEEP'}
                     </span>
                     <div className="text-right">
                       <div className="text-xl font-bold text-[#FFD700]">
@@ -543,26 +552,62 @@ export default function PremiumServices() {
                       </div>
                     </div>
                   </div>
-                  <ul className="space-y-1 mb-3">
-                    {service.features.full?.slice(0, 3).map((feature, i) => (
-                      <li key={i} className="flex items-start text-purple-200 text-sm">
-                        <span className="text-[#FFD700] mr-2 flex-shrink-0">✓</span>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  
+                  {/* Tier Title (first element) */}
+                  <h4 className="text-white font-semibold mb-2 text-sm">
+                    {service.features.full[0]}
+                  </h4>
+                  
+                  {/* Tier Description (remaining elements) */}
+                  <div className="space-y-2 mb-3">
+                    {service.features.full.slice(1).map((feature, i) => {
+                      // Check if it starts with ➕ or is the last item (hook text)
+                      const isLastItem = i === service.features.full!.length - 2;
+                      const startsWithPlus = feature.startsWith('➕');
+                      
+                      if (isLastItem && !startsWithPlus) {
+                        // This is the hook text at the end
+                        return (
+                          <p key={i} className="text-purple-300 italic text-xs mt-3">
+                            {feature}
+                          </p>
+                        );
+                      } else if (startsWithPlus) {
+                        // This is a feature with ➕
+                        return (
+                          <p key={i} className="text-purple-200 text-xs leading-relaxed">
+                            {feature}
+                          </p>
+                        );
+                      } else {
+                        // Regular description text
+                        return (
+                          <p key={i} className="text-purple-200 text-xs leading-relaxed">
+                            {feature}
+                          </p>
+                        );
+                      }
+                    })}
+                  </div>
+                  
                   <button
                     onClick={() => handleBuyClick(service, 'full')}
                     className="w-full py-2 px-4 rounded-lg transition-all text-sm font-semibold bg-gradient-to-r from-[#FFD700] to-amber-500 hover:from-amber-500 hover:to-[#FFD700] text-[#2D1B4E] shadow-[0_0_20px_rgba(255,215,0,0.3)]"
                   >
-                    {locale === 'ru' ? 'Купить полный' : 'Buy Full'}
+                    {locale === 'ru' ? 'Купить' : 'Buy'}
                   </button>
                 </div>
               )}
             </div>
           </div>
-        ))}
-      </div>
+        )) : (
+          <div className="col-span-full text-center py-12">
+            <p className="text-purple-200 text-lg">
+              {locale === 'ru' ? 'Услуги временно недоступны' : 'Services temporarily unavailable'}
+            </p>
+          </div>
+        )}
+        </div>
       )}
 
       {/* Gift Certificate Modal */}

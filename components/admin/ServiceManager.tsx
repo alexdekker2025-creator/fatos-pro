@@ -243,29 +243,38 @@ export default function ServiceManager() {
     setError(null);
     try {
       const sessionId = localStorage.getItem('sessionId');
+      console.log('[ServiceManager] SessionId:', sessionId ? 'exists' : 'missing');
+      
       const response = await fetch('/api/admin/services', {
         headers: {
           'Authorization': `Bearer ${sessionId}`,
         },
       });
 
+      console.log('[ServiceManager] Response status:', response.status);
+
       if (response.ok) {
         const data = await response.json();
-        console.log('Loaded services from API:', data.services);
+        console.log('[ServiceManager] Loaded services from API:', data.services?.length || 0, 'services');
+        console.log('[ServiceManager] First service:', data.services?.[0]);
+        
         if (data.services && data.services.length > 0) {
           setServices(data.services);
+          setError(null);
         } else {
-          console.log('API returned empty array, using defaults');
+          console.log('[ServiceManager] API returned empty array, using defaults');
+          setError('API вернул пустой массив. Показаны данные по умолчанию.');
           setServices(defaultServices);
         }
       } else {
-        setError(`API вернул ошибку: ${response.status}`);
-        console.log('API error, using defaults');
+        const errorText = await response.text();
+        console.error('[ServiceManager] API error:', response.status, errorText);
+        setError(`API вернул ошибку: ${response.status} - ${errorText}`);
         setServices(defaultServices);
       }
     } catch (error) {
-      console.error('Error fetching services:', error);
-      setError('Ошибка загрузки. Показаны данные по умолчанию.');
+      console.error('[ServiceManager] Error fetching services:', error);
+      setError(`Ошибка загрузки: ${error instanceof Error ? error.message : 'Unknown error'}`);
       setServices(defaultServices);
     } finally {
       setLoading(false);
@@ -575,6 +584,81 @@ function ServiceEditModal({
                 className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
+          </div>
+
+          {/* Descriptions (СТАРТ заголовок) */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Описание СТАРТ (RU)</label>
+              <input
+                type="text"
+                value={formData.descriptionRu}
+                onChange={(e) => setFormData({ ...formData, descriptionRu: e.target.value })}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Всё, чтобы понять главное"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Description START (EN)</label>
+              <input
+                type="text"
+                value={formData.descriptionEn}
+                onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Everything to understand the main thing"
+              />
+            </div>
+          </div>
+
+          {/* Button Text */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Текст кнопки (RU)</label>
+              <input
+                type="text"
+                value={formData.buttonTextRu}
+                onChange={(e) => setFormData({ ...formData, buttonTextRu: e.target.value })}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Рассчитать матрицу"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Button Text (EN)</label>
+              <input
+                type="text"
+                value={formData.buttonTextEn}
+                onChange={(e) => setFormData({ ...formData, buttonTextEn: e.target.value })}
+                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Calculate Matrix"
+              />
+            </div>
+          </div>
+
+          {/* Features Basic (СТАРТ) */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Описание тарифа СТАРТ (по одному на строку)</label>
+            <textarea
+              value={formData.featuresBasic.join('\n')}
+              onChange={(e) => setFormData({ ...formData, featuresBasic: e.target.value.split('\n').filter(f => f.trim()) })}
+              className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 min-h-[120px]"
+              placeholder="Вы получите базовый расчёт матрицы&#10;Этого достаточно, чтобы увидеть направление"
+            />
+            <p className="text-sm text-gray-500 mt-1">Каждая строка = отдельный пункт описания</p>
+          </div>
+
+          {/* Features Full (ГЛУБОКИЙ) */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Описание тарифа ГЛУБОКИЙ (по одному на строку)</label>
+            <textarea
+              value={formData.featuresFull?.join('\n') || ''}
+              onChange={(e) => setFormData({ ...formData, featuresFull: e.target.value.split('\n').filter(f => f.trim()) })}
+              className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 min-h-[180px]"
+              placeholder="Полная картина вашей судьбы&#10;Всё, что в тарифе «Старт» + полная расшифровка&#10;Детальный разбор теневых зон&#10;Этот вариант выбирают те, кто готов работать всерьёз"
+            />
+            <p className="text-sm text-gray-500 mt-1">
+              Первая строка = заголовок ГЛУБОКИЙ<br/>
+              Остальные строки = описание и hook внизу
+            </p>
           </div>
 
           {/* Buttons */}

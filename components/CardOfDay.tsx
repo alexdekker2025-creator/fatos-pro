@@ -25,25 +25,83 @@ export default function CardOfDay({ arcana }: CardOfDayProps) {
   const [autoFlipped, setAutoFlipped] = useState(false);
 
   const cards = [
-    { key: 'morning', value: arcana.morning, label: locale === 'ru' ? 'Утро' : 'Morning', color: 'from-yellow-400 to-orange-500' },
-    { key: 'day', value: arcana.day, label: locale === 'ru' ? 'День' : 'Day', color: 'from-blue-400 to-cyan-500' },
-    { key: 'evening', value: arcana.evening, label: locale === 'ru' ? 'Вечер' : 'Evening', color: 'from-purple-400 to-pink-500' },
-    { key: 'night', value: arcana.night, label: locale === 'ru' ? 'Ночь' : 'Night', color: 'from-indigo-600 to-purple-700' },
+    { key: 'morning', value: arcana.morning, label: locale === 'ru' ? 'Утро' : 'Morning', color: 'from-yellow-400 to-orange-500', timeOfDay: 'morning' },
+    { key: 'day', value: arcana.day, label: locale === 'ru' ? 'День' : 'Day', color: 'from-blue-400 to-cyan-500', timeOfDay: 'day' },
+    { key: 'evening', value: arcana.evening, label: locale === 'ru' ? 'Вечер' : 'Evening', color: 'from-purple-400 to-pink-500', timeOfDay: 'evening' },
+    { key: 'night', value: arcana.night, label: locale === 'ru' ? 'Ночь' : 'Night', color: 'from-indigo-600 to-purple-700', timeOfDay: 'night' },
   ];
 
-  // Auto-flip первой карты (День) при загрузке
+  // Функция для извлечения нужной части описания
+  const extractTimeOfDayContent = (fullContent: string, timeOfDay: string): string => {
+    const patterns = {
+      morning: locale === 'ru' ? '🌅 УТРО' : '🌅 MORNING',
+      day: locale === 'ru' ? '☀️ ДЕНЬ' : '☀️ DAY',
+      evening: locale === 'ru' ? '🌇 ВЕЧЕР' : '🌇 EVENING',
+      night: locale === 'ru' ? '🌙 НОЧЬ' : '🌙 NIGHT'
+    };
+
+    const currentPattern = patterns[timeOfDay as keyof typeof patterns];
+    const allPatterns = Object.values(patterns);
+    
+    // Находим начало нужного раздела
+    const startIndex = fullContent.indexOf(currentPattern);
+    if (startIndex === -1) return fullContent; // Если не найден, возвращаем весь текст
+    
+    // Находим начало следующего раздела
+    let endIndex = fullContent.length;
+    for (const pattern of allPatterns) {
+      if (pattern === currentPattern) continue;
+      const nextIndex = fullContent.indexOf(pattern, startIndex + 1);
+      if (nextIndex !== -1 && nextIndex < endIndex) {
+        endIndex = nextIndex;
+      }
+    }
+    
+    // Извлекаем текст и убираем заголовок раздела
+    let extracted = fullContent.substring(startIndex, endIndex).trim();
+    extracted = extracted.replace(currentPattern, '').trim();
+    
+    return extracted;
+  };
+
+  // Функция определения текущего времени суток
+  const getCurrentTimeOfDay = (): string => {
+    const now = new Date();
+    const hours = now.getHours();
+    
+    // Утро: 6:00-11:59
+    if (hours >= 6 && hours < 12) {
+      return 'morning';
+    }
+    // День: 12:00-17:59
+    else if (hours >= 12 && hours < 18) {
+      return 'day';
+    }
+    // Вечер: 18:00-23:59
+    else if (hours >= 18 && hours < 24) {
+      return 'evening';
+    }
+    // Ночь: 00:00-05:59
+    else {
+      return 'night';
+    }
+  };
+
+  // Auto-flip карты в зависимости от текущего времени суток
   useEffect(() => {
     if (!autoFlipped) {
       const timer = setTimeout(() => {
-        setFlipped({ day: true });
+        const currentTimeOfDay = getCurrentTimeOfDay();
+        setFlipped({ [currentTimeOfDay]: true });
         setAutoFlipped(true);
+        console.log(`[CardOfDay] Auto-flipped card: ${currentTimeOfDay}`);
       }, 800); // Задержка перед автоматическим переворотом
       
       return () => clearTimeout(timer);
     }
   }, [autoFlipped]);
 
-  // Load arcana descriptions
+  // Load arcana descriptions (optimized with parallel loading)
   useEffect(() => {
     const loadArticles = async () => {
       const arcanaNumbers = [arcana.morning, arcana.day, arcana.evening, arcana.night];
@@ -51,33 +109,47 @@ export default function CardOfDay({ arcana }: CardOfDayProps) {
       
       console.log('Loading articles for arcanas:', uniqueArcanas);
       
-      const loadedArticles: Record<number, ArcanaArticle> = {};
-      
-      for (const num of uniqueArcanas) {
+      // Параллельная загрузка всех статей через Promise.all()
+      const promises = uniqueArcanas.map(async (num) => {
         try {
           const url = `/api/articles?relatedValue=arcana_${num}&language=${locale}`;
-          console.log('Fetching:', url);
-          
           const response = await fetch(url);
-          console.log(`Response for arcana ${num}:`, response.status);
           
           if (response.ok) {
             const data = await response.json();
-            console.log(`Data for arcana ${num}:`, data);
             
-            if (data.articles && data.articles.length > 0) {
-              loadedArticles[num] = {
-                title: data.articles[0].title,
-                content: data.articles[0].content
+            if (data && data.articles && Array.isArray(data.articles) && data.articles.length > 0) {
+              return {
+                num,
+                article: {
+                  title: data.articles[0].title,
+                  content: data.articles[0].content
+                }
               };
             } else {
-              console.log(`No articles found for arcana ${num}`);
+              console.warn(`No articles found for arcana_${num}, response:`, data);
             }
+          } else {
+            console.warn(`Failed to fetch article for arcana_${num}, status:`, response.status);
           }
+          
+          return { num, article: null };
         } catch (error) {
           console.error(`Failed to load article for arcana ${num}:`, error);
+          return { num, article: null };
         }
-      }
+      });
+      
+      // Ждем завершения всех запросов
+      const results = await Promise.all(promises);
+      
+      // Формируем объект с загруженными статьями
+      const loadedArticles: Record<number, ArcanaArticle> = {};
+      results.forEach(({ num, article }) => {
+        if (article) {
+          loadedArticles[num] = article;
+        }
+      });
       
       console.log('Loaded articles:', loadedArticles);
       setArticles(loadedArticles);
@@ -99,6 +171,7 @@ export default function CardOfDay({ arcana }: CardOfDayProps) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
         {cards.map((card) => {
           const article = articles[card.value];
+          const displayContent = article ? extractTimeOfDayContent(article.content, card.timeOfDay) : '';
           
           return (
             <div
@@ -248,10 +321,10 @@ export default function CardOfDay({ arcana }: CardOfDayProps) {
                     </div>
                     
                     {/* Центральная часть - описание */}
-                    {article && (
+                    {article && displayContent && (
                       <div className="flex-1 overflow-y-auto px-2 relative z-10 scrollbar-thin scrollbar-thumb-purple-600/50 scrollbar-track-transparent">
                         <p className="text-purple-100 text-xs sm:text-sm leading-relaxed text-center">
-                          {article.content}
+                          {displayContent}
                         </p>
                       </div>
                     )}
