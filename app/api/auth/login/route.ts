@@ -65,18 +65,21 @@ async function loginHandler(request: NextRequest) {
       );
     }
 
+    // TypeScript type narrowing: теперь result точно AuthResult
+    const authResult = result as { user: { id: string; email: string; name: string }; session: { id: string; expiresAt: Date } };
+
     // Возвращаем успешный ответ
     return NextResponse.json(
       {
         success: true,
         user: {
-          id: result.user.id,
-          email: result.user.email,
-          name: result.user.name,
+          id: authResult.user.id,
+          email: authResult.user.email,
+          name: authResult.user.name,
         },
         session: {
-          id: result.session.id,
-          expiresAt: result.session.expiresAt,
+          id: authResult.session.id,
+          expiresAt: authResult.session.expiresAt,
         },
       },
       { status: 200 }
