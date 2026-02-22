@@ -10,6 +10,10 @@ import { getTokenService } from '@/lib/services/auth/TokenService';
 //   }]
 // }
 
+// Force dynamic rendering for cron jobs
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function GET(request: NextRequest) {
   try {
     // Проверка authorization header для безопасности
