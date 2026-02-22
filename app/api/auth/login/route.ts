@@ -52,6 +52,19 @@ async function loginHandler(request: NextRequest) {
       password: validatedData.password,
     });
 
+    // Проверяем требуется ли 2FA
+    if ('requiresTwoFactor' in result && result.requiresTwoFactor) {
+      return NextResponse.json(
+        {
+          success: false,
+          requiresTwoFactor: true,
+          userId: result.userId,
+          message: 'Two-factor authentication required',
+        },
+        { status: 200 }
+      );
+    }
+
     // Возвращаем успешный ответ
     return NextResponse.json(
       {
