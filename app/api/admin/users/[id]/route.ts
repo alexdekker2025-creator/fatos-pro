@@ -10,7 +10,6 @@ import { prisma } from '@/lib/prisma';
 import { verifyAdminSession } from '@/lib/auth/adminAuth';
 import { checkRateLimit } from '@/lib/utils/rateLimit';
 import { z } from 'zod';
-import bcrypt from 'bcryptjs';
 
 export const dynamic = 'force-dynamic';
 
