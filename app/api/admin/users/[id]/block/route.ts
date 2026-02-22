@@ -146,7 +146,7 @@ export async function PATCH(
   } catch (error) {
     console.error('Error blocking/unblocking user:', error);
     
-    if (error.code === 'P2025') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
       return NextResponse.json(
         { error: 'NOT_FOUND', message: 'User not found' },
         { status: 404 }
