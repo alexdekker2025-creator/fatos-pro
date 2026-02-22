@@ -251,6 +251,9 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
                     placeholder={t('namePlaceholder')}
                     disabled={loading}
                   />
+                  <p className="text-purple-300/70 text-xs mt-1 ml-1">
+                    Минимум 2 символа
+                  </p>
                 </div>
               )}
 
@@ -274,6 +277,11 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
                   placeholder="••••••••"
                   disabled={loading}
                 />
+                {mode === 'register' && (
+                  <p className="text-purple-300/70 text-xs mt-1 ml-1">
+                    Минимум 8 символов, должен содержать буквы и цифры
+                  </p>
+                )}
               </div>
 
               {error && (
