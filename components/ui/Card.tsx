@@ -18,16 +18,16 @@ export const Card: React.FC<CardProps> = ({
   const baseStyles = 'rounded-lg overflow-hidden transition-all duration-200';
   
   const variantStyles = {
-    default: 'bg-white',
-    bordered: 'bg-white border border-gray-200',
-    elevated: 'bg-white shadow-lg hover:shadow-xl',
+    default: 'bg-gradient-to-br from-purple-950/80 via-indigo-950/80 to-purple-900/80 backdrop-blur-sm border-2 border-purple-500/30',
+    bordered: 'bg-gradient-to-br from-purple-950/80 via-indigo-950/80 to-purple-900/80 backdrop-blur-sm border-2 border-amber-500/50',
+    elevated: 'bg-gradient-to-br from-purple-950/90 via-indigo-950/90 to-purple-900/90 backdrop-blur-sm border-2 border-purple-500/40 shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.3)] hover:border-amber-500/60',
   };
   
   return (
     <div className={`${baseStyles} ${variantStyles[variant]} ${className}`}>
       {title && (
-        <div className="px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-200 bg-gray-50">
-          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+        <div className="px-4 py-3 sm:px-6 sm:py-4 border-b border-purple-500/30 bg-purple-900/30">
+          <h3 className="text-lg font-semibold text-amber-400">{title}</h3>
         </div>
       )}
       
@@ -36,7 +36,7 @@ export const Card: React.FC<CardProps> = ({
       </div>
       
       {footer && (
-        <div className="px-4 py-3 sm:px-6 sm:py-4 border-t border-gray-200 bg-gray-50">
+        <div className="px-4 py-3 sm:px-6 sm:py-4 border-t border-purple-500/30 bg-purple-900/30">
           {footer}
         </div>
       )}
