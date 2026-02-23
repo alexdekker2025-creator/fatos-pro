@@ -35,6 +35,18 @@ export default function RuPage() {
           
           <div className="flex flex-wrap gap-2 justify-center">
             <Link 
+              href="/ru/about" 
+              className="inline-block px-4 sm:px-6 py-2 min-h-[44px] glass hover:glass-strong active:scale-95 text-white rounded-lg transition-all text-sm sm:text-base border border-purple-400/30 hover:border-purple-400/50"
+            >
+              О проекте
+            </Link>
+            <Link 
+              href="/ru/faq" 
+              className="inline-block px-4 sm:px-6 py-2 min-h-[44px] glass hover:glass-strong active:scale-95 text-white rounded-lg transition-all text-sm sm:text-base border border-purple-400/30 hover:border-purple-400/50"
+            >
+              FAQ
+            </Link>
+            <Link 
               href="/en" 
               className="inline-block px-4 sm:px-6 py-2 min-h-[44px] glass hover:glass-strong active:scale-95 text-white rounded-lg transition-all text-sm sm:text-base border border-[#FFD700]/30 hover:border-[#FFD700]/50"
             >
