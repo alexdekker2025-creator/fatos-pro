@@ -46,6 +46,12 @@ export default function EnPage() {
               FAQ
             </Link>
             <Link 
+              href="/en/privacy" 
+              className="inline-block px-4 sm:px-6 py-2 min-h-[44px] glass hover:glass-strong active:scale-95 text-white rounded-lg transition-all text-sm sm:text-base border border-purple-400/30 hover:border-purple-400/50"
+            >
+              Privacy Policy
+            </Link>
+            <Link 
               href="/ru" 
               className="inline-block px-4 sm:px-6 py-2 min-h-[44px] glass hover:glass-strong active:scale-95 text-white rounded-lg transition-all text-sm sm:text-base border border-[#FFD700]/30 hover:border-[#FFD700]/50"
             >
