@@ -274,3 +274,31 @@ model ContentPage {
   @@index([isPublished])
   @@index([sortOrder])
 }
+
+model SiteVisit {
+  id          String   @id @default(cuid())
+  ipAddress   String?
+  userAgent   String?
+  path        String
+  referrer    String?
+  country     String?
+  city        String?
+  createdAt   DateTime @default(now())
+  
+  @@index([createdAt])
+  @@index([path])
+  @@index([ipAddress])
+}
+
+model DailyStats {
+  id              String   @id @default(cuid())
+  date            DateTime @unique @db.Date
+  uniqueVisitors  Int      @default(0)
+  totalVisits     Int      @default(0)
+  newUsers        Int      @default(0)
+  calculations    Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([date])
+}
