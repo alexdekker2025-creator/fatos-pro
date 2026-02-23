@@ -257,3 +257,20 @@ model SecurityLog {
   @@index([event])
   @@index([createdAt])
 }
+
+model ContentPage {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  titleRu     String
+  titleEn     String
+  contentRu   String   @db.Text
+  contentEn   String   @db.Text
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([slug])
+  @@index([isPublished])
+  @@index([sortOrder])
+}

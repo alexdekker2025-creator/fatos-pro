@@ -14,8 +14,9 @@ import StatisticsDashboard from '@/components/admin/StatisticsDashboard';
 import AdminLogs from '@/components/admin/AdminLogs';
 import ServiceManager from '@/components/admin/ServiceManager';
 import UserManagement from '@/components/admin/UserManagement';
+import ContentManager from '@/components/admin/ContentManager';
 
-type Tab = 'articles' | 'statistics' | 'logs' | 'services' | 'users';
+type Tab = 'articles' | 'statistics' | 'logs' | 'services' | 'users' | 'content';
 
 export default function AdminPage() {
   const { user, loading } = useAuth();
@@ -103,6 +104,16 @@ export default function AdminPage() {
               Пользователи
             </button>
             <button
+              onClick={() => setActiveTab('content')}
+              className={`flex-1 min-w-[120px] py-3 px-6 rounded-lg font-medium transition-all ${
+                activeTab === 'content'
+                  ? 'bg-white text-purple-900 shadow-lg'
+                  : 'text-white hover:bg-white/10'
+              }`}
+            >
+              Контент
+            </button>
+            <button
               onClick={() => setActiveTab('services')}
               className={`flex-1 min-w-[120px] py-3 px-6 rounded-lg font-medium transition-all ${
                 activeTab === 'services'
@@ -139,6 +150,7 @@ export default function AdminPage() {
         <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
           {activeTab === 'articles' && <ArticleManager />}
           {activeTab === 'users' && <UserManagement locale="ru" />}
+          {activeTab === 'content' && <ContentManager sessionId={localStorage.getItem('sessionId') || ''} />}
           {activeTab === 'services' && <ServiceManager />}
           {activeTab === 'statistics' && <StatisticsDashboard />}
           {activeTab === 'logs' && <AdminLogs />}

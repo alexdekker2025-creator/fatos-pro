@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import '../globals.css';
 import MagicCursor from '@/components/MagicCursor';
+import Footer from '@/components/Footer';
 
 export const metadata = {
   title: 'FATOS.pro - Numerology Calculator',
@@ -16,8 +17,13 @@ export default async function EnLayout({
 
   return (
     <NextIntlClientProvider locale="en" messages={messages}>
-      <MagicCursor />
-      {children}
+      <div className="flex flex-col min-h-screen">
+        <MagicCursor />
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer locale="en" />
+      </div>
     </NextIntlClientProvider>
   );
 }
