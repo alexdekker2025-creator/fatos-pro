@@ -20,14 +20,22 @@ interface VisitStatsData {
 export default function VisitStats() {
   const [stats, setStats] = useState<VisitStatsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     fetchStats();
   }, []);
 
-  const fetchStats = async () => {
+  const fetchStats = async (isRefresh = false) => {
     try {
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+      setError('');
+
       const sessionId = localStorage.getItem('sessionId');
       const response = await fetch(`/api/admin/visit-stats?sessionId=${sessionId}`);
 
@@ -42,7 +50,12 @@ export default function VisitStats() {
       setError('Ошибка при загрузке статистики');
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
+  };
+
+  const handleRefresh = () => {
+    fetchStats(true);
   };
 
   if (loading) {
@@ -175,10 +188,12 @@ export default function VisitStats() {
       {/* Кнопка обновления */}
       <div className="flex justify-center">
         <button
-          onClick={fetchStats}
-          className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg font-medium transition-all shadow-lg hover:shadow-purple-500/50"
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg font-medium transition-all shadow-lg hover:shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
         >
-          🔄 Обновить статистику
+          <span className={refreshing ? 'animate-spin' : ''}>🔄</span>
+          {refreshing ? 'Обновление...' : 'Обновить статистику'}
         </button>
       </div>
     </div>
