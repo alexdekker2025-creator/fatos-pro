@@ -136,6 +136,7 @@
     "tabs": {
       "users": "Users",
       "articles": "Articles",
+      "content": "Content",
       "statistics": "Statistics",
       "logs": "Logs"
     },
