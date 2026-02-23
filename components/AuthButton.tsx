@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/hooks/useAuth';
 import AuthModal from './AuthModal';
 import { Button } from '@/components/ui';
+import MysticLoader from './MysticLoader';
 
 export default function AuthButton() {
   const t = useTranslations('auth');
@@ -14,8 +15,8 @@ export default function AuthButton() {
 
   if (loading) {
     return (
-      <div className="flex gap-2">
-        <div className="w-20 h-10 bg-white/10 rounded-lg animate-pulse"></div>
+      <div className="flex gap-2 items-center">
+        <MysticLoader size="sm" text="" />
       </div>
     );
   }

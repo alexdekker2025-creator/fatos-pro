@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Button } from '@/components/ui';
 import { MysticalInput } from '@/components/ui/MysticalInput';
 import { useAuth } from '@/lib/hooks/useAuth';
 import OAuthButtons from './auth/OAuthButtons';
 import PasswordResetModal from './auth/PasswordResetModal';
 import TwoFactorVerify from './auth/TwoFactorVerify';
+import MysticButton from './MysticButton';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -285,23 +285,19 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
               </div>
 
               {error && (
-                <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-3">
+                <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-3 animate-shake">
                   <p className="text-red-300 text-sm text-center">{error}</p>
                 </div>
               )}
 
-              <Button
+              <MysticButton
                 type="submit"
-                variant="primary"
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-purple-950 font-bold py-3 rounded-lg shadow-lg hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                loading={loading}
+                fullWidth
+                className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-purple-950 font-bold py-3 shadow-lg hover:shadow-[0_0_20px_rgba(251,191,36,0.5)]"
               >
-                {loading
-                  ? t('loading')
-                  : mode === 'login'
-                  ? t('loginButton')
-                  : t('registerButton')}
-              </Button>
+                {mode === 'login' ? t('loginButton') : t('registerButton')}
+              </MysticButton>
 
               {mode === 'login' && (
                 <button
