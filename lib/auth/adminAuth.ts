@@ -158,3 +158,55 @@ export async function verifyAdminSessionById(sessionId: string): Promise<AdminSe
     return null;
   }
 }
+
+/**
+ * Verify admin authentication from request
+ * Returns success status and session info
+ * 
+ * @param request - Next.js request object
+ * @returns Object with success status, sessionId, and error message
+ */
+export async function verifyAdminAuth(request: Request): Promise<{
+  success: boolean;
+  sessionId?: string;
+  error?: string;
+}> {
+  try {
+    // Try to get sessionId from query params or headers
+    const url = new URL(request.url);
+    let sessionId = url.searchParams.get('sessionId');
+    
+    // If not in query, check headers
+    if (!sessionId) {
+      sessionId = request.headers.get('X-Session-ID');
+    }
+    
+    if (!sessionId) {
+      return {
+        success: false,
+        error: 'No session ID provided',
+      };
+    }
+    
+    // Verify session
+    const session = await verifyAdminSessionById(sessionId);
+    
+    if (!session) {
+      return {
+        success: false,
+        error: 'Invalid or expired session',
+      };
+    }
+    
+    return {
+      success: true,
+      sessionId: session.id,
+    };
+  } catch (error) {
+    console.error('Admin auth verification error:', error);
+    return {
+      success: false,
+      error: 'Authentication failed',
+    };
+  }
+}

@@ -1,30 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { verifyAdminAuth } from '@/lib/auth/adminAuth';
+import { prisma } from '@/lib/prisma';
+import { verifyAdminSession } from '@/lib/auth/adminAuth';
 import { checkRateLimit } from '@/lib/utils/rateLimit';
-
-const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 
 // GET /api/admin/content - получить все страницы
 export async function GET(request: NextRequest) {
   try {
-    // Проверка rate limit
-    const rateLimitResult = await checkRateLimit(request, 'admin-content-list', 30);
-    if (!rateLimitResult.success) {
+    // Проверка админской сессии
+    const session = await verifyAdminSession(request);
+    if (!session) {
       return NextResponse.json(
-        { error: 'RATE_LIMIT', message: 'Too many requests' },
-        { status: 429 }
+        { error: 'UNAUTHORIZED', message: 'Invalid or expired session' },
+        { status: 401 }
       );
     }
 
-    // Проверка админских прав
-    const authResult = await verifyAdminAuth(request);
-    if (!authResult.success) {
+    // Проверка rate limit
+    if (!checkRateLimit(session.userId, 30)) {
       return NextResponse.json(
-        { error: 'UNAUTHORIZED', message: authResult.error },
-        { status: 401 }
+        { error: 'RATE_LIMIT', message: 'Too many requests' },
+        { status: 429 }
       );
     }
 
@@ -46,21 +43,20 @@ export async function GET(request: NextRequest) {
 // POST /api/admin/content - создать новую страницу
 export async function POST(request: NextRequest) {
   try {
-    // Проверка rate limit
-    const rateLimitResult = await checkRateLimit(request, 'admin-content-create', 10);
-    if (!rateLimitResult.success) {
+    // Проверка админской сессии
+    const session = await verifyAdminSession(request);
+    if (!session) {
       return NextResponse.json(
-        { error: 'RATE_LIMIT', message: 'Too many requests' },
-        { status: 429 }
+        { error: 'UNAUTHORIZED', message: 'Invalid or expired session' },
+        { status: 401 }
       );
     }
 
-    // Проверка админских прав
-    const authResult = await verifyAdminAuth(request);
-    if (!authResult.success) {
+    // Проверка rate limit
+    if (!checkRateLimit(session.userId, 10)) {
       return NextResponse.json(
-        { error: 'UNAUTHORIZED', message: authResult.error },
-        { status: 401 }
+        { error: 'RATE_LIMIT', message: 'Too many requests' },
+        { status: 429 }
       );
     }
 
@@ -103,7 +99,7 @@ export async function POST(request: NextRequest) {
     // Логируем действие
     await prisma.adminLog.create({
       data: {
-        adminId: authResult.sessionId!,
+        adminId: session.userId,
         action: 'CREATE_CONTENT_PAGE',
         details: { pageId: page.id, slug: page.slug },
       },

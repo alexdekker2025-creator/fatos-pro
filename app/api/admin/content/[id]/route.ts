@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { verifyAdminAuth } from '@/lib/auth/adminAuth';
+import { prisma } from '@/lib/prisma';
+import { verifyAdminSession } from '@/lib/auth/adminAuth';
 import { checkRateLimit } from '@/lib/utils/rateLimit';
-
-const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 
@@ -13,19 +11,18 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const rateLimitResult = await checkRateLimit(request, 'admin-content-get', 60);
-    if (!rateLimitResult.success) {
+    const session = await verifyAdminSession(request);
+    if (!session) {
       return NextResponse.json(
-        { error: 'RATE_LIMIT', message: 'Too many requests' },
-        { status: 429 }
+        { error: 'UNAUTHORIZED', message: 'Invalid or expired session' },
+        { status: 401 }
       );
     }
 
-    const authResult = await verifyAdminAuth(request);
-    if (!authResult.success) {
+    if (!checkRateLimit(session.userId, 60)) {
       return NextResponse.json(
-        { error: 'UNAUTHORIZED', message: authResult.error },
-        { status: 401 }
+        { error: 'RATE_LIMIT', message: 'Too many requests' },
+        { status: 429 }
       );
     }
 
@@ -56,19 +53,18 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const rateLimitResult = await checkRateLimit(request, 'admin-content-update', 20);
-    if (!rateLimitResult.success) {
+    const session = await verifyAdminSession(request);
+    if (!session) {
       return NextResponse.json(
-        { error: 'RATE_LIMIT', message: 'Too many requests' },
-        { status: 429 }
+        { error: 'UNAUTHORIZED', message: 'Invalid or expired session' },
+        { status: 401 }
       );
     }
 
-    const authResult = await verifyAdminAuth(request);
-    if (!authResult.success) {
+    if (!checkRateLimit(session.userId, 20)) {
       return NextResponse.json(
-        { error: 'UNAUTHORIZED', message: authResult.error },
-        { status: 401 }
+        { error: 'RATE_LIMIT', message: 'Too many requests' },
+        { status: 429 }
       );
     }
 
@@ -118,7 +114,7 @@ export async function PUT(
     // Логируем действие
     await prisma.adminLog.create({
       data: {
-        adminId: authResult.sessionId!,
+        adminId: session.userId,
         action: 'UPDATE_CONTENT_PAGE',
         details: { pageId: page.id, slug: page.slug },
       },
@@ -140,19 +136,18 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const rateLimitResult = await checkRateLimit(request, 'admin-content-delete', 10);
-    if (!rateLimitResult.success) {
+    const session = await verifyAdminSession(request);
+    if (!session) {
       return NextResponse.json(
-        { error: 'RATE_LIMIT', message: 'Too many requests' },
-        { status: 429 }
+        { error: 'UNAUTHORIZED', message: 'Invalid or expired session' },
+        { status: 401 }
       );
     }
 
-    const authResult = await verifyAdminAuth(request);
-    if (!authResult.success) {
+    if (!checkRateLimit(session.userId, 10)) {
       return NextResponse.json(
-        { error: 'UNAUTHORIZED', message: authResult.error },
-        { status: 401 }
+        { error: 'RATE_LIMIT', message: 'Too many requests' },
+        { status: 429 }
       );
     }
 
@@ -176,7 +171,7 @@ export async function DELETE(
     // Логируем действие
     await prisma.adminLog.create({
       data: {
-        adminId: authResult.sessionId!,
+        adminId: session.userId,
         action: 'DELETE_CONTENT_PAGE',
         details: { pageId: params.id, slug: existing.slug },
       },
