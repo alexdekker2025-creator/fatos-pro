@@ -16,8 +16,9 @@ import ServiceManager from '@/components/admin/ServiceManager';
 import UserManagement from '@/components/admin/UserManagement';
 import ContentManager from '@/components/admin/ContentManager';
 import VisitStats from '@/components/admin/VisitStats';
+import VisitLogs from '@/components/admin/VisitLogs';
 
-type Tab = 'articles' | 'statistics' | 'logs' | 'services' | 'users' | 'content' | 'visits';
+type Tab = 'articles' | 'statistics' | 'logs' | 'services' | 'users' | 'content' | 'visits' | 'visit-logs';
 
 export default function AdminPage() {
   const { user, loading } = useAuth();
@@ -145,6 +146,16 @@ export default function AdminPage() {
               Посещения
             </button>
             <button
+              onClick={() => setActiveTab('visit-logs')}
+              className={`flex-1 min-w-[120px] py-3 px-6 rounded-lg font-medium transition-all ${
+                activeTab === 'visit-logs'
+                  ? 'bg-white text-purple-900 shadow-lg'
+                  : 'text-white hover:bg-white/10'
+              }`}
+            >
+              Логи посещений
+            </button>
+            <button
               onClick={() => setActiveTab('logs')}
               className={`flex-1 min-w-[120px] py-3 px-6 rounded-lg font-medium transition-all ${
                 activeTab === 'logs'
@@ -165,6 +176,7 @@ export default function AdminPage() {
           {activeTab === 'services' && <ServiceManager />}
           {activeTab === 'statistics' && <StatisticsDashboard />}
           {activeTab === 'visits' && <VisitStats />}
+          {activeTab === 'visit-logs' && <VisitLogs />}
           {activeTab === 'logs' && <AdminLogs />}
         </div>
       </div>
