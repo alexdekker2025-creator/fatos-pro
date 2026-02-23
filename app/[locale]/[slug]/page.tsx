@@ -4,9 +4,7 @@
  */
 
 import { notFound } from 'next/navigation';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 interface PageProps {
   params: {
@@ -66,28 +64,6 @@ export default async function ContentPage({ params }: PageProps) {
   );
 }
 
-// Генерация статических путей для известных страниц
-export async function generateStaticParams() {
-  const pages = await prisma.contentPage.findMany({
-    where: { isPublished: true },
-    select: { slug: true },
-  });
-
-  const locales = ['ru', 'en'];
-  const params = [];
-
-  for (const page of pages) {
-    for (const locale of locales) {
-      params.push({
-        locale,
-        slug: page.slug,
-      });
-    }
-  }
-
-  return params;
-}
-
 // Метаданные для SEO
 export async function generateMetadata({ params }: PageProps) {
   const { locale, slug } = params;
@@ -106,3 +82,6 @@ export async function generateMetadata({ params }: PageProps) {
     description: title,
   };
 }
+
+// Делаем страницу динамической
+export const dynamic = 'force-dynamic';
