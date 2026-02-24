@@ -78,12 +78,30 @@ export async function GET(
 
     console.log('[OAuth Callback] Success! User ID:', result.user.id);
 
-    // Get locale from URL or default to 'ru'
+    // Get locale from request URL
     const url = new URL(request.url);
-    const locale = url.pathname.split('/')[1] || 'ru';
+    console.log('[OAuth Callback] Request URL:', url.toString());
+    
+    // Try to get locale from referer or default to 'ru'
+    const referer = request.headers.get('referer');
+    console.log('[OAuth Callback] Referer:', referer);
+    
+    let locale = 'ru';
+    if (referer) {
+      const refererUrl = new URL(referer);
+      const pathParts = refererUrl.pathname.split('/').filter(Boolean);
+      if (pathParts.length > 0 && (pathParts[0] === 'ru' || pathParts[0] === 'en')) {
+        locale = pathParts[0];
+      }
+    }
+    
+    console.log('[OAuth Callback] Detected locale:', locale);
     
     // Clear state cookie and redirect to profile
-    const response = NextResponse.redirect(new URL(`/${locale}/profile`, request.url));
+    const redirectUrl = new URL(`/${locale}/profile`, url.origin);
+    console.log('[OAuth Callback] Redirect URL:', redirectUrl.toString());
+    
+    const response = NextResponse.redirect(redirectUrl);
     response.cookies.delete('oauth_state');
 
     // Set session cookie
