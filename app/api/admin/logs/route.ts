@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Проверяем права администратора
-    const isAdmin = await adminService.isAdmin(session.id);
+    const isAdmin = await adminService.isAdmin(session.userId);
     if (!isAdmin) {
       return NextResponse.json(
         { error: 'Forbidden: Admin access required' },

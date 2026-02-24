@@ -278,6 +278,8 @@
       "exportCSV": "Экспорт в CSV",
       "exportExcel": "Экспорт в Excel",
       "exporting": "Экспорт...",
+      "autoRefreshOn": "Авто-обновление ВКЛ",
+      "autoRefreshOff": "Авто-обновление ВЫКЛ",
       "exportSuccess": "Данные экспортированы",
       "exportError": "Не удалось экспортировать данные",
       "dataStale": "Данные могут быть устаревшими",

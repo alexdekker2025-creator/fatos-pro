@@ -278,6 +278,8 @@
       "exportCSV": "Export to CSV",
       "exportExcel": "Export to Excel",
       "exporting": "Exporting...",
+      "autoRefreshOn": "Auto-refresh ON",
+      "autoRefreshOff": "Auto-refresh OFF",
       "exportSuccess": "Data exported",
       "exportError": "Failed to export data",
       "dataStale": "Data may be stale",
