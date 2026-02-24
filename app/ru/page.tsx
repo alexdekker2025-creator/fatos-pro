@@ -81,12 +81,12 @@ export default function RuPage() {
         <Calculator userId={user?.id} />
 
         {/* Ad Banner */}
-        <div className="mt-12 sm:mt-16">
+        <div className="mt-6 sm:mt-8">
           <AdBanner />
         </div>
 
         {/* Premium Services Section */}
-        <div className="mt-12 sm:mt-16">
+        <div className="mt-6 sm:mt-8">
           <PremiumServices />
         </div>
       </div>
