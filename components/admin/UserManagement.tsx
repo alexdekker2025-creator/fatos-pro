@@ -280,7 +280,7 @@ export default function UserManagement({ locale, currentUserId }: UserManagement
             placeholder={locale === 'ru' ? 'Поиск по email или имени' : 'Search by email or name'}
             value={filters.search}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900"
           />
         </div>
 
@@ -289,7 +289,7 @@ export default function UserManagement({ locale, currentUserId }: UserManagement
           <select
             value={filters.emailVerified === null ? '' : filters.emailVerified.toString()}
             onChange={(e) => setFilters({ ...filters, emailVerified: e.target.value === '' ? null : e.target.value === 'true' })}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-gray-900"
           >
             <option value="">{locale === 'ru' ? 'Email (все)' : 'Email (all)'}</option>
             <option value="true">{locale === 'ru' ? 'Подтвержден' : 'Verified'}</option>
@@ -299,7 +299,7 @@ export default function UserManagement({ locale, currentUserId }: UserManagement
           <select
             value={filters.twoFactorEnabled === null ? '' : filters.twoFactorEnabled.toString()}
             onChange={(e) => setFilters({ ...filters, twoFactorEnabled: e.target.value === '' ? null : e.target.value === 'true' })}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-gray-900"
           >
             <option value="">{locale === 'ru' ? '2FA (все)' : '2FA (all)'}</option>
             <option value="true">{locale === 'ru' ? 'Включена' : 'Enabled'}</option>
@@ -309,7 +309,7 @@ export default function UserManagement({ locale, currentUserId }: UserManagement
           <select
             value={filters.isBlocked === null ? '' : filters.isBlocked.toString()}
             onChange={(e) => setFilters({ ...filters, isBlocked: e.target.value === '' ? null : e.target.value === 'true' })}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-gray-900"
           >
             <option value="">{locale === 'ru' ? 'Статус (все)' : 'Status (all)'}</option>
             <option value="false">{locale === 'ru' ? 'Активен' : 'Active'}</option>
@@ -321,7 +321,7 @@ export default function UserManagement({ locale, currentUserId }: UserManagement
             value={filters.dateFrom}
             onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
             placeholder={locale === 'ru' ? 'Дата от' : 'Date from'}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-gray-900"
           />
 
           <input
@@ -329,7 +329,7 @@ export default function UserManagement({ locale, currentUserId }: UserManagement
             value={filters.dateTo}
             onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
             placeholder={locale === 'ru' ? 'Дата до' : 'Date to'}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-gray-900"
           />
         </div>
 
@@ -338,7 +338,7 @@ export default function UserManagement({ locale, currentUserId }: UserManagement
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'createdAt' | 'email')}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-gray-900"
           >
             <option value="createdAt">{locale === 'ru' ? 'Дата регистрации' : 'Registration date'}</option>
             <option value="email">{locale === 'ru' ? 'Email' : 'Email'}</option>
@@ -346,7 +346,7 @@ export default function UserManagement({ locale, currentUserId }: UserManagement
 
           <button
             onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-gray-900"
           >
             {sortOrder === 'asc' ? '↑' : '↓'}
           </button>
@@ -590,7 +590,7 @@ export default function UserManagement({ locale, currentUserId }: UserManagement
                   type="text"
                   value={editForm.name}
                   onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-gray-900"
                 />
               </div>
 
@@ -602,7 +602,7 @@ export default function UserManagement({ locale, currentUserId }: UserManagement
                   type="email"
                   value={editForm.email}
                   onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-gray-900"
                 />
               </div>
 
