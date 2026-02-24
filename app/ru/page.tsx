@@ -6,6 +6,7 @@ import Calculator from '@/components/Calculator';
 import StarryBackground from '@/components/StarryBackground';
 import AuthButton from '@/components/AuthButton';
 import PremiumServices from '@/components/PremiumServices';
+import AdBanner from '@/components/AdBanner';
 import { useAuth } from '@/lib/hooks/useAuth';
 
 export default function RuPage() {
@@ -78,6 +79,11 @@ export default function RuPage() {
         </div>
 
         <Calculator userId={user?.id} />
+
+        {/* Ad Banner */}
+        <div className="mt-12 sm:mt-16">
+          <AdBanner />
+        </div>
 
         {/* Premium Services Section */}
         <div className="mt-12 sm:mt-16">
