@@ -140,3 +140,6 @@ export default function PaymentSuccessPage() {
     </Suspense>
   );
 }
+
+// Отключаем статическую генерацию для этой страницы
+export const dynamic = 'force-dynamic';

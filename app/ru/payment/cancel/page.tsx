@@ -65,3 +65,6 @@ export default function PaymentCancelPage() {
     </div>
   );
 }
+
+// Отключаем статическую генерацию для этой страницы
+export const dynamic = 'force-dynamic';
