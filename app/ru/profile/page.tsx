@@ -29,16 +29,20 @@ export default function ProfilePage() {
   const loadUserStats = async () => {
     try {
       // Load calculations count
-      const calcResponse = await fetch('/api/calculations');
+      const calcResponse = await fetch('/api/calculations', {
+        credentials: 'include',
+      });
       const calcData = await calcResponse.json();
       
       // Load arcana collection
-      const arcanaResponse = await fetch('/api/arcana/collection');
+      const arcanaResponse = await fetch(`/api/arcana/collection?userId=${user.id}`, {
+        credentials: 'include',
+      });
       const arcanaData = await arcanaResponse.json();
 
       setStats({
         totalCalculations: calcData.total || 0,
-        arcanaCollected: arcanaData.collection?.length || 0,
+        arcanaCollected: arcanaData.collected || 0,
       });
     } catch (error) {
       console.error('Failed to load stats:', error);
