@@ -10,11 +10,20 @@ function isValidProvider(provider: string): provider is Provider {
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
 
+// Generate static params for known providers
+export async function generateStaticParams() {
+  return [
+    { provider: 'google' },
+    { provider: 'facebook' },
+  ];
+}
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { provider: string } }
+  context: { params: Promise<{ provider: string }> }
 ) {
   try {
+    const params = await context.params;
     const { provider } = params;
 
     // Validate provider
