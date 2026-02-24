@@ -76,6 +76,11 @@ export class OAuthService {
     const config = this.getProviderConfig(provider);
     const redirectUri = `${this.redirectBaseUrl}/api/auth/oauth/${provider}/callback`;
 
+    // Log for debugging
+    console.log(`[OAuth] Provider: ${provider}`);
+    console.log(`[OAuth] Redirect Base URL: ${this.redirectBaseUrl}`);
+    console.log(`[OAuth] Full Redirect URI: ${redirectUri}`);
+
     const params = new URLSearchParams({
       client_id: config.clientId,
       redirect_uri: redirectUri,
