@@ -29,9 +29,10 @@ interface UserFilters {
 
 interface UserManagementProps {
   locale: 'ru' | 'en';
+  currentUserId: string;
 }
 
-export default function UserManagement({ locale }: UserManagementProps) {
+export default function UserManagement({ locale, currentUserId }: UserManagementProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -110,8 +111,7 @@ export default function UserManagement({ locale }: UserManagementProps) {
 
   // Get current user ID
   const getCurrentUserId = (): string | null => {
-    // We'll need to fetch this from the session
-    return localStorage.getItem('userId');
+    return currentUserId;
   };
 
   // Block/Unblock user

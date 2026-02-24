@@ -170,7 +170,7 @@ export default function AdminPage() {
         {/* Tab Content */}
         <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
           {activeTab === 'articles' && <ArticleManager />}
-          {activeTab === 'users' && <UserManagement locale="en" />}
+          {activeTab === 'users' && user && <UserManagement locale="en" currentUserId={user.id} />}
           {activeTab === 'content' && <ContentManager sessionId={localStorage.getItem('sessionId') || ''} />}
           {activeTab === 'services' && <ServiceManager />}
           {activeTab === 'statistics' && <StatisticsDashboard />}

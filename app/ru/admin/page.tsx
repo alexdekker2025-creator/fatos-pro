@@ -171,7 +171,7 @@ export default function AdminPage() {
         {/* Контент вкладок */}
         <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
           {activeTab === 'articles' && <ArticleManager />}
-          {activeTab === 'users' && <UserManagement locale="ru" />}
+          {activeTab === 'users' && user && <UserManagement locale="ru" currentUserId={user.id} />}
           {activeTab === 'content' && <ContentManager sessionId={localStorage.getItem('sessionId') || ''} />}
           {activeTab === 'services' && <ServiceManager />}
           {activeTab === 'statistics' && <StatisticsDashboard />}
