@@ -1,9 +1,9 @@
 import { getRequestConfig } from 'next-intl/server';
 
-export default getRequestConfig(async () => {
-  // This config is not used for static locale routing
-  // but next-intl requires it to exist
+export default getRequestConfig(async ({ locale }) => {
+  // This config is used for static locale routing (/ru, /en)
   return {
-    messages: {}
+    locale: locale || 'ru',
+    messages: (await import(`./messages/${locale || 'ru'}.json`)).default
   };
 });
