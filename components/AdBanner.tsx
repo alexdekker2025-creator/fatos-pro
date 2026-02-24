@@ -49,7 +49,7 @@ export default function AdBanner() {
       setTimeout(() => {
         setCurrentAdIndex((prev) => (prev + 1) % ads.length);
         setIsAnimating(false);
-      }, 500);
+      }, 600);
     }, 10000); // Change ad every 10 seconds
 
     return () => clearInterval(interval);
@@ -58,14 +58,14 @@ export default function AdBanner() {
   const currentAd = ads[currentAdIndex];
 
   return (
-    <div className="w-full animate-fade-in">
-      <div
-        className={`relative overflow-hidden rounded-2xl shadow-2xl border-2 border-amber-500/40 transition-all duration-500 ${
-          isAnimating ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-        }`}
-      >
-        {/* Background gradient */}
-        <div className={`absolute inset-0 bg-gradient-to-r ${currentAd.bgGradient} opacity-90`} />
+    <div className="w-full px-4 sm:px-6 lg:px-8 animate-fade-in">
+      <div className="relative overflow-hidden rounded-2xl shadow-2xl border-2 border-amber-500/40">
+        {/* Background gradient with slide animation */}
+        <div
+          className={`absolute inset-0 bg-gradient-to-r ${currentAd.bgGradient} opacity-90 transition-transform duration-600 ${
+            isAnimating ? '-translate-x-full' : 'translate-x-0'
+          }`}
+        />
         
         {/* Animated stars background */}
         <div className="absolute inset-0 overflow-hidden">
@@ -74,8 +74,12 @@ export default function AdBanner() {
           <div className="absolute w-1 h-1 bg-white rounded-full animate-twinkle" style={{ top: '40%', left: '50%', animationDelay: '2s' }} />
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 px-6 sm:px-8 py-8 sm:py-12">
+        {/* Content with slide animation */}
+        <div
+          className={`relative z-10 px-6 sm:px-8 py-8 sm:py-12 transition-all duration-600 ${
+            isAnimating ? 'opacity-0 translate-x-full' : 'opacity-100 translate-x-0'
+          }`}
+        >
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             {/* Icon */}
             <div className="text-6xl sm:text-7xl animate-pulse">
