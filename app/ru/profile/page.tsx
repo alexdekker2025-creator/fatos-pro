@@ -27,6 +27,8 @@ export default function ProfilePage() {
   }, [user]);
 
   const loadUserStats = async () => {
+    if (!user) return;
+    
     try {
       // Load calculations count
       const calcResponse = await fetch('/api/calculations', {
