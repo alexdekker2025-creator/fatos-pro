@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     // Извлечение sessionId из cookies
-    const sessionId = request.cookies.get('sessionId')?.value;
+    const sessionId = request.cookies.get('session')?.value;
 
     if (!sessionId) {
       return NextResponse.json(
@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     // Извлечение sessionId из cookies
-    const sessionId = request.cookies.get('sessionId')?.value;
+    const sessionId = request.cookies.get('session')?.value;
 
     if (!sessionId) {
       return NextResponse.json(

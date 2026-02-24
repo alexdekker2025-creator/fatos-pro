@@ -25,6 +25,39 @@ export default function SecuritySettings({ user }: SecuritySettingsProps) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
+  // Check email verification status on mount and periodically
+  useEffect(() => {
+    const checkEmailStatus = async () => {
+      try {
+        const response = await fetch('/api/user/profile', {
+          credentials: 'include',
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.user) {
+            if (data.user.emailVerified !== emailVerified) {
+              setEmailVerified(data.user.emailVerified);
+            }
+            if (data.user.twoFactorEnabled !== twoFactorEnabled) {
+              setTwoFactorEnabled(data.user.twoFactorEnabled);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Failed to check email status:', err);
+      }
+    };
+
+    // Check immediately
+    checkEmailStatus();
+
+    // Check every 10 seconds
+    const interval = setInterval(checkEmailStatus, 10000);
+
+    return () => clearInterval(interval);
+  }, [emailVerified, twoFactorEnabled]);
+
   const handleResendVerification = async () => {
     setLoading(true);
     setMessage('');
