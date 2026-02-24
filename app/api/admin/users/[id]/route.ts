@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { verifyAdminSession } from '@/lib/auth/adminAuth';
+import { verifyAdminSession, verifyAdminSessionById } from '@/lib/auth/adminAuth';
 import { checkRateLimit } from '@/lib/utils/rateLimit';
 import { z } from 'zod';
 
@@ -208,15 +208,17 @@ export async function PUT(
     console.log('PUT /api/admin/users/[id] - Body:', JSON.stringify(body, null, 2));
     console.log('PUT /api/admin/users/[id] - Params:', params);
     
-    // Create a new request with sessionId in query params for verifyAdminSession
-    const url = new URL(request.url);
-    if (body.sessionId) {
-      url.searchParams.set('sessionId', body.sessionId);
+    // Extract sessionId from body
+    const sessionId = body.sessionId;
+    if (!sessionId) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'No session ID provided' },
+        { status: 401 }
+      );
     }
-    const modifiedRequest = new NextRequest(url, request);
     
-    // Verify admin session
-    const session = await verifyAdminSession(modifiedRequest);
+    // Verify admin session using sessionId directly
+    const session = await verifyAdminSessionById(sessionId);
     console.log('PUT /api/admin/users/[id] - Session:', session ? 'Valid' : 'Invalid');
     if (!session) {
       return NextResponse.json(
@@ -401,15 +403,17 @@ export async function DELETE(
     // Parse body first to get sessionId
     const body = await request.json();
     
-    // Create a new request with sessionId in query params for verifyAdminSession
-    const url = new URL(request.url);
-    if (body.sessionId) {
-      url.searchParams.set('sessionId', body.sessionId);
+    // Extract sessionId from body
+    const sessionId = body.sessionId;
+    if (!sessionId) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'No session ID provided' },
+        { status: 401 }
+      );
     }
-    const modifiedRequest = new NextRequest(url, request);
     
-    // Verify admin session
-    const session = await verifyAdminSession(modifiedRequest);
+    // Verify admin session using sessionId directly
+    const session = await verifyAdminSessionById(sessionId);
     if (!session) {
       return NextResponse.json(
         { error: 'UNAUTHORIZED', message: 'Invalid or expired session' },

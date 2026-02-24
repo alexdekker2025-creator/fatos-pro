@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { verifyAdminSession } from '@/lib/auth/adminAuth';
+import { verifyAdminSession, verifyAdminSessionById } from '@/lib/auth/adminAuth';
 import { checkRateLimit } from '@/lib/utils/rateLimit';
 import { z } from 'zod';
 
@@ -27,15 +27,17 @@ export async function PATCH(
     // Parse body first to get sessionId
     const body = await request.json();
     
-    // Create a new request with sessionId in query params for verifyAdminSession
-    const url = new URL(request.url);
-    if (body.sessionId) {
-      url.searchParams.set('sessionId', body.sessionId);
+    // Extract sessionId from body
+    const sessionId = body.sessionId;
+    if (!sessionId) {
+      return NextResponse.json(
+        { error: 'UNAUTHORIZED', message: 'No session ID provided' },
+        { status: 401 }
+      );
     }
-    const modifiedRequest = new NextRequest(url, request);
     
-    // Verify admin session
-    const session = await verifyAdminSession(modifiedRequest);
+    // Verify admin session using sessionId directly
+    const session = await verifyAdminSessionById(sessionId);
     if (!session) {
       return NextResponse.json(
         { error: 'UNAUTHORIZED', message: 'Invalid or expired session' },
