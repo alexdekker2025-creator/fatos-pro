@@ -42,8 +42,13 @@ prisma/migrations/
 
 # backups
 backups/
-*.sql
-*.sql.gz
+
+# Temporary files
+*.tmp
+*.temp
+test-*.js
+test-*.bat
+check-*.js
 
 # sentry
 .sentryclirc
