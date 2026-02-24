@@ -61,9 +61,12 @@ export async function GET(request: NextRequest) {
 
     // Проверяем права администратора
     const isAdmin = await adminService.isAdmin(session.id);
+    console.log('GET /api/admin/articles - User ID:', session.id);
+    console.log('GET /api/admin/articles - User email:', session.email);
     console.log('GET /api/admin/articles - Is admin:', isAdmin);
     
     if (!isAdmin) {
+      console.log('GET /api/admin/articles - Access denied: user is not admin');
       return NextResponse.json(
         { error: 'Forbidden: Admin access required' },
         { status: 403 }
