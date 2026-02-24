@@ -206,6 +206,7 @@
       "relatedValue": "Related Value",
       "loading": "Loading...",
       "noArticles": "No articles found",
+      "totalArticles": "Total articles",
       "edit": "Edit",
       "delete": "Delete",
       "confirmDelete": "Are you sure you want to delete this article?",
