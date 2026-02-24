@@ -22,10 +22,10 @@ export async function GET(
   request: NextRequest,
   context: { params: Promise<{ provider: string }> }
 ) {
+  const params = await context.params;
+  const { provider } = params;
+  
   try {
-    const params = await context.params;
-    const { provider } = params;
-
     // Validate provider
     if (!isValidProvider(provider)) {
       return NextResponse.json(

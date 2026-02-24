@@ -22,9 +22,10 @@ export async function GET(
   request: NextRequest,
   context: { params: Promise<{ provider: string }> }
 ) {
+  const params = await context.params;
+  const { provider } = params;
+  
   try {
-    const params = await context.params;
-    const { provider } = params;
     const { searchParams } = new URL(request.url);
 
     console.log('[OAuth Callback] Provider:', provider);
@@ -110,7 +111,7 @@ export async function GET(
 
     const errorUrl = new URL('/auth/error', request.url);
     errorUrl.searchParams.set('error', errorType);
-    errorUrl.searchParams.set('provider', params.provider);
+    errorUrl.searchParams.set('provider', provider);
     return NextResponse.redirect(errorUrl);
   }
 }
