@@ -25,17 +25,21 @@ export async function GET(
   const params = await context.params;
   const { provider } = params;
   
+  // Use production URL for redirects
+  const baseUrl = process.env.OAUTH_REDIRECT_BASE_URL || process.env.NEXT_PUBLIC_BASE_URL || 'https://fatos-pro.vercel.app';
+  
   try {
     const { searchParams } = new URL(request.url);
 
     console.log('[OAuth Callback] Provider:', provider);
     console.log('[OAuth Callback] Full URL:', request.url);
+    console.log('[OAuth Callback] Base URL:', baseUrl);
     console.log('[OAuth Callback] Search params:', Object.fromEntries(searchParams.entries()));
 
     // Validate provider
     if (!isValidProvider(provider)) {
       console.error('[OAuth Callback] Invalid provider:', provider);
-      const errorUrl = new URL('/auth/error', request.url);
+      const errorUrl = new URL('/auth/error', baseUrl);
       errorUrl.searchParams.set('error', 'invalid_provider');
       return NextResponse.redirect(errorUrl);
     }
@@ -49,7 +53,7 @@ export async function GET(
 
     if (!code || !state) {
       console.error('[OAuth Callback] Missing code or state');
-      const errorUrl = new URL('/auth/error', request.url);
+      const errorUrl = new URL('/auth/error', baseUrl);
       errorUrl.searchParams.set('error', 'missing_parameters');
       return NextResponse.redirect(errorUrl);
     }
@@ -61,7 +65,7 @@ export async function GET(
 
     if (!expectedState) {
       console.error('[OAuth Callback] Missing expected state cookie');
-      const errorUrl = new URL('/auth/error', request.url);
+      const errorUrl = new URL('/auth/error', baseUrl);
       errorUrl.searchParams.set('error', 'missing_state');
       return NextResponse.redirect(errorUrl);
     }
@@ -77,6 +81,7 @@ export async function GET(
     );
 
     console.log('[OAuth Callback] Success! User ID:', result.user.id);
+    console.log('[OAuth Callback] Session ID:', result.session.id);
 
     // Get locale from request URL
     const url = new URL(request.url);
@@ -99,7 +104,7 @@ export async function GET(
     
     // Create redirect response to oauth-success page with sessionId
     // This page will store sessionId in localStorage (matching app's auth pattern)
-    const redirectUrl = new URL(`/${locale}/auth/oauth-success`, url.origin);
+    const redirectUrl = new URL(`/${locale}/auth/oauth-success`, baseUrl);
     redirectUrl.searchParams.set('sessionId', result.session.id);
     redirectUrl.searchParams.set('locale', locale);
     
@@ -126,7 +131,7 @@ export async function GET(
       }
     }
 
-    const errorUrl = new URL('/auth/error', request.url);
+    const errorUrl = new URL('/auth/error', baseUrl);
     errorUrl.searchParams.set('error', errorType);
     errorUrl.searchParams.set('provider', provider);
     return NextResponse.redirect(errorUrl);
