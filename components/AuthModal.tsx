@@ -102,7 +102,8 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
+    // Only close if clicking directly on the overlay, not when text selection is happening
+    if (e.target === e.currentTarget && !window.getSelection()?.toString()) {
       onClose();
     }
   };
@@ -153,7 +154,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
       role="dialog"
       aria-modal="true"
     >
-      <div className="w-full max-w-md relative">
+      <div className="w-full max-w-md relative" onClick={(e) => e.stopPropagation()}>
         {/* Мистический контейнер */}
         <div className="bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900 rounded-2xl shadow-2xl border-4 border-amber-500/60 hover:border-amber-400/80 transition-all hover:shadow-[0_0_40px_rgba(251,191,36,0.4)] overflow-hidden relative">
           {/* Мистическая текстура фона */}
