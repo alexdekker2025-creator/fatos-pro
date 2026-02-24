@@ -92,7 +92,7 @@ export class OAuthService {
     // Add provider-specific parameters
     if (provider === 'google') {
       params.append('access_type', 'offline'); // Request refresh token
-      params.append('prompt', 'consent'); // Force consent screen to get refresh token
+      // Removed prompt=consent as it may cause issues with code parameter
     }
 
     return `${config.authorizationEndpoint}?${params.toString()}`;
