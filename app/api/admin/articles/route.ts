@@ -35,7 +35,13 @@ export async function GET(request: NextRequest) {
       }
     }
     
+    console.log('GET /api/admin/articles - SessionToken source:', 
+      request.cookies.get('session')?.value ? 'cookie' : 
+      request.headers.get('Authorization') ? 'header' : 'none');
+    console.log('GET /api/admin/articles - SessionToken:', sessionToken ? 'present' : 'missing');
+    
     if (!sessionToken) {
+      console.log('GET /api/admin/articles - No session token found');
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -43,7 +49,10 @@ export async function GET(request: NextRequest) {
     }
 
     const session = await authService.verifySession(sessionToken);
+    console.log('GET /api/admin/articles - Session verified:', session ? 'yes' : 'no');
+    
     if (!session) {
+      console.log('GET /api/admin/articles - Invalid session');
       return NextResponse.json(
         { error: 'Invalid session' },
         { status: 401 }
@@ -52,6 +61,8 @@ export async function GET(request: NextRequest) {
 
     // Проверяем права администратора
     const isAdmin = await adminService.isAdmin(session.id);
+    console.log('GET /api/admin/articles - Is admin:', isAdmin);
+    
     if (!isAdmin) {
       return NextResponse.json(
         { error: 'Forbidden: Admin access required' },
