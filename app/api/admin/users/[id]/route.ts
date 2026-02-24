@@ -441,22 +441,39 @@ export async function DELETE(
 
     // Delete user and all associated data using transaction
     await prisma.$transaction(async (tx) => {
-      // Delete related records (Prisma cascade will handle most, but explicit for clarity)
+      // Delete related records in correct order to avoid foreign key constraints
+      
+      // First, delete records that reference this user
       await tx.calculation.deleteMany({ where: { userId: params.id } });
       await tx.purchase.deleteMany({ where: { userId: params.id } });
-      await tx.order.deleteMany({ where: { userId: params.id } });
-      await tx.session.deleteMany({ where: { userId: params.id } });
       await tx.collectedArcana.deleteMany({ where: { userId: params.id } });
       await tx.passwordResetToken.deleteMany({ where: { userId: params.id } });
       await tx.emailVerificationToken.deleteMany({ where: { userId: params.id } });
       await tx.twoFactorAuth.deleteMany({ where: { userId: params.id } });
       await tx.oAuthProvider.deleteMany({ where: { userId: params.id } });
       await tx.securityLog.deleteMany({ where: { userId: params.id } });
+      await tx.session.deleteMany({ where: { userId: params.id } });
       
-      // Delete user
+      // Delete orders (must be after purchases)
+      await tx.order.deleteMany({ where: { userId: params.id } });
+      
+      // Update AdminLog to remove reference (set adminId to a system user or null)
+      // Instead of deleting, we'll keep the logs but mark them as deleted user
+      await tx.adminLog.updateMany({
+        where: { adminId: params.id },
+        data: { 
+          details: {
+            deletedAdmin: true,
+            originalAdminId: params.id,
+            originalAdminEmail: user.email,
+          }
+        }
+      });
+      
+      // Finally, delete the user
       await tx.user.delete({ where: { id: params.id } });
       
-      // Create audit log
+      // Create audit log with current admin
       await tx.adminLog.create({
         data: {
           adminId: session.userId,
@@ -464,6 +481,7 @@ export async function DELETE(
           details: {
             targetUserId: params.id,
             targetUserEmail: user.email,
+            deletedAt: new Date().toISOString(),
           }
         }
       });
