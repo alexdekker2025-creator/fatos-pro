@@ -51,6 +51,7 @@ export async function GET(
     console.log('[OAuth Callback] Base URL:', baseUrl);
     console.log('[OAuth Callback] Locale:', locale);
     console.log('[OAuth Callback] Search params:', Object.fromEntries(searchParams.entries()));
+    console.log('[OAuth Callback] All query params:', Array.from(searchParams.entries()));
 
     // Validate provider
     if (!isValidProvider(provider)) {
@@ -63,9 +64,15 @@ export async function GET(
     // Get code and state from query parameters
     const code = searchParams.get('code');
     const state = searchParams.get('state');
+    const error = searchParams.get('error');
+    const errorDescription = searchParams.get('error_description');
 
     console.log('[OAuth Callback] Code present:', !!code);
+    console.log('[OAuth Callback] Code value:', code);
     console.log('[OAuth Callback] State present:', !!state);
+    console.log('[OAuth Callback] State value:', state);
+    console.log('[OAuth Callback] Error from provider:', error);
+    console.log('[OAuth Callback] Error description:', errorDescription);
 
     if (!code || !state) {
       console.error('[OAuth Callback] Missing code or state');

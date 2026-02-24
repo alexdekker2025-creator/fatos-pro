@@ -26,6 +26,9 @@ export async function GET(
   const { provider } = params;
   
   try {
+    console.log('[OAuth Authorize] Provider:', provider);
+    console.log('[OAuth Authorize] Request URL:', request.url);
+    
     // Validate provider
     if (!isValidProvider(provider)) {
       return NextResponse.json(
@@ -37,6 +40,9 @@ export async function GET(
     // Initiate OAuth login
     const result = await authService.initiateOAuthLogin(provider);
 
+    console.log('[OAuth Authorize] Generated state:', result.state);
+    console.log('[OAuth Authorize] Redirect URL:', result.redirectUrl);
+
     // Store state in cookie for CSRF protection
     const response = NextResponse.redirect(result.redirectUrl);
     response.cookies.set('oauth_state', result.state, {
@@ -46,6 +52,8 @@ export async function GET(
       maxAge: 10 * 60, // 10 minutes
       path: '/',
     });
+
+    console.log('[OAuth Authorize] Cookie set, redirecting to provider');
 
     return response;
   } catch (error) {
