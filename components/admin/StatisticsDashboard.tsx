@@ -258,14 +258,14 @@ export default function StatisticsDashboard() {
           )}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3">
           {/* Time Range Selector */}
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 sm:flex gap-2">
             {(['7d', '30d', '90d', 'all'] as TimeRange[]).map((range) => (
               <button
                 key={range}
                 onClick={() => handleTimeRangeChange(range)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   timeRange === range
                     ? 'bg-purple-600 text-white'
                     : 'bg-white/10 text-white/70 hover:bg-white/20'
@@ -277,39 +277,41 @@ export default function StatisticsDashboard() {
           </div>
 
           {/* Custom Date Range */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <input
               type="date"
               value={customDateRange.start}
               onChange={(e) => handleCustomDateChange('start', e.target.value)}
-              className="px-3 py-2 rounded-lg bg-white/10 text-white text-sm border border-white/20 focus:border-purple-500 focus:outline-none"
+              className="px-3 py-2 rounded-lg bg-white/10 text-white text-sm border border-white/20 focus:border-purple-500 focus:outline-none w-full sm:w-auto"
             />
-            <span className="text-white/50">-</span>
+            <span className="text-white/50 text-center sm:inline">-</span>
             <input
               type="date"
               value={customDateRange.end}
               onChange={(e) => handleCustomDateChange('end', e.target.value)}
-              className="px-3 py-2 rounded-lg bg-white/10 text-white text-sm border border-white/20 focus:border-purple-500 focus:outline-none"
+              className="px-3 py-2 rounded-lg bg-white/10 text-white text-sm border border-white/20 focus:border-purple-500 focus:outline-none w-full sm:w-auto"
             />
             <button
               onClick={applyCustomDateRange}
-              className="px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition-all"
+              className="px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition-all w-full sm:w-auto"
             >
               {t('apply', { default: 'Apply' })}
             </button>
           </div>
 
           {/* Export Buttons */}
-          <ExportButton
-            format="csv"
-            timeRange={timeRange}
-            customDateRange={timeRange === 'custom' ? customDateRange : undefined}
-          />
-          <ExportButton
-            format="excel"
-            timeRange={timeRange}
-            customDateRange={timeRange === 'custom' ? customDateRange : undefined}
-          />
+          <div className="grid grid-cols-2 sm:flex gap-2">
+            <ExportButton
+              format="csv"
+              timeRange={timeRange}
+              customDateRange={timeRange === 'custom' ? customDateRange : undefined}
+            />
+            <ExportButton
+              format="excel"
+              timeRange={timeRange}
+              customDateRange={timeRange === 'custom' ? customDateRange : undefined}
+            />
+          </div>
 
           {/* Auto-refresh Toggle */}
           <button
