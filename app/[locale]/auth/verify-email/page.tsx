@@ -1,11 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui';
 
-export default function VerifyEmailPage() {
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
+function VerifyEmailContent() {
   const t = useTranslations('auth');
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -99,5 +102,26 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900">
+        <div className="w-full max-w-md">
+          <div className="bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-800 rounded-2xl shadow-2xl border-4 border-amber-500/60 p-8">
+            <div className="text-center">
+              <div className="text-amber-400 text-6xl mb-4 animate-pulse">⏳</div>
+              <h1 className="text-2xl font-bold text-amber-400 mb-4">
+                Загрузка...
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    }>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }

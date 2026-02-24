@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui';
 import { MysticalInput } from '@/components/ui/MysticalInput';
 
-export default function ResetPasswordPage() {
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
+function ResetPasswordContent() {
   const t = useTranslations('auth');
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -194,5 +197,17 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900">
+        <div className="text-amber-400 text-6xl animate-pulse">⏳</div>
+      </div>
+    }>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }
