@@ -11,13 +11,22 @@ function OAuthSuccessContent() {
     const sessionId = searchParams.get('sessionId');
     const locale = searchParams.get('locale') || 'ru';
     
+    console.log('[OAuth Success] SessionId:', sessionId);
+    console.log('[OAuth Success] Locale:', locale);
+    
     if (sessionId) {
       // Store session in localStorage (matching the app's auth pattern)
       localStorage.setItem('sessionId', sessionId);
+      console.log('[OAuth Success] SessionId stored in localStorage');
       
-      // Redirect to profile
-      router.push(`/${locale}/profile`);
+      // Small delay to ensure localStorage is written
+      setTimeout(() => {
+        console.log('[OAuth Success] Redirecting to profile...');
+        // Force reload to ensure useAuth picks up the new session
+        window.location.href = `/${locale}/profile`;
+      }, 500);
     } else {
+      console.log('[OAuth Success] No sessionId, redirecting to home');
       // No session ID, redirect to home
       router.push(`/${locale}`);
     }
