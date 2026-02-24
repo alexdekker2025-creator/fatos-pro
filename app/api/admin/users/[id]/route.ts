@@ -440,52 +440,83 @@ export async function DELETE(
     }
 
     // Delete user and all associated data using transaction
-    await prisma.$transaction(async (tx) => {
-      // Delete related records in correct order to avoid foreign key constraints
-      
-      // First, delete records that reference this user
-      await tx.calculation.deleteMany({ where: { userId: params.id } });
-      await tx.purchase.deleteMany({ where: { userId: params.id } });
-      await tx.collectedArcana.deleteMany({ where: { userId: params.id } });
-      await tx.passwordResetToken.deleteMany({ where: { userId: params.id } });
-      await tx.emailVerificationToken.deleteMany({ where: { userId: params.id } });
-      await tx.twoFactorAuth.deleteMany({ where: { userId: params.id } });
-      await tx.oAuthProvider.deleteMany({ where: { userId: params.id } });
-      await tx.securityLog.deleteMany({ where: { userId: params.id } });
-      await tx.session.deleteMany({ where: { userId: params.id } });
-      
-      // Delete orders (must be after purchases)
-      await tx.order.deleteMany({ where: { userId: params.id } });
-      
-      // Update AdminLog to remove reference (set adminId to a system user or null)
-      // Instead of deleting, we'll keep the logs but mark them as deleted user
-      await tx.adminLog.updateMany({
-        where: { adminId: params.id },
-        data: { 
-          details: {
-            deletedAdmin: true,
-            originalAdminId: params.id,
-            originalAdminEmail: user.email,
-          }
+    try {
+      await prisma.$transaction(async (tx) => {
+        console.log(`Starting deletion of user ${params.id}`);
+        
+        // Delete related records in correct order to avoid foreign key constraints
+        
+        // First, delete records that reference this user
+        console.log('Deleting calculations...');
+        await tx.calculation.deleteMany({ where: { userId: params.id } });
+        
+        console.log('Deleting purchases...');
+        await tx.purchase.deleteMany({ where: { userId: params.id } });
+        
+        console.log('Deleting collected arcana...');
+        await tx.collectedArcana.deleteMany({ where: { userId: params.id } });
+        
+        console.log('Deleting password reset tokens...');
+        await tx.passwordResetToken.deleteMany({ where: { userId: params.id } });
+        
+        console.log('Deleting email verification tokens...');
+        await tx.emailVerificationToken.deleteMany({ where: { userId: params.id } });
+        
+        console.log('Deleting two factor auth...');
+        await tx.twoFactorAuth.deleteMany({ where: { userId: params.id } });
+        
+        console.log('Deleting OAuth providers...');
+        await tx.oAuthProvider.deleteMany({ where: { userId: params.id } });
+        
+        console.log('Deleting security logs...');
+        await tx.securityLog.deleteMany({ where: { userId: params.id } });
+        
+        console.log('Deleting sessions...');
+        await tx.session.deleteMany({ where: { userId: params.id } });
+        
+        // Delete orders (must be after purchases)
+        console.log('Deleting orders...');
+        await tx.order.deleteMany({ where: { userId: params.id } });
+        
+        // Update AdminLog to remove reference (set adminId to a system user or null)
+        // Instead of deleting, we'll keep the logs but mark them as deleted user
+        console.log('Updating admin logs...');
+        const adminLogsCount = await tx.adminLog.count({ where: { adminId: params.id } });
+        console.log(`Found ${adminLogsCount} admin logs to update`);
+        
+        if (adminLogsCount > 0) {
+          await tx.adminLog.updateMany({
+            where: { adminId: params.id },
+            data: { 
+              adminId: session.userId, // Transfer ownership to current admin
+            }
+          });
         }
-      });
-      
-      // Finally, delete the user
-      await tx.user.delete({ where: { id: params.id } });
-      
-      // Create audit log with current admin
-      await tx.adminLog.create({
-        data: {
-          adminId: session.userId,
-          action: 'USER_DELETED',
-          details: {
-            targetUserId: params.id,
-            targetUserEmail: user.email,
-            deletedAt: new Date().toISOString(),
+        
+        // Finally, delete the user
+        console.log('Deleting user...');
+        await tx.user.delete({ where: { id: params.id } });
+        
+        // Create audit log with current admin
+        console.log('Creating audit log...');
+        await tx.adminLog.create({
+          data: {
+            adminId: session.userId,
+            action: 'USER_DELETED',
+            details: {
+              targetUserId: params.id,
+              targetUserEmail: user.email,
+              deletedAt: new Date().toISOString(),
+            }
           }
-        }
+        });
+        
+        console.log(`Successfully deleted user ${params.id}`);
       });
-    });
+    } catch (transactionError) {
+      console.error('Transaction error during user deletion:', transactionError);
+      throw transactionError;
+    }
 
     return NextResponse.json({
       success: true,
@@ -494,8 +525,20 @@ export async function DELETE(
 
   } catch (error) {
     console.error('Error deleting user:', error);
+    
+    // Log detailed error information
+    if (error instanceof Error) {
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+    
     return NextResponse.json(
-      { error: 'DATABASE_ERROR', message: 'Failed to delete user' },
+      { 
+        error: 'DATABASE_ERROR', 
+        message: 'Failed to delete user',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
