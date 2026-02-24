@@ -236,7 +236,7 @@ export async function PUT(
     }
 
     // Parse and validate request body (excluding sessionId)
-    const { sessionId, ...updateData } = body;
+    const { sessionId: _, ...updateData } = body;
     const validation = updateUserSchema.safeParse(updateData);
 
     if (!validation.success) {
