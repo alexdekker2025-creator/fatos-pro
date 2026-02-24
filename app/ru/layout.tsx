@@ -8,6 +8,9 @@ export const metadata = {
   description: 'Профессиональный нумерологический калькулятор с Квадратом Пифагора, Числом Судьбы и Матрицей',
 };
 
+// Отключаем статическую генерацию для всех страниц в этом layout
+export const dynamic = 'force-dynamic';
+
 export default async function RuLayout({
   children,
 }: {

@@ -8,6 +8,9 @@ export const metadata = {
   description: 'Professional numerology calculator with Pythagorean Square, Destiny Number and Matrix',
 };
 
+// Disable static generation for all pages in this layout
+export const dynamic = 'force-dynamic';
+
 export default async function EnLayout({
   children,
 }: {
