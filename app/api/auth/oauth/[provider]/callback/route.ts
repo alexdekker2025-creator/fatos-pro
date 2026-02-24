@@ -18,8 +18,13 @@ export async function GET(
     const { provider } = params;
     const { searchParams } = new URL(request.url);
 
+    console.log('[OAuth Callback] Provider:', provider);
+    console.log('[OAuth Callback] Full URL:', request.url);
+    console.log('[OAuth Callback] Search params:', Object.fromEntries(searchParams.entries()));
+
     // Validate provider
     if (!isValidProvider(provider)) {
+      console.error('[OAuth Callback] Invalid provider:', provider);
       const errorUrl = new URL('/auth/error', request.url);
       errorUrl.searchParams.set('error', 'invalid_provider');
       return NextResponse.redirect(errorUrl);
@@ -29,7 +34,11 @@ export async function GET(
     const code = searchParams.get('code');
     const state = searchParams.get('state');
 
+    console.log('[OAuth Callback] Code present:', !!code);
+    console.log('[OAuth Callback] State present:', !!state);
+
     if (!code || !state) {
+      console.error('[OAuth Callback] Missing code or state');
       const errorUrl = new URL('/auth/error', request.url);
       errorUrl.searchParams.set('error', 'missing_parameters');
       return NextResponse.redirect(errorUrl);
@@ -38,11 +47,16 @@ export async function GET(
     // Get expected state from cookie
     const expectedState = request.cookies.get('oauth_state')?.value;
 
+    console.log('[OAuth Callback] Expected state present:', !!expectedState);
+
     if (!expectedState) {
+      console.error('[OAuth Callback] Missing expected state cookie');
       const errorUrl = new URL('/auth/error', request.url);
       errorUrl.searchParams.set('error', 'missing_state');
       return NextResponse.redirect(errorUrl);
     }
+
+    console.log('[OAuth Callback] Calling authService.handleOAuthCallback...');
 
     // Handle OAuth callback
     const result = await authService.handleOAuthCallback(
@@ -52,8 +66,14 @@ export async function GET(
       expectedState
     );
 
-    // Clear state cookie
-    const response = NextResponse.redirect(new URL('/dashboard', request.url));
+    console.log('[OAuth Callback] Success! User ID:', result.user.id);
+
+    // Get locale from URL or default to 'ru'
+    const url = new URL(request.url);
+    const locale = url.pathname.split('/')[1] || 'ru';
+    
+    // Clear state cookie and redirect to profile
+    const response = NextResponse.redirect(new URL(`/${locale}/profile`, request.url));
     response.cookies.delete('oauth_state');
 
     // Set session cookie
