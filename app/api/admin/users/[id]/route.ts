@@ -205,6 +205,8 @@ export async function PUT(
   try {
     // Parse body first to get sessionId
     const body = await request.json();
+    console.log('PUT /api/admin/users/[id] - Body:', JSON.stringify(body, null, 2));
+    console.log('PUT /api/admin/users/[id] - Params:', params);
     
     // Create a new request with sessionId in query params for verifyAdminSession
     const url = new URL(request.url);
@@ -215,6 +217,7 @@ export async function PUT(
     
     // Verify admin session
     const session = await verifyAdminSession(modifiedRequest);
+    console.log('PUT /api/admin/users/[id] - Session:', session ? 'Valid' : 'Invalid');
     if (!session) {
       return NextResponse.json(
         { error: 'UNAUTHORIZED', message: 'Invalid or expired session' },
@@ -367,8 +370,20 @@ export async function PUT(
 
   } catch (error) {
     console.error('Error updating user:', error);
+    
+    // Log detailed error information
+    if (error instanceof Error) {
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+    
     return NextResponse.json(
-      { error: 'DATABASE_ERROR', message: 'Failed to update user' },
+      { 
+        error: 'DATABASE_ERROR', 
+        message: 'Failed to update user',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
