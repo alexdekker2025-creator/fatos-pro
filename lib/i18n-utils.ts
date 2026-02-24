@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { defaultLocale, type Locale } from '@/i18n';
+import { defaultLocale, type Locale } from '@/lib/i18n-config';
 
 const LOCALE_COOKIE_NAME = 'NEXT_LOCALE';
 

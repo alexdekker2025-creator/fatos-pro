@@ -1,5 +1,4 @@
 const { withSentryConfig } = require('@sentry/nextjs');
-const withNextIntl = require('next-intl/plugin')('./i18n.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -20,6 +19,6 @@ const sentryWebpackPluginOptions = {
 
 // Make sure adding Sentry options is the last code to run before exporting
 module.exports = withSentryConfig(
-  withNextIntl(nextConfig),
+  nextConfig,
   sentryWebpackPluginOptions
 );
