@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Проверяем права администратора
-    const isAdmin = await adminService.isAdmin(session.userId);
+    const isAdmin = await adminService.isAdmin(session.id);
     if (!isAdmin) {
       return NextResponse.json(
         { error: 'Forbidden: Admin access required' },
@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Проверяем права администратора
-    const isAdmin = await adminService.isAdmin(session.userId);
+    const isAdmin = await adminService.isAdmin(session.id);
     if (!isAdmin) {
       return NextResponse.json(
         { error: 'Forbidden: Admin access required' },
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Создаем статью
-    const article = await adminService.createArticle(body, session.userId);
+    const article = await adminService.createArticle(body, session.id);
 
     return NextResponse.json(article, { status: 201 });
   } catch (error: any) {

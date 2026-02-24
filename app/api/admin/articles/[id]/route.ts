@@ -48,7 +48,7 @@ export async function PUT(
     }
 
     // Проверяем права администратора
-    const isAdmin = await adminService.isAdmin(session.userId);
+    const isAdmin = await adminService.isAdmin(session.id);
     if (!isAdmin) {
       return NextResponse.json(
         { error: 'Forbidden: Admin access required' },
@@ -63,7 +63,7 @@ export async function PUT(
     const article = await adminService.updateArticle(
       params.id,
       body,
-      session.userId
+      session.id
     );
 
     return NextResponse.json(article);
@@ -128,7 +128,7 @@ export async function DELETE(
     }
 
     // Проверяем права администратора
-    const isAdmin = await adminService.isAdmin(session.userId);
+    const isAdmin = await adminService.isAdmin(session.id);
     if (!isAdmin) {
       return NextResponse.json(
         { error: 'Forbidden: Admin access required' },
@@ -137,7 +137,7 @@ export async function DELETE(
     }
 
     // Удаляем статью
-    await adminService.deleteArticle(params.id, session.userId);
+    await adminService.deleteArticle(params.id, session.id);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
