@@ -41,6 +41,14 @@ export class AuthService {
       },
     });
 
+    // Отправка письма с подтверждением email
+    try {
+      await this.sendEmailVerification(user.id);
+    } catch (error) {
+      // Логируем ошибку, но не прерываем регистрацию
+      console.error('Failed to send verification email:', error);
+    }
+
     // Создание сессии
     const session = await this.createSession(user.id);
 
