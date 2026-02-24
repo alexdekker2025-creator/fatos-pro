@@ -203,8 +203,18 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    // Parse body first to get sessionId
+    const body = await request.json();
+    
+    // Create a new request with sessionId in query params for verifyAdminSession
+    const url = new URL(request.url);
+    if (body.sessionId) {
+      url.searchParams.set('sessionId', body.sessionId);
+    }
+    const modifiedRequest = new NextRequest(url, request);
+    
     // Verify admin session
-    const session = await verifyAdminSession(request);
+    const session = await verifyAdminSession(modifiedRequest);
     if (!session) {
       return NextResponse.json(
         { error: 'UNAUTHORIZED', message: 'Invalid or expired session' },
@@ -220,9 +230,9 @@ export async function PUT(
       );
     }
 
-    // Parse and validate request body
-    const body = await request.json();
-    const validation = updateUserSchema.safeParse(body);
+    // Parse and validate request body (excluding sessionId)
+    const { sessionId, ...updateData } = body;
+    const validation = updateUserSchema.safeParse(updateData);
 
     if (!validation.success) {
       return NextResponse.json(
