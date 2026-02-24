@@ -97,21 +97,20 @@ export async function GET(
     
     console.log('[OAuth Callback] Detected locale:', locale);
     
-    // Clear state cookie and redirect to profile
-    const redirectUrl = new URL(`/${locale}/profile`, url.origin);
+    // Create redirect response to oauth-success page with sessionId
+    // This page will store sessionId in localStorage (matching app's auth pattern)
+    const redirectUrl = new URL(`/${locale}/auth/oauth-success`, url.origin);
+    redirectUrl.searchParams.set('sessionId', result.session.id);
+    redirectUrl.searchParams.set('locale', locale);
+    
     console.log('[OAuth Callback] Redirect URL:', redirectUrl.toString());
     
     const response = NextResponse.redirect(redirectUrl);
+    
+    // Clear state cookie
     response.cookies.delete('oauth_state');
-
-    // Set session cookie
-    response.cookies.set('session', result.session.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 30 * 24 * 60 * 60, // 30 days
-      path: '/',
-    });
+    
+    console.log('[OAuth Callback] Response created, returning redirect');
 
     return response;
   } catch (error) {
