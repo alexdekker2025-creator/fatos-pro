@@ -7,6 +7,32 @@ function isValidProvider(provider: string): provider is Provider {
   return provider === 'google' || provider === 'facebook';
 }
 
+/**
+ * Helper function to manually parse URL parameters
+ * Fallback for cases where standard searchParams API fails in Edge Runtime
+ */
+function parseUrlParams(url: string): { code: string | null; state: string | null } {
+  try {
+    // Extract query string manually
+    const queryStart = url.indexOf('?');
+    if (queryStart === -1) return { code: null, state: null };
+    
+    const queryString = url.substring(queryStart + 1);
+    const params = new URLSearchParams(queryString);
+    
+    return {
+      code: params.get('code'),
+      state: params.get('state')
+    };
+  } catch (e) {
+    console.error('[OAuth Callback] Manual URL parsing failed:', e);
+    return { code: null, state: null };
+  }
+}
+
+// Use Node.js Runtime instead of Edge Runtime for better OAuth compatibility
+export const runtime = 'nodejs';
+
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
 
@@ -44,21 +70,12 @@ export async function GET(
   }
   
   try {
-    // Parse URL to get search params
-    const url = new URL(request.url);
-    const { searchParams } = url;
-    
-    // Also try getting from nextUrl (Next.js specific)
-    const nextSearchParams = request.nextUrl.searchParams;
-
+    // Log runtime environment for diagnostics
+    console.log('[OAuth Callback] Runtime:', process.env.NEXT_RUNTIME || 'nodejs');
     console.log('[OAuth Callback] Provider:', provider);
     console.log('[OAuth Callback] Full URL:', request.url);
-    console.log('[OAuth Callback] request.nextUrl:', request.nextUrl.href);
     console.log('[OAuth Callback] Base URL:', baseUrl);
     console.log('[OAuth Callback] Locale:', locale);
-    console.log('[OAuth Callback] Search params from URL:', Object.fromEntries(searchParams.entries()));
-    console.log('[OAuth Callback] Search params from nextUrl:', Object.fromEntries(nextSearchParams.entries()));
-    console.log('[OAuth Callback] All query params:', Array.from(searchParams.entries()));
 
     // Validate provider
     if (!isValidProvider(provider)) {
@@ -68,16 +85,38 @@ export async function GET(
       return NextResponse.redirect(errorUrl);
     }
 
-    // Get code and state from query parameters (try both sources)
-    const code = nextSearchParams.get('code') || searchParams.get('code');
-    const state = nextSearchParams.get('state') || searchParams.get('state');
-    const error = nextSearchParams.get('error') || searchParams.get('error');
-    const errorDescription = nextSearchParams.get('error_description') || searchParams.get('error_description');
+    // Try multiple methods to extract parameters (cascade approach)
+    let code: string | null = null;
+    let state: string | null = null;
+    let error: string | null = null;
+    let errorDescription: string | null = null;
 
-    console.log('[OAuth Callback] Code present:', !!code);
-    console.log('[OAuth Callback] Code value:', code);
-    console.log('[OAuth Callback] State present:', !!state);
-    console.log('[OAuth Callback] State value:', state);
+    // Method 1: Try nextUrl.searchParams (standard Next.js API)
+    code = request.nextUrl.searchParams.get('code');
+    state = request.nextUrl.searchParams.get('state');
+    error = request.nextUrl.searchParams.get('error');
+    errorDescription = request.nextUrl.searchParams.get('error_description');
+    console.log('[OAuth Callback] Method 1 (nextUrl.searchParams) - code:', code, 'state:', state);
+
+    // Method 2: Try new URL().searchParams (standard Web API)
+    if (!code || !state) {
+      const url = new URL(request.url);
+      code = code || url.searchParams.get('code');
+      state = state || url.searchParams.get('state');
+      error = error || url.searchParams.get('error');
+      errorDescription = errorDescription || url.searchParams.get('error_description');
+      console.log('[OAuth Callback] Method 2 (URL.searchParams) - code:', code, 'state:', state);
+    }
+
+    // Method 3: Manual parsing (fallback)
+    if (!code || !state) {
+      const manualParams = parseUrlParams(request.url);
+      code = code || manualParams.code;
+      state = state || manualParams.state;
+      console.log('[OAuth Callback] Method 3 (manual parsing) - code:', code, 'state:', state);
+    }
+
+    console.log('[OAuth Callback] Final extracted - code:', !!code, 'state:', !!state);
     console.log('[OAuth Callback] Error from provider:', error);
     console.log('[OAuth Callback] Error description:', errorDescription);
 

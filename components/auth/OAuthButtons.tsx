@@ -22,7 +22,6 @@ export default function OAuthButtons({ mode = 'login', disabled = false }: OAuth
         <div className="h-px bg-purple-400/40 flex-1 max-w-[60px]"></div>
       </div>
 
-      {/* Temporarily disabled Google OAuth - needs debugging
       <button
         onClick={() => handleOAuthLogin('google')}
         disabled={disabled}
@@ -48,7 +47,6 @@ export default function OAuthButtons({ mode = 'login', disabled = false }: OAuth
         </svg>
         {mode === 'login' ? t('continueWithGoogle') : t('linkGoogle')}
       </button>
-      */}
 
       <button
         onClick={() => handleOAuthLogin('facebook')}

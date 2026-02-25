@@ -7,6 +7,9 @@ function isValidProvider(provider: string): provider is Provider {
   return provider === 'google' || provider === 'facebook';
 }
 
+// Use Node.js Runtime for better OAuth compatibility
+export const runtime = 'nodejs';
+
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
 
