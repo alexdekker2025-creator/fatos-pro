@@ -179,17 +179,15 @@ export default function PythagoreanPage() {
         </div>
 
         {/* Pythagorean Square (9 cells) */}
-        {square && (
-          <div className="mb-8 glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30 animate-fade-in">
-            <h2 className="text-xl sm:text-2xl font-bold text-amber-400 mb-6 text-center">
-              Ваш Квадрат Пифагора
-            </h2>
-            
-            <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:gap-4 max-w-2xl mx-auto">
+        <div className="mb-8 glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30">
+          <h2 className="text-xl sm:text-2xl font-bold text-amber-400 mb-6 text-center">
+            {square ? 'Ваш Квадрат Пифагора' : 'Квадрат Пифагора'}
+          </h2>
+          
+          {square ? (
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:gap-4 max-w-2xl mx-auto animate-fade-in">
               {gridNumbers.map((num) => {
-                // Получаем количество для этой цифры из square
-                // square - это flat массив [count1, count2, count3, count4, count5, count6, count7, count8, count9]
-                const count = square[num - 1]; // num-1 потому что индексы с 0
+                const count = square[num - 1];
                 let repeatedDigits = '---';
                 if (count > 0) {
                   repeatedDigits = num.toString().repeat(count);
@@ -215,8 +213,12 @@ export default function PythagoreanPage() {
                 );
               })}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="text-center text-purple-200 py-8">
+              Введите дату рождения и нажмите &quot;Рассчитать&quot;, чтобы увидеть ваш квадрат
+            </div>
+          )}
+        </div>
 
         {/* Pricing Blocks */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -294,13 +296,19 @@ export default function PythagoreanPage() {
           </div>
         </div>
 
-        {/* Interpretations Section (shown after purchase) */}
-        {square && (
-          <div className="glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30 animate-fade-in">
-            <h2 className="text-xl sm:text-2xl font-bold text-amber-400 mb-6 text-center">
-              Расшифровка вашего квадрата
-            </h2>
-            
+        {/* Interpretations Section */}
+        <div className="glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30">
+          <h2 className="text-xl sm:text-2xl font-bold text-amber-400 mb-6 text-center">
+            Расшифровка вашего квадрата
+          </h2>
+          
+          {!square && (
+            <div className="text-center text-purple-200 py-8">
+              Сначала рассчитайте ваш квадрат Пифагора, чтобы увидеть расшифровку
+            </div>
+          )}
+          
+          {square && (
             <div className="space-y-4">
               {/* Basic Interpretations - Available with basic tier */}
               <div className={`relative ${!hasBasic && !hasFull ? 'pointer-events-none' : ''}`}>
@@ -428,8 +436,8 @@ export default function PythagoreanPage() {
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Payment Modal */}
