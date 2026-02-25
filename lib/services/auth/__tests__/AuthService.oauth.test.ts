@@ -113,7 +113,7 @@ describe('AuthService - OAuth Methods', () => {
 
     it('should throw error if state parameter does not match', async () => {
       await expect(
-        authService.handleOAuthCallback('google', 'code123', 'state1', 'state2')
+        authService.handleOAuthCallback('google', 'code123', 'state1', 'state2', new URL('http://localhost:3000/callback?code=code123&state=state1'))
       ).rejects.toThrow('Invalid OAuth state parameter');
     });
 
@@ -128,9 +128,9 @@ describe('AuthService - OAuth Methods', () => {
         .mockResolvedValueOnce(mockUser); // Return user after creation
       (prisma.user.create as jest.Mock).mockResolvedValue(mockUser);
 
-      const result = await authService.handleOAuthCallback('google', code, state, state);
+      const result = await authService.handleOAuthCallback('google', code, state, state, new URL('http://localhost:3000/callback?code=test&state=test'));
 
-      expect(mockOAuthService.exchangeCodeForTokens).toHaveBeenCalledWith('google', code);
+      expect(mockOAuthService.exchangeCodeForTokens).toHaveBeenCalledWith('google', code, state, expect.any(URL));
       expect(mockOAuthService.getUserProfile).toHaveBeenCalledWith('google', mockTokens.accessToken);
       expect(result).toHaveProperty('user');
       expect(result).toHaveProperty('session');
@@ -145,7 +145,7 @@ describe('AuthService - OAuth Methods', () => {
       (prisma.oAuthProvider.findUnique as jest.Mock).mockResolvedValue(null);
       (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
 
-      const result = await authService.handleOAuthCallback('google', code, state, state);
+      const result = await authService.handleOAuthCallback('google', code, state, state, new URL('http://localhost:3000/callback?code=test&state=test'));
 
       expect(mockOAuthService.linkOAuthAccount).toHaveBeenCalledWith(
         mockUser.id,
@@ -170,7 +170,7 @@ describe('AuthService - OAuth Methods', () => {
       (prisma.oAuthProvider.findUnique as jest.Mock).mockResolvedValue(existingOAuth);
       (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
 
-      const result = await authService.handleOAuthCallback('google', code, state, state);
+      const result = await authService.handleOAuthCallback('google', code, state, state, new URL('http://localhost:3000/callback?code=test&state=test'));
 
       expect(result.user.id).toBe(mockUser.id);
       expect(mockOAuthService.linkOAuthAccount).toHaveBeenCalled();
@@ -395,7 +395,7 @@ describe('AuthService - OAuth Methods', () => {
 
       expect(result.success).toBe(true);
       expect(result.linkedProviders).toContain('google');
-      expect(mockOAuthService.exchangeCodeForTokens).toHaveBeenCalledWith('google', 'auth_code');
+      expect(mockOAuthService.exchangeCodeForTokens).toHaveBeenCalledWith('google', 'auth_code', expect.any(String), expect.any(URL));
       expect(mockOAuthService.getUserProfile).toHaveBeenCalledWith('google', mockTokens.accessToken);
       expect(mockOAuthService.linkOAuthAccount).toHaveBeenCalledWith(
         'user_123',

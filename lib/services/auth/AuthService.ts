@@ -897,7 +897,8 @@ export class AuthService {
     provider: 'google' | 'facebook',
     code: string,
     state: string,
-    expectedState: string
+    expectedState: string,
+    currentUrl: URL
   ): Promise<AuthResult> {
     // Verify state parameter to prevent CSRF attacks
     if (state !== expectedState) {
@@ -909,7 +910,7 @@ export class AuthService {
     const oauthService = getOAuthService();
 
     // Exchange authorization code for tokens
-    const tokens = await oauthService.exchangeCodeForTokens(provider, code);
+    const tokens = await oauthService.exchangeCodeForTokens(provider, code, state, currentUrl);
 
     // Get user profile from provider
     const profile = await oauthService.getUserProfile(provider, tokens.accessToken);

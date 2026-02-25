@@ -105,7 +105,9 @@ export class OAuthService {
    */
   async exchangeCodeForTokens(
     provider: OAuthProvider,
-    code: string
+    code: string,
+    state: string,
+    currentUrl: URL
   ): Promise<OAuthTokens> {
     const config = this.getProviderConfig(provider);
     const redirectUri = `${this.redirectBaseUrl}/api/auth/oauth/${provider}/callback`;
@@ -122,9 +124,17 @@ export class OAuthService {
       token_endpoint: config.tokenEndpoint,
     };
 
-    // Validate and prepare parameters
-    const params = new URLSearchParams();
-    params.set('code', code);
+    // Validate callback parameters using oauth4webapi
+    const params = oauth.validateAuthResponse(
+      authServer,
+      client,
+      currentUrl,
+      state
+    );
+
+    if (oauth.isOAuth2Error(params)) {
+      throw new Error(`OAuth validation error: ${params.error} - ${params.error_description || ''}`);
+    }
 
     // Exchange code for tokens (without PKCE for simplicity)
     const response = await oauth.authorizationCodeGrantRequest(

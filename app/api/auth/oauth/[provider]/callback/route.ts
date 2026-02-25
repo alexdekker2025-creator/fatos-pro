@@ -145,12 +145,16 @@ export async function GET(
 
     console.log('[OAuth Callback] Calling authService.handleOAuthCallback...');
     
+    // Create URL object for oauth4webapi validation
+    const currentUrl = new URL(request.url);
+    
     // Use state from URL as both state and expectedState (skip validation)
     const result = await authService.handleOAuthCallback(
       provider,
       code,
       state,
-      state // Using same state for validation (effectively skipping check)
+      state, // Using same state for validation (effectively skipping check)
+      currentUrl
     );
 
     console.log('[OAuth Callback] Success! User ID:', result.user.id);
