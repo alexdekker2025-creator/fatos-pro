@@ -350,7 +350,7 @@ export default function PythagoreanPage() {
               {/* Full Interpretations - Available only with full tier */}
               <div className={`relative ${!hasFull ? 'pointer-events-none' : ''}`}>
                 <h3 className="text-lg font-semibold text-white mb-4 mt-8">
-                  🔥 Полная расшифровка (только в тарифе "Глубокий")
+                  🔥 Полная расшифровка (только в тарифе &quot;Глубокий&quot;)
                 </h3>
                 
                 <div className="space-y-4">
@@ -362,7 +362,7 @@ export default function PythagoreanPage() {
                       <div className="absolute inset-0 backdrop-blur-md bg-black/30 rounded-lg z-10 flex items-center justify-center">
                         <div className="text-center">
                           <div className="text-4xl mb-2">🔒</div>
-                          <p className="text-white text-sm font-semibold">Доступно в тарифе "Глубокий"</p>
+                          <p className="text-white text-sm font-semibold">Доступно в тарифе &quot;Глубокий&quot;</p>
                         </div>
                       </div>
                     )}
@@ -386,7 +386,7 @@ export default function PythagoreanPage() {
                       <div className="absolute inset-0 backdrop-blur-md bg-black/30 rounded-lg z-10 flex items-center justify-center">
                         <div className="text-center">
                           <div className="text-4xl mb-2">🔒</div>
-                          <p className="text-white text-sm font-semibold">Доступно в тарифе "Глубокий"</p>
+                          <p className="text-white text-sm font-semibold">Доступно в тарифе &quot;Глубокий&quot;</p>
                         </div>
                       </div>
                     )}
@@ -410,7 +410,7 @@ export default function PythagoreanPage() {
                       <div className="absolute inset-0 backdrop-blur-md bg-black/30 rounded-lg z-10 flex items-center justify-center">
                         <div className="text-center">
                           <div className="text-4xl mb-2">🔒</div>
-                          <p className="text-white text-sm font-semibold">Доступно в тарифе "Глубокий"</p>
+                          <p className="text-white text-sm font-semibold">Доступно в тарифе &quot;Глубокий&quot;</p>
                         </div>
                       </div>
                     )}
