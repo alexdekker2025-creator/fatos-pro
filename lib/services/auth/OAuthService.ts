@@ -101,7 +101,7 @@ export class OAuthService {
 
   /**
    * Exchange authorization code for access tokens
-   * Uses oauth4webapi for standards-compliant token exchange
+   * Uses direct fetch to Google/Facebook token endpoint
    */
   async exchangeCodeForTokens(
     provider: OAuthProvider,
@@ -112,53 +112,36 @@ export class OAuthService {
     const config = this.getProviderConfig(provider);
     const redirectUri = `${this.redirectBaseUrl}/api/auth/oauth/${provider}/callback`;
 
-    // Create oauth4webapi client and authorization server metadata
-    const client: oauth.Client = {
-      client_id: config.clientId,
-      client_secret: config.clientSecret,
-      token_endpoint_auth_method: 'client_secret_post',
-    };
+    // Exchange code for tokens using direct HTTP request
+    const tokenResponse = await fetch(config.tokenEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        code,
+        client_id: config.clientId,
+        client_secret: config.clientSecret,
+        redirect_uri: redirectUri,
+        grant_type: 'authorization_code',
+      }),
+    });
 
-    const authServer: oauth.AuthorizationServer = {
-      issuer: provider === 'google' ? 'https://accounts.google.com' : 'https://www.facebook.com',
-      token_endpoint: config.tokenEndpoint,
-    };
-
-    // Validate callback parameters using oauth4webapi
-    const params = oauth.validateAuthResponse(
-      authServer,
-      client,
-      currentUrl,
-      oauth.expectNoState // Use expectNoState for flows without state validation
-    );
-
-    if (oauth.isOAuth2Error(params)) {
-      throw new Error(`OAuth validation error: ${params.error} - ${params.error_description || ''}`);
+    if (!tokenResponse.ok) {
+      const errorText = await tokenResponse.text();
+      throw new Error(`Token exchange failed: ${tokenResponse.status} ${errorText}`);
     }
 
-    // Exchange code for tokens (without PKCE)
-    const response = await oauth.authorizationCodeGrantRequest(
-      authServer,
-      client,
-      params,
-      redirectUri,
-      oauth.expectNoState // Use expectNoState for flows without PKCE
-    );
+    const tokens = await tokenResponse.json();
 
-    const result = await oauth.processAuthorizationCodeOpenIDResponse(
-      authServer,
-      client,
-      response
-    );
-
-    if (oauth.isOAuth2Error(result)) {
-      throw new Error(`OAuth error: ${result.error} - ${result.error_description || ''}`);
+    if (tokens.error) {
+      throw new Error(`OAuth error: ${tokens.error} - ${tokens.error_description || ''}`);
     }
 
     return {
-      accessToken: result.access_token,
-      refreshToken: result.refresh_token,
-      expiresIn: result.expires_in || 3600,
+      accessToken: tokens.access_token,
+      refreshToken: tokens.refresh_token,
+      expiresIn: tokens.expires_in || 3600,
     };
   }
 
