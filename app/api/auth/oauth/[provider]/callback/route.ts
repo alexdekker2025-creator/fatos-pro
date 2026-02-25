@@ -81,42 +81,18 @@ export async function GET(
       return NextResponse.redirect(errorUrl);
     }
 
-    // Get expected state from cookie AND database
-    const expectedStateFromCookie = request.cookies.get('oauth_state')?.value;
+    // Get expected state from cookie
+    const expectedState = request.cookies.get('oauth_state')?.value;
     const allCookies = request.cookies.getAll();
 
-    console.log('[OAuth Callback] Expected state from cookie:', expectedStateFromCookie);
-    console.log('[OAuth Callback] All cookies:', allCookies.map(c => `${c.name}=${c.value.substring(0, 10)}...`));
-
-    // Try to get state from database
-    const { prisma } = await import('@/lib/prisma');
-    const stateRecord = await prisma.oAuthState.findUnique({
-      where: { state },
-    });
-
-    console.log('[OAuth Callback] State record from DB:', !!stateRecord);
-    console.log('[OAuth Callback] State expired:', stateRecord ? new Date() > stateRecord.expiresAt : 'N/A');
-
-    let expectedState: string | undefined;
-
-    if (stateRecord && new Date() <= stateRecord.expiresAt) {
-      expectedState = stateRecord.state;
-      console.log('[OAuth Callback] Using state from database');
-      
-      // Delete used state
-      await prisma.oAuthState.delete({
-        where: { state },
-      }).catch(() => {});
-    } else if (expectedStateFromCookie) {
-      expectedState = expectedStateFromCookie;
-      console.log('[OAuth Callback] Using state from cookie (fallback)');
-    }
-
     console.log('[OAuth Callback] Expected state present:', !!expectedState);
+    console.log('[OAuth Callback] Expected state value:', expectedState);
+    console.log('[OAuth Callback] All cookies:', allCookies.map(c => `${c.name}=${c.value.substring(0, 10)}...`));
     console.log('[OAuth Callback] State match:', state === expectedState);
 
     if (!expectedState) {
-      console.error('[OAuth Callback] Missing expected state from both cookie and database');
+      console.error('[OAuth Callback] Missing expected state cookie');
+      console.error('[OAuth Callback] This means cookie was not set or was lost between requests');
       const errorUrl = new URL(`/${locale}/auth/error`, baseUrl);
       errorUrl.searchParams.set('error', 'missing_state');
       return NextResponse.redirect(errorUrl);
