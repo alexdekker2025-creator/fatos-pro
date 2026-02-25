@@ -141,8 +141,8 @@ export class OAuthService {
       authServer,
       client,
       params,
-      redirectUri,
-      '' // code_verifier (empty string when not using PKCE)
+      redirectUri
+      // No code_verifier parameter - we're not using PKCE
     );
 
     const result = await oauth.processAuthorizationCodeOpenIDResponse(
