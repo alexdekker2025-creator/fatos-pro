@@ -453,7 +453,7 @@ export default function PremiumServices() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="max-w-7xl mx-auto py-8 sm:py-12">
       <div className="text-center mb-8 sm:mb-12 animate-fade-in">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#FFD700] mb-4 drop-shadow-[0_0_20px_rgba(255,215,0,0.4)]">
           {locale === 'ru' ? 'Премиум услуги' : 'Premium Services'}

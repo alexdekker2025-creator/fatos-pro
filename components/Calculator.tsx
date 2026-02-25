@@ -17,6 +17,7 @@ import CardOfDay from './CardOfDay';
 import PythagoreanSquareDisplay from './PythagoreanSquareDisplay';
 import DestinyMatrixDisplay from './DestinyMatrixDisplay';
 import PersonalizedGreeting from './PersonalizedGreeting';
+import AdBanner from './AdBanner';
 
 interface CalculatorState {
   name: string;
@@ -557,6 +558,9 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
       {/* Results */}
       {state.results && (
         <div className="space-y-6 sm:space-y-8">
+          {/* Ad Banner - Advertisement Carousel */}
+          <AdBanner />
+
           {/* Персонализированное приветствие */}
           {state.name && state.results.arcana && (
             <PersonalizedGreeting 
@@ -579,32 +583,6 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
           <div className="animate-fade-in-up animation-delay-100">
             <CardOfDay arcana={state.results.arcana!} />
           </div>
-
-          {/* Working Numbers */}
-          {state.results.workingNumbers && (
-            <div className="animate-fade-in-up animation-delay-200">
-              <ResultSection title={t('workingNumbers')}>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                  {Object.entries(state.results.workingNumbers).map(([key, value]) => {
-                  // Русские названия для рабочих чисел
-                  const workingNumberNames: Record<string, string> = {
-                    first: locale === 'ru' ? 'Первое рабочее число' : 'First Working Number',
-                    second: locale === 'ru' ? 'Второе рабочее число' : 'Second Working Number',
-                    third: locale === 'ru' ? 'Третье рабочее число' : 'Third Working Number',
-                    fourth: locale === 'ru' ? 'Четвёртое рабочее число' : 'Fourth Working Number',
-                  };
-                  
-                  return (
-                    <div key={key} className="glass p-3 sm:p-4 rounded-lg text-center hover:glass-strong transition-all hover:scale-105 border border-purple-400/20">
-                      <div className="text-xl sm:text-2xl font-bold text-[#FFD700]">{value as number}</div>
-                      <div className="text-xs sm:text-sm text-purple-200 mt-1">{workingNumberNames[key] || key}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            </ResultSection>
-            </div>
-          )}
 
           {/* Pythagorean Square */}
           {state.results.square && (

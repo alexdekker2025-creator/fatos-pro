@@ -114,20 +114,6 @@ export default function DestinyMatrixDisplay({ matrix, articles }: DestinyMatrix
       {/* Сообщение о разблокировке - кликабельная кнопка */}
       {!hasFullAccess && (
         <>
-          <div className="flex justify-center">
-            <button
-              onClick={() => setIsPaymentModalOpen(true)}
-              className="bg-purple-500/20 border border-purple-400/30 rounded-lg p-4 text-center max-w-md hover:bg-purple-500/30 hover:border-purple-400/50 transition-all cursor-pointer active:scale-95"
-            >
-              <p className="text-purple-100 text-sm mb-2 font-semibold">
-                🔒 Некоторые позиции скрыты
-              </p>
-              <p className="text-purple-200 text-xs">
-                Купите полную матрицу судьбы за 490 ₽, чтобы увидеть все позиции и получить детальную интерпретацию
-              </p>
-            </button>
-          </div>
-
           {/* Payment Modal */}
           <PaymentModal
             isOpen={isPaymentModalOpen}
@@ -166,6 +152,15 @@ export default function DestinyMatrixDisplay({ matrix, articles }: DestinyMatrix
           })}
         </div>
       )}
+
+      {/* Кнопка перехода на полную страницу */}
+      <div className="flex justify-center mt-6">
+        <button
+          className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+        >
+          Подробнее о матрице судьбы →
+        </button>
+      </div>
     </div>
   );
 }

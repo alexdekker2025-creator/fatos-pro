@@ -8,6 +8,7 @@ import StarryBackground from '@/components/StarryBackground';
 import AuthButton from '@/components/AuthButton';
 import ArcanaCollection from '@/components/ArcanaCollection';
 import SecuritySettings from '@/components/auth/SecuritySettings';
+import PremiumServices from '@/components/PremiumServices';
 import { Card } from '@/components/ui';
 
 export default function ProfilePage() {
@@ -235,13 +236,17 @@ export default function ProfilePage() {
 
           {/* Arcana Tab */}
           {activeTab === 'arcana' && (
-            <div className="animate-fade-in">
+            <div className="animate-fade-in space-y-6">
               <ArcanaCollection userId={user.id} />
-              <div className="mt-6 p-4 bg-white/10 backdrop-blur-sm rounded-lg text-center">
+              
+              <div className="p-4 bg-white/10 backdrop-blur-sm rounded-lg text-center">
                 <p className="text-purple-200 text-sm">
                   💡 Совет: Выполняйте расчеты каждый день, чтобы собрать все 22 аркана!
                 </p>
               </div>
+
+              {/* Premium Services */}
+              <PremiumServices />
             </div>
           )}
         </div>

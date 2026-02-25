@@ -58,7 +58,7 @@ export default function AdBanner() {
   const currentAd = ads[currentAdIndex];
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 animate-fade-in">
+    <div className="w-full animate-fade-in">
       <div className="relative overflow-hidden rounded-2xl shadow-2xl border-2 border-amber-500/40">
         {/* Background gradient with slide animation */}
         <div

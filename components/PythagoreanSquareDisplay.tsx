@@ -147,119 +147,15 @@ export default function PythagoreanSquareDisplay({ square, squareData, articles 
         })}
       </div>
 
-      {/* Линии квадрата (платные) - в стиле ячеек выше */}
-      <div className="max-w-2xl mx-auto mt-6">
-        <h3 className="text-lg sm:text-xl font-bold text-white mb-4 text-center">
-          {locale === 'ru' ? 'Линии Квадрата' : 'Square Lines'}
-        </h3>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 lg:gap-4">
-          {squareLines.map((line, index) => {
-            const lineSum = hasFullAccess ? calculateLineSum(line.cells) : 0;
-            
-            return (
-              <div
-                key={index}
-                className="relative rounded-lg border-2 transition-all flex flex-col items-center justify-center p-3 sm:p-4 min-h-[100px] bg-white/5 border-purple-400/30 hover:border-purple-400/60 hover:scale-105 hover:bg-white/10"
-              >
-                {!hasFullAccess && (
-                  <>
-                    {/* Полупрозрачное содержимое для неоплаченных */}
-                    <div className="opacity-30 blur-[1px] select-none pointer-events-none w-full">
-                      <div className="text-xs sm:text-sm text-purple-300 mb-2 font-semibold text-center uppercase">
-                        {line.name}
-                      </div>
-                      <div className="text-xl sm:text-2xl font-bold text-amber-400 mb-1 text-center">
-                        ••
-                      </div>
-                      <div className="text-xs text-purple-200 text-center">
-                        ({line.cells.join('-')})
-                      </div>
-                    </div>
-                    
-                    {/* Иконка замка по центру */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-2xl">🔒</div>
-                    </div>
-                  </>
-                )}
-                
-                {hasFullAccess && (
-                  <>
-                    {/* Название линии сверху */}
-                    <div className="text-xs sm:text-sm text-purple-300 mb-2 font-semibold text-center uppercase">
-                      {line.name}
-                    </div>
-                    
-                    {/* Сумма линии */}
-                    <div className="text-xl sm:text-2xl font-bold text-amber-400 mb-1">
-                      {lineSum}
-                    </div>
-                    
-                    {/* Ячейки в скобках снизу */}
-                    <div className="text-xs text-purple-200 text-center">
-                      ({line.cells.join('-')})
-                    </div>
-                  </>
-                )}
-              </div>
-            );
-          })}
-        </div>
-        
-        {/* Сообщение о покупке - кликабельная кнопка */}
-        {!hasFullAccess && (
-          <>
-            <button
-              onClick={() => setIsPaymentModalOpen(true)}
-              className="w-full text-center py-4 bg-purple-500/20 rounded-lg border border-purple-400/30 mt-4 hover:bg-purple-500/30 hover:border-purple-400/50 transition-all cursor-pointer active:scale-95"
-            >
-              <p className="text-purple-100 text-sm mb-2 font-semibold">
-                {locale === 'ru' 
-                  ? '🔓 Полный Квадрат Пифагора' 
-                  : '🔓 Full Pythagorean Square'}
-              </p>
-              <p className="text-purple-200 text-xs">
-                {locale === 'ru'
-                  ? 'Получите доступ ко всем скрытым линиям квадрата и детальному анализу за 490 ₽'
-                  : 'Get access to all hidden square lines and detailed analysis for 490 ₽'}
-              </p>
-            </button>
-
-            {/* Payment Modal */}
-            <PaymentModal
-              isOpen={isPaymentModalOpen}
-              onClose={() => setIsPaymentModalOpen(false)}
-              service={pythagoreanService}
-              onSuccess={() => {
-                setIsPaymentModalOpen(false);
-                // Страница перезагрузится после успешной оплаты
-              }}
-            />
-          </>
-        )}
+      {/* Кнопка перехода на полную страницу */}
+      <div className="flex justify-center mt-6">
+        <a
+          href="/ru/pythagorean"
+          className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+        >
+          {locale === 'ru' ? 'Подробнее о Квадрате Пифагора →' : 'Learn More About Pythagorean Square →'}
+        </a>
       </div>
-
-      {/* Articles for all cells */}
-      {articles && (
-        <div className="space-y-3 max-w-2xl mx-auto mt-6">
-          {gridNumbers.map((num, index) => {
-            const article = articles.get(num);
-            if (!article) return null;
-
-            return (
-              <div key={num} className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-sm sm:text-base font-semibold text-purple-200 mb-2">
-                  {locale === 'ru' ? 'Цифра' : 'Digit'} {num}: {article.title}
-                </h4>
-                <p className="text-xs sm:text-sm text-gray-200 whitespace-pre-wrap">
-                  {article.content}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 }

@@ -55,19 +55,13 @@ export default function PersonalizedGreeting({ userName, arcanaNumber, arcanaTit
 
         {/* Приветствие */}
         <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2">
             <span className="text-2xl animate-pulse">✨</span>
             <h3 className="text-lg sm:text-xl font-bold text-white">
               {locale === 'ru' ? `С возвращением, ${userName}` : `Welcome back, ${userName}`}
             </h3>
             <span className="text-2xl animate-pulse" style={{ animationDelay: '0.5s' }}>✨</span>
           </div>
-          <p className="text-purple-200 text-sm sm:text-base">
-            {locale === 'ru' 
-              ? `Твой день начнётся с ${arcanaNumber} ${arcanaTitle || 'Аркана'}` 
-              : `Your day begins with ${arcanaNumber} ${arcanaTitle || 'Arcana'}`}
-            <span className="ml-2">🔮</span>
-          </p>
         </div>
       </div>
 
