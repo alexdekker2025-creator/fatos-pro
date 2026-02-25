@@ -71,6 +71,7 @@ export class OAuthService {
   /**
    * Get authorization URL for OAuth flow
    * Generates a redirect URL to the provider's authorization endpoint
+   * Updated: Removed prompt=consent to fix missing code parameter issue
    */
   getAuthorizationURL(provider: OAuthProvider, state: string): string {
     const config = this.getProviderConfig(provider);
