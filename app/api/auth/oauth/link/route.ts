@@ -8,6 +8,8 @@ const linkSchema = z.object({
     errorMap: () => ({ message: 'Provider must be "google" or "facebook"' }),
   }),
   code: z.string().min(1, 'Authorization code is required'),
+  state: z.string().min(1, 'State parameter is required'),
+  currentUrl: z.string().url('Valid callback URL is required'),
 });
 
 // Helper to get user ID from session
@@ -49,10 +51,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { provider, code } = validation.data;
+    const { provider, code, state, currentUrl } = validation.data;
 
     // Link OAuth provider
-    const result = await authService.linkOAuthProvider(userId, provider, code);
+    const result = await authService.linkOAuthProvider(userId, provider, code, state, new URL(currentUrl));
 
     return NextResponse.json(
       {

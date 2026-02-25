@@ -1062,7 +1062,9 @@ export class AuthService {
     async linkOAuthProvider(
       userId: string,
       provider: 'google' | 'facebook',
-      code: string
+      code: string,
+      state: string,
+      currentUrl: URL
     ): Promise<{ success: true; linkedProviders: string[] }> {
       // Import OAuthService at runtime
       const { getOAuthService } = await import('./OAuthService');
@@ -1081,7 +1083,7 @@ export class AuthService {
       }
 
       // Exchange OAuth code for tokens
-      const tokens = await oauthService.exchangeCodeForTokens(provider, code);
+      const tokens = await oauthService.exchangeCodeForTokens(provider, code, state, currentUrl);
 
       // Get user profile from provider
       const profile = await oauthService.getUserProfile(provider, tokens.accessToken);
