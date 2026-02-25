@@ -129,7 +129,7 @@ export class OAuthService {
       authServer,
       client,
       currentUrl,
-      state
+      oauth.expectNoState // Use expectNoState for flows without state validation
     );
 
     if (oauth.isOAuth2Error(params)) {
@@ -142,7 +142,7 @@ export class OAuthService {
       client,
       params,
       redirectUri,
-      undefined // No PKCE code_verifier
+      oauth.expectNoState // Use expectNoState for flows without PKCE
     );
 
     const result = await oauth.processAuthorizationCodeOpenIDResponse(
