@@ -47,13 +47,13 @@ export async function GET(
     const response = NextResponse.redirect(result.redirectUrl);
     response.cookies.set('oauth_state', result.state, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: true, // Always use secure in production
+      sameSite: 'none', // Changed from 'lax' to 'none' for cross-site redirects
       maxAge: 10 * 60, // 10 minutes
       path: '/',
     });
 
-    console.log('[OAuth Authorize] Cookie set, redirecting to provider');
+    console.log('[OAuth Authorize] Cookie set with sameSite=none, redirecting to provider');
 
     return response;
   } catch (error) {
