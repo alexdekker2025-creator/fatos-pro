@@ -136,13 +136,13 @@ export class OAuthService {
       throw new Error(`OAuth validation error: ${params.error} - ${params.error_description || ''}`);
     }
 
-    // Exchange code for tokens (without PKCE for simplicity)
+    // Exchange code for tokens (without PKCE)
     const response = await oauth.authorizationCodeGrantRequest(
       authServer,
       client,
       params,
-      redirectUri
-      // No code_verifier parameter - we're not using PKCE
+      redirectUri,
+      undefined // No PKCE code_verifier
     );
 
     const result = await oauth.processAuthorizationCodeOpenIDResponse(
