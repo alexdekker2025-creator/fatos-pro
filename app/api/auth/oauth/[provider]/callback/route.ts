@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { authService } from '@/lib/services/auth/AuthService';
-import { setLastOAuthError } from '@/lib/debug/oauth-error-store';
 
 type Provider = 'google' | 'facebook';
 
@@ -177,9 +176,6 @@ export async function GET(
 
     return response;
   } catch (error) {
-    // Save error for debugging
-    setLastOAuthError(error);
-    
     console.error('[OAuth Callback] Error occurred:', error);
     console.error('[OAuth Callback] Error type:', error instanceof Error ? error.constructor.name : typeof error);
     console.error('[OAuth Callback] Error message:', error instanceof Error ? error.message : String(error));
