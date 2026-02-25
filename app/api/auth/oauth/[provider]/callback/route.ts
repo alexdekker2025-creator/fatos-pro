@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { authService } from '@/lib/services/auth/AuthService';
-import { setLastOAuthError } from '@/app/api/debug/last-oauth-error/route';
+import { setLastOAuthError } from '@/lib/debug/oauth-error-store';
 
 type Provider = 'google' | 'facebook';
 
