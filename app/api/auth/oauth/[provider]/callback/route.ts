@@ -44,13 +44,20 @@ export async function GET(
   }
   
   try {
-    const { searchParams } = new URL(request.url);
+    // Parse URL to get search params
+    const url = new URL(request.url);
+    const { searchParams } = url;
+    
+    // Also try getting from nextUrl (Next.js specific)
+    const nextSearchParams = request.nextUrl.searchParams;
 
     console.log('[OAuth Callback] Provider:', provider);
     console.log('[OAuth Callback] Full URL:', request.url);
+    console.log('[OAuth Callback] request.nextUrl:', request.nextUrl.href);
     console.log('[OAuth Callback] Base URL:', baseUrl);
     console.log('[OAuth Callback] Locale:', locale);
-    console.log('[OAuth Callback] Search params:', Object.fromEntries(searchParams.entries()));
+    console.log('[OAuth Callback] Search params from URL:', Object.fromEntries(searchParams.entries()));
+    console.log('[OAuth Callback] Search params from nextUrl:', Object.fromEntries(nextSearchParams.entries()));
     console.log('[OAuth Callback] All query params:', Array.from(searchParams.entries()));
 
     // Validate provider
@@ -61,11 +68,11 @@ export async function GET(
       return NextResponse.redirect(errorUrl);
     }
 
-    // Get code and state from query parameters
-    const code = searchParams.get('code');
-    const state = searchParams.get('state');
-    const error = searchParams.get('error');
-    const errorDescription = searchParams.get('error_description');
+    // Get code and state from query parameters (try both sources)
+    const code = nextSearchParams.get('code') || searchParams.get('code');
+    const state = nextSearchParams.get('state') || searchParams.get('state');
+    const error = nextSearchParams.get('error') || searchParams.get('error');
+    const errorDescription = nextSearchParams.get('error_description') || searchParams.get('error_description');
 
     console.log('[OAuth Callback] Code present:', !!code);
     console.log('[OAuth Callback] Code value:', code);
