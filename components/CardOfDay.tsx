@@ -183,7 +183,7 @@ export default function CardOfDay({ arcana }: CardOfDayProps) {
               <div className="absolute inset-0 rounded-xl animate-breathing-glow pointer-events-none z-0"></div>
               
               <div
-                className={`relative w-full h-80 sm:h-96 lg:h-[28rem] transition-transform duration-700 transform-style-3d cursor-pointer z-10 ${
+                className={`relative w-full h-[32rem] sm:h-[36rem] lg:h-[40rem] transition-transform duration-700 transform-style-3d cursor-pointer z-10 ${
                   flipped[card.key] ? 'rotate-y-180' : ''
                 }`}
               >
