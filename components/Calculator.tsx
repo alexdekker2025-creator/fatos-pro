@@ -18,6 +18,7 @@ import PythagoreanSquareDisplay from './PythagoreanSquareDisplay';
 import DestinyMatrixDisplay from './DestinyMatrixDisplay';
 import PersonalizedGreeting from './PersonalizedGreeting';
 import AdBanner from './AdBanner';
+import AuthModal from './AuthModal';
 
 interface CalculatorState {
   name: string;
@@ -67,6 +68,7 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
     results: null,
     fromCache: false,
   });
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   // Загрузка сохраненного имени при монтировании
   useEffect(() => {
@@ -265,6 +267,12 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
   };
 
   const handleCalculate = async () => {
+    // Check if user is authenticated
+    if (!userId) {
+      setShowAuthModal(true);
+      return;
+    }
+
     // Reset errors
     setState(prev => ({ ...prev, errors: {} }));
 
@@ -554,6 +562,13 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
           {t('calculate')}
         </button>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialMode="login"
+      />
 
       {/* Results */}
       {state.results && (
