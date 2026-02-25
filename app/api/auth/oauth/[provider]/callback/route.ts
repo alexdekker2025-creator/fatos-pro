@@ -98,6 +98,14 @@ export async function GET(
       return NextResponse.redirect(errorUrl);
     }
 
+    if (!expectedState) {
+      console.error('[OAuth Callback] Missing expected state cookie');
+      console.error('[OAuth Callback] This means cookie was not set or was lost between requests');
+      const errorUrl = new URL(`/${locale}/auth/error`, baseUrl);
+      errorUrl.searchParams.set('error', 'missing_state');
+      return NextResponse.redirect(errorUrl);
+    }
+
     console.log('[OAuth Callback] Calling authService.handleOAuthCallback...');
 
     // Handle OAuth callback
