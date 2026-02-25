@@ -172,18 +172,25 @@ export async function GET(
 
     return response;
   } catch (error) {
-    console.error('OAuth callback error:', error);
+    console.error('[OAuth Callback] Error occurred:', error);
+    console.error('[OAuth Callback] Error type:', error instanceof Error ? error.constructor.name : typeof error);
+    console.error('[OAuth Callback] Error message:', error instanceof Error ? error.message : String(error));
+    console.error('[OAuth Callback] Error stack:', error instanceof Error ? error.stack : 'No stack trace');
 
     // Handle specific error messages
     let errorType = 'oauth_failed';
     if (error instanceof Error) {
+      console.error('[OAuth Callback] Checking error message for specific types...');
       if (error.message.includes('state')) {
         errorType = 'csrf_detected';
+        console.error('[OAuth Callback] Detected state validation error');
       } else if (error.message.includes('code')) {
         errorType = 'invalid_code';
+        console.error('[OAuth Callback] Detected invalid code error');
       }
     }
 
+    console.error('[OAuth Callback] Final error type:', errorType);
     const errorUrl = new URL(`/${locale}/auth/error`, baseUrl);
     errorUrl.searchParams.set('error', errorType);
     errorUrl.searchParams.set('provider', provider);
