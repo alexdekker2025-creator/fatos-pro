@@ -307,7 +307,7 @@ export default function PythagoreanPage() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {gridNumbers.map((num) => {
-                    const count = square[num - 1];
+                    const count = square ? square[num - 1] : 0;
                     const isLocked = !hasBasic && !hasFull;
                     
                     return (

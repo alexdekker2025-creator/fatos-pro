@@ -17,6 +17,7 @@ import CardOfDay from './CardOfDay';
 import PythagoreanSquareDisplay from './PythagoreanSquareDisplay';
 import DestinyMatrixDisplay from './DestinyMatrixDisplay';
 import PersonalizedGreeting from './PersonalizedGreeting';
+import AdBanner from './AdBanner';
 
 interface CalculatorState {
   name: string;
@@ -557,6 +558,11 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
       {/* Results */}
       {state.results && (
         <div className="space-y-6 sm:space-y-8">
+          {/* Ad Banner - First in results */}
+          <div className="animate-fade-in">
+            <AdBanner />
+          </div>
+
           {/* Персонализированное приветствие */}
           {state.name && state.results.arcana && (
             <PersonalizedGreeting 
