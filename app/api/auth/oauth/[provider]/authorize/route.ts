@@ -43,7 +43,19 @@ export async function GET(
     console.log('[OAuth Authorize] Generated state:', result.state);
     console.log('[OAuth Authorize] Redirect URL:', result.redirectUrl);
 
-    // Store state in cookie for CSRF protection
+    // Store state in database instead of cookie for reliability
+    const { prisma } = await import('@/lib/prisma');
+    await prisma.oAuthState.create({
+      data: {
+        state: result.state,
+        provider,
+        expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+      },
+    });
+
+    console.log('[OAuth Authorize] State saved to database');
+
+    // Also set cookie as backup
     const response = NextResponse.redirect(result.redirectUrl);
     response.cookies.set('oauth_state', result.state, {
       httpOnly: true,

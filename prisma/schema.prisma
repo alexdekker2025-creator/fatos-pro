@@ -242,6 +242,17 @@ model OAuthProvider {
   @@index([provider])
 }
 
+model OAuthState {
+  id         String   @id @default(cuid())
+  state      String   @unique
+  provider   String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  
+  @@index([state])
+  @@index([expiresAt])
+}
+
 model SecurityLog {
   id         String   @id @default(cuid())
   userId     String?
