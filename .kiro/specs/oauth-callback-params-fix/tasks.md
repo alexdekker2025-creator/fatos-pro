@@ -15,7 +15,7 @@
   - Mark task complete when test is written, run, and failure is documented
   - _Requirements: 2.1, 2.2, 2.3_
 
-- [ ] 2. Write preservation property tests (BEFORE implementing fix)
+- [x] 2. Write preservation property tests (BEFORE implementing fix)
   - **Property 2: Preservation** - Error Handling and Session Management
   - **IMPORTANT**: Follow observation-first methodology
   - Observe behavior on UNFIXED code for non-buggy inputs:
@@ -35,7 +35,7 @@
   - Mark task complete when tests are written, run, and passing on unfixed code
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-- [-] 3. Fix for OAuth callback parameters not being read in Edge Runtime
+- [x] 3. Fix for OAuth callback parameters not being read in Edge Runtime
 
   - [x] 3.1 Switch to Node.js Runtime
     - Add `export const runtime = 'nodejs'` at the top of `app/api/auth/oauth/[provider]/callback/route.ts`
@@ -76,7 +76,7 @@
     - _Preservation: Logging is additive, doesn't change behavior_
     - _Requirements: 2.3_
 
-  - [ ] 3.5 Verify bug condition exploration test now passes
+  - [x] 3.5 Verify bug condition exploration test now passes
     - **Property 1: Expected Behavior** - OAuth Callback Parameters Extraction
     - **IMPORTANT**: Re-run the SAME test from task 1 - do NOT write a new test
     - The test from task 1 encodes the expected behavior
@@ -86,7 +86,7 @@
     - Verify that `code` and `state` are successfully extracted and passed to `authService.handleOAuthCallback()`
     - _Requirements: 2.1, 2.2, 2.3_
 
-  - [ ] 3.6 Verify preservation tests still pass
+  - [x] 3.6 Verify preservation tests still pass
     - **Property 2: Preservation** - Error Handling and Session Management
     - **IMPORTANT**: Re-run the SAME tests from task 2 - do NOT write new tests
     - Run preservation property tests from step 2

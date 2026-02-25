@@ -13,14 +13,6 @@ export const runtime = 'nodejs';
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
 
-// Generate static params for known providers
-export async function generateStaticParams() {
-  return [
-    { provider: 'google' },
-    { provider: 'facebook' },
-  ];
-}
-
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ provider: string }> }
