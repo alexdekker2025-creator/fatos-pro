@@ -9,6 +9,7 @@ import AuthButton from '@/components/AuthButton';
 import ArcanaCollection from '@/components/ArcanaCollection';
 import SecuritySettings from '@/components/auth/SecuritySettings';
 import PremiumServices from '@/components/PremiumServices';
+import AdBanner from '@/components/AdBanner';
 import { Card } from '@/components/ui';
 
 export default function ProfilePage() {
@@ -236,8 +237,11 @@ export default function ProfilePage() {
 
           {/* Arcana Tab */}
           {activeTab === 'arcana' && (
-            <div className="animate-fade-in space-y-6">
+            <div className="animate-fade-in space-y-3">
               <ArcanaCollection userId={user.id} />
+              
+              {/* Ad Banner */}
+              <AdBanner />
               
               <div className="p-4 bg-white/10 backdrop-blur-sm rounded-lg text-center">
                 <p className="text-purple-200 text-sm">
