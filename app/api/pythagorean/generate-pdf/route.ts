@@ -9,7 +9,8 @@ export const dynamic = 'force-dynamic';
 const renderPDF = async (props: any) => {
   const { renderToStream } = await import('@react-pdf/renderer');
   const { PythagoreanBasicPDFNew } = await import('@/lib/pdf/PythagoreanBasicPDFNew');
-  const doc = PythagoreanBasicPDFNew(props);
+  const React = await import('react');
+  const doc = React.createElement(PythagoreanBasicPDFNew, props);
   return await renderToStream(doc);
 };
 
