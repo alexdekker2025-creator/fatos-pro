@@ -529,7 +529,7 @@ export default function PremiumServices() {
                   onClick={() => handleBuyClick(service, 'basic')}
                   className={`w-full py-2 px-4 rounded-lg transition-all text-sm font-semibold bg-gradient-to-r ${service.color} hover:opacity-90 text-white`}
                 >
-                  {locale === 'ru' ? 'Купить' : 'Buy'}
+                  {locale === 'ru' ? 'Скоро доступно' : 'Coming Soon'}
                 </button>
               </div>
 
@@ -594,7 +594,7 @@ export default function PremiumServices() {
                     onClick={() => handleBuyClick(service, 'full')}
                     className="w-full py-2 px-4 rounded-lg transition-all text-sm font-semibold bg-gradient-to-r from-[#FFD700] to-amber-500 hover:from-amber-500 hover:to-[#FFD700] text-[#2D1B4E] shadow-[0_0_20px_rgba(255,215,0,0.3)]"
                   >
-                    {locale === 'ru' ? 'Купить' : 'Buy'}
+                    {locale === 'ru' ? 'Скоро доступно' : 'Coming Soon'}
                   </button>
                 </div>
               )}

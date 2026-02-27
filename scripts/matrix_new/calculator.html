@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>test</title>
+    <meta name="description" content="Ваш персональный расчет матрицы судьбы." />
+    <link rel="canonical" href="/calculator.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style-new.css">
+    <link rel="stylesheet" href="calculator.css">
+    <link rel="stylesheet" href="adapt.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <header itemscope="" itemtype="https://schema.org/SiteNavigationElement">
+        <div class="container">
+            <div class="menu-mob">
+                <div class="hamburger-menu">
+                    <input id="menu__toggle" type="checkbox" />
+                    <div class="bg-for-burger">
+                        <label class="menu__btn" for="menu__toggle">
+                            <span></span>
+                        </label>
+                    </div>
+                    <ul class="menu__box">
+                        <li><a class="menu__item" href="https://humanmatrix.ru/">Главная</a></li>
+                        <li><a class="menu__item" href="/age-forecast/">Прогноз 
+                            по годам</a></li>
+                    </ul>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <ul itemprop="about" itemscope="" itemtype="https://schema.org/ItemList">
+                    <li itemprop="name"><a itemprop="url" class="menu__item active-li" href="index.html">Главная</a></li>
+                    <li itemprop="name"><a itemprop="url" class="menu__item" href="/age-forecast.html">Прогноз по годам</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+    <section>
+        <div class="container-big">
+            <div class="title-calculate">
+                <h1>Ваш персональный расчет матрицы судьбы</h1>
+                <div class="your-characteristics">
+                    <p>Имя: <span id="name_text" class="name"></span></p>
+                    <p>Дата рождения: <span id="birthday" class="birthday"></span></p>
+                    <p>Возраст: <span id="age" class="age"></span></p>
+                </div>
+            </div>
+            <div class="table-matrix">
+                <div class="table">
+                    <div class="caption">Ваша карта здоровья</div>
+                    <div class="table-body">
+                        <div class="table-body-top">
+                            <div class="chakra">Чакра</div>
+                            <div class="td options-top">Физика</div>
+                            <div class="td options-top">Энергия</div>
+                            <div class="td options-top">Эмоции</div>
+                        </div>
+                        <div class="table-body-content-body">
+                            <div class="table-body-content">
+                                <div class="table-body-content-block">
+                                    <div class="name-tr name1">
+                                        <span>1</span>Муладхара
+                                        <div class="ellipse-i tooltip">
+                                            <div class="tooltiptext tooltiptext2">
+                                                Отвечает за - Мочеполовая система, нижние конечности, толстый кишечник, копчик, крестец, ноги
+                                            </div>
+                                            <img src="img/i.svg" alt="Муладхара" class="el-i-img">
+                                        </div>
+                                    </div>
+                                    <div class="table-body-content-block-right">
+                                        <div class="td options" id="C">C</div>
+                                        <div class="td options" id="D">D</div>
+                                        <div class="td options" id="K1">K1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-body-content">
+                                <div class="table-body-content-block">
+                                    <div class="name-tr name2">
+                                        <span>2</span>Свадхистана
+                                        <div class="ellipse-i tooltip">
+                                            <div class="tooltiptext">
+                                                Отвечает за - Надпочечники, матка и яичники, почки, кишечник, предстательная железа у мужчин, поясничный район позвоночного столба.
+                                            </div>
+                                            <img src="/img/i.svg" alt="Свадхистана" class="el-i-img">
+                                        </div>
+                                    </div>
+                                    <div class="table-body-content-block-right">
+                                        <div class="td options" id="C1">C</div>
+                                        <div class="td options" id="D1">D</div>
+                                        <div class="td options" id="K2">K1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-body-content">
+                                <div class="table-body-content-block">
+                                    <div class="name-tr name3">
+                                        <span>3</span>Манипура
+                                        <div class="ellipse-i tooltip">
+                                            <div class="tooltiptext tooltiptext2">
+                                                Отвечает за - ЖКТ, органы брюшной полости, поджелудочная железа, селезёнка, печень, желчный пузырь, тонкий кишечник, центральная часть позвоночника.
+                                            </div>
+                                            <img src="/img/i.svg" alt="Манипура" class="el-i-img">
+                                        </div>
+                                    </div>
+                                    <div class="table-body-content-block-right">
+                                        <div class="td options" id="X_2">C</div>
+                                        <div class="td options" id="X">D</div>
+                                        <div class="td options" id="K3">K1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-body-content">
+                                <div class="table-body-content-block">
+                                    <div class="name-tr name4">
+                                        <span>4</span>Анахата
+                                        <div class="ellipse-i tooltip">
+                                            <div class="tooltiptext tooltiptext2">
+                                                Отвечает за - Сердце, кровеносная система, органы дыхания, легкие, бронхи, грудной отдел позвоночника, рёбра, лопаточная зона спины, грудь.
+                                            </div>
+                                            <img src="/img/i.svg" alt="Анахата" class="el-i-img">
+                                        </div>
+                                    </div>
+                                    <div class="table-body-content-block-right">
+                                        <div class="td options" id="A3">C</div>
+                                        <div class="td options" id="B3">D</div>
+                                        <div class="td options" id="K4">K1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-body-content">
+                                <div class="table-body-content-block">
+                                    <div class="name-tr name5">
+                                        <span>5</span>Вишудха
+                                        <div class="ellipse-i tooltip">
+                                            <div class="tooltiptext tooltiptext2">
+                                                Отвечает за - Щитовидная железа, трахея, бронхи, горло, голосовые связки, плечи, руки, седьмой шейный позвонок, все шейные позвонки, нижняя челюсть, зубы нижней челюсти.
+                                            </div>
+                                            <img src="/img/i.svg" alt="Вишудха" class="el-i-img">
+                                        </div>
+                                    </div>
+                                    <div class="table-body-content-block-right">
+                                        <div class="td options" id="A2">C</div>
+                                        <div class="td options" id="B2">D</div>
+                                        <div class="td options" id="K5">K1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-body-content">
+                                <div class="table-body-content-block">
+                                    <div class="name-tr name6">
+                                        <span>6</span>Аджна
+                                        <div class="ellipse-i tooltip">
+                                            <div class="tooltiptext tooltiptext2">
+                                                Отвечает за - Затылочные и височные доли мозга, глаз, уши, нос, лицо, верхняя челюсть, зубы верхней челюсти, зрительный нерв, кора головного мозга.
+                                            </div>
+                                            <img src="/img/i.svg" alt="Аджна" class="el-i-img">
+                                        </div>
+                                    </div>
+                                    <div class="table-body-content-block-right">
+                                        <div class="td options" id="A1">C</div>
+                                        <div class="td options" id="B1">D</div>
+                                        <div class="td options" id="K6">K1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-body-content">
+                                <div class="table-body-content-block">
+                                    <div class="name-tr name7">
+                                        <span>7</span>Сахасрара
+                                        <div class="ellipse-i tooltip">
+                                            <div class="tooltiptext tooltiptext2">
+                                                Отвечает за - Головной мозг, волосы, верхняя часть черепа.
+                                            </div>
+                                            <img src="/img/i.svg" alt="Сахасрара" class="el-i-img">
+                                        </div>
+                                    </div>
+                                    <div class="table-body-content-block-right">
+                                        <div class="td options" id="A">C</div>
+                                        <div class="td options" id="B">D</div>
+                                        <div class="td options" id="E">E</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-body-content">
+                                <div class="table-body-content-block">
+                                    <div class="name-tr name8">
+                                        Результат:
+                                    </div>
+                                    <div class="table-body-content-block-right">
+                                        <div class="td options" id="T2">C</div>
+                                        <div class="td options" id="T1">D</div>
+                                        <div class="td options" id="T3">E</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table style="display: none">
+                    <caption class="caption">Ваша карта здоровья</caption>
+                    <tr>
+                        <th>Чакра</th>
+                        <th class="options">Физика</th>
+                        <th class="options">Энергия</th>
+                        <th class="options">Эмоции</th>
+                    </tr>
+                    <tr class="rectangle-tr">
+                        <td>
+                            <div class="name-tr name1">
+                                <span>1</span>Муладхара
+                                <div class="ellipse-i tooltip">
+                                    <div class="tooltiptext tooltiptext2">
+                                        Отвечает за - Мочеполовая система, нижние конечности, толстый кишечник, копчик, крестец, ноги
+                                    </div>
+                                    <img src="/img/i.svg" alt="Муладхара" class="el-i-img">
+                                </div>
+                            </div>
+                        </td>
+                        <td id="C">C</td>
+                        <td id="D">D</td>
+                        <td id="K1">K1</td>
+                    </tr>
+                    <tr class="rectangle-tr">
+                        <td>
+                            <div class="name-tr name2">
+                                <span>2</span>Свадхистана
+                                <div class="ellipse-i tooltip">
+                                    <div class="tooltiptext">
+                                        Отвечает за - Надпочечники, матка и яичники, почки, кишечник, предстательная железа у мужчин, поясничный район позвоночного столба.
+                                    </div>
+                                    <img src="/img/i.svg" alt="Свадхистана" class="el-i-img">
+                                </div>
+                            </div>
+                        </td>
+                        <td id="C1">C1</td>
+                        <td id="D1">D1</td>
+                        <td id="K2">K2</td>
+                    </tr>
+                    <tr class="rectangle-tr">
+                        <td>
+                            <div class="name-tr name3">
+                                <span>3</span>Манипура
+                                <div class="ellipse-i tooltip">
+                                    <div class="tooltiptext tooltiptext2">
+                                        Отвечает за - ЖКТ, органы брюшной полости, поджелудочная железа, селезёнка, печень, желчный пузырь, тонкий кишечник, центральная часть позвоночника.
+                                    </div>
+                                    <img src="/img/i.svg" alt="Манипура" class="el-i-img">
+                                </div>
+                            </div>
+                        </td>
+                        <td id="X_2">X_2</td>
+                        <td id="X">X</td>
+                        <td id="K3">K3</td>
+                    </tr>
+                    <tr class="rectangle-tr">
+                        <td>
+                            <div class="name-tr name4">
+                                <span>4</span>Анахата
+                                <div class="ellipse-i tooltip">
+                                    <div class="tooltiptext tooltiptext2">
+                                        Отвечает за - Сердце, кровеносная система, органы дыхания, легкие, бронхи, грудной отдел позвоночника, рёбра, лопаточная зона спины, грудь.
+                                    </div>
+                                    <img src="/img/i.svg" alt="Анахата" class="el-i-img">
+                                </div>
+                            </div>
+                        </td>
+                        <td id="A3">A3</td>
+                        <td id="B3">B3</td>
+                        <td id="K4">K4</td>
+                    </tr>
+                    <tr class="rectangle-tr">
+                        <td>
+                            <div class="name-tr name5">
+                                <span>5</span>Вишудха
+                                <div class="ellipse-i tooltip">
+                                    <div class="tooltiptext tooltiptext2">
+                                        Отвечает за - Щитовидная железа, трахея, бронхи, горло, голосовые связки, плечи, руки, седьмой шейный позвонок, все шейные позвонки, нижняя челюсть, зубы нижней челюсти.
+                                    </div>
+                                    <img src="/img/i.svg" alt="Вишудха" class="el-i-img">
+                                </div>
+                            </div>
+                        </td>
+                        <td id="A2">A2</td>
+                        <td id="B2">B2</td>
+                        <td id="K5">K5</td>
+                    </tr>
+                    <tr class="rectangle-tr">
+                        <td>
+                            <div class="name-tr name6">
+                                <span>6</span>Аджна
+                                <div class="ellipse-i tooltip">
+                                    <div class="tooltiptext tooltiptext2">
+                                        Отвечает за - Затылочные и височные доли мозга, глаз, уши, нос, лицо, верхняя челюсть, зубы верхней челюсти, зрительный нерв, кора головного мозга.
+                                    </div>
+                                    <img src="/img/i.svg" alt="Аджна" class="el-i-img">
+                                </div>
+                            </div>
+                        </td>
+                        <td id="A1">A1</td>
+                        <td id="B1">B1</td>
+                        <td id="K6">K6</td>
+                    </tr>
+                    <tr class="rectangle-tr">
+                        <td>
+                            <div class="name-tr name7">
+                                <span>7</span>Сахасрара
+                                <div class="ellipse-i tooltip">
+                                    <div class="tooltiptext tooltiptext2">
+                                        Отвечает за - Головной мозг, волосы, верхняя часть черепа.
+                                    </div>
+                                    <img src="/img/i.svg" alt="Сахасрара" class="el-i-img">
+                                </div>
+                            </div>
+                        </td>
+                        <td id="A" class="options">A</td>
+                        <td id="B" class="options">B</td>
+                        <td id="E" class="options">E</td>
+                    </tr>
+                    <tr class="rectangle-tr">
+                        <td>
+                            <div class="name-tr name8">
+                                Результат:
+                            </div>
+                        </td>
+                        <td id="T2">T2</td>
+                        <td id="T1">T1</td>
+                        <td id="T3">T3</td>
+                    </tr>
+                </table>
+                <div class="matrix-parent">
+                    <img class="matrix" src="/img/matrix.png" alt="matrix">
+                    <div id="B_diagram" class="numbers number1">B</div>
+                    <div id="B1_diagram" class="numbers number12">B1</div>
+                    <div id="B2_diagram" class="numbers number13">B2</div>
+                    <div id="B3_diagram" class="numbers number14">B3</div>
+                    <div id="E_diagram" class="numbers number2">E</div>
+                    <div id="E1_diagram" class="numbers number22">E1</div>
+                    <div id="E2_diagram" class="numbers number23">E2</div>
+                    <div id="F_diagram" class="numbers number3">F</div>
+                    <div id="F1_diagram" class="numbers number32">F1</div>
+                    <div id="F2_diagram" class="numbers number33">F2</div>
+                    <div id="A_diagram" class="numbers number4">A</div>
+                    <div id="A1_diagram" class="numbers number42">A1</div>
+                    <div id="A2_diagram" class="numbers number43">A2</div>
+                    <div id="A3_diagram" class="numbers number44">A3</div>
+                    <div id="C_diagram" class="numbers number5">C</div>
+                    <div id="C1_diagram" class="numbers number52">C1</div>
+                    <div id="C2_diagram" class="numbers number53">C2</div>
+                    <div id="Y_diagram" class="numbers number54">Y</div>
+                    <div id="H_diagram" class="numbers number6">H</div>
+                    <div id="H1_diagram" class="numbers number62">H1</div>
+                    <div id="H2_diagram" class="numbers number63">H2</div>
+                    <div id="G_diagram" class="numbers number7">G</div>
+                    <div id="G1_diagram" class="numbers number72">G1</div>
+                    <div id="G2_diagram" class="numbers number73">G2</div>
+                    <div id="G4_diagram" class="numbers number74">G4</div>
+                    <div id="L_diagram" class="numbers number75">L</div>
+                    <div id="M_diagram" class="numbers number76">M</div>
+                    <div id="D_diagram" class="numbers number8">D</div>
+                    <div id="D1_diagram" class="numbers number82">D1</div>
+                    <div id="D2_diagram" class="numbers number83">D2</div>
+                    <div id="X_diagram" class="numbers number-center">X</div>
+                </div>
+            </div>
+            <div class="ellipses">
+                <div class="ellipse-block">
+                    <h3>Личное предназначение
+                        (20-40 лет)</h3>
+                    <div class="ellipses-img">
+                        <div class="choose">
+                            <h4>Небо</h4>
+                            <h4>Земля</h4>
+                        </div>
+                        <img src="/img/elipses.svg" alt="Личное предназначение (20-40 лет)" class="ellipses-image">
+                        <div id="LN" class="number-ellipse number-ellipse1">ЛН</div>
+                        <div id="LZ" class="number-ellipse number-ellipse2">ЛЗ</div>
+                        <div id="LP1" class="number-ellipse number-ellipse3">ЛП1</div>
+                    </div>
+                </div>
+                <div class="ellipse-block">
+                    <h3>Социальное предназначение
+                        (40-60 лет)</h3>
+                    <div class="ellipses-img">
+                        <div class="choose">
+                            <h4>Муж</h4>
+                            <h4>Жен</h4>
+                        </div>
+                        <img src="/img/elipses.svg" alt="Социальное предназначение (40-60 лет)" class="ellipses-image">
+                        <div id="LO" class="number-ellipse number-ellipse1">LO</div>
+                        <div id="LM" class="number-ellipse number-ellipse2">LM</div>
+                        <div id="Y" class="number-ellipse number-ellipse3">Y</div>
+                    </div>
+                </div>
+                <div class="ellipse-block">
+                    <h3>Духовное предназначение
+                        (после 60 лет)</h3>
+                    <div class="ellipses-img">
+                        <div class="choose">
+                            <h4>Лич</h4>
+                            <h4>Соц</h4>
+                        </div>
+                        <img src="/img/elipses.svg" alt="Духовное предназначение (после 60 лет)" class="ellipses-image">
+                        <div id="LP1_2" class="number-ellipse number-ellipse1">LP1</div>
+                        <div id="Y_2" class="number-ellipse number-ellipse2">Y</div>
+                        <div id="LP3" class="number-ellipse number-ellipse3">LP3</div>
+                    </div>
+                </div>
+                <div class="ellipse-block">
+                    <h3>Родовые программы</h3>
+                    <div class="ellipses-img man-woman-mob">
+                        <div class="last-ellipse-block">
+                            <div class="man-woman">
+                                <div class="together">
+                                    <h4>Муж</h4>
+                                    <div id="E_man" class="el">E</div>
+                                    <div id="G_man" class="el">G</div>
+                                    <div id="X_man" class="el">X</div>
+                                </div>
+                                <div class="together">
+                                    <h4>Жен</h4>
+                                    <div id="F_woman" class="el">F</div>
+                                    <div id="H_woman" class="el">H</div>
+                                    <div id="X_woman" class="el">X</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container-big">
+            <div class="delivery_blocks">
+                <div class="delivery_block">
+                    <div id="accordion" class="accordion">
+                        <h2>Личностные качества</h2>
+                        <div class="icon-with-text">
+                            <h3>Блок открыт</h3>
+                            <img src="/img/question-answer-item.svg" alt="active" id="down" class="down">
+                        </div>
+                    </div>
+                    <div id="personal_panel" class="panel">
+                    </div>
+                </div>
+                <div class="delivery_block">
+                        <div class="accordion">
+                            <h2>Таланты</h2>
+                            <div class="icon-with-text">
+                                <h3>Блок открыт</h3>
+                                <img src="/img/question-answer-item.svg" alt="active" class="down">
+                            </div>
+                        </div>
+                    
+                    <div id="talents_panel" class="panel">
+                    </div>
+                </div>
+                <div class="delivery_block">
+                    <div class="accordion">
+                        <h2>Прошлая жизнь</h2>
+                        <div class="icon-with-text">
+                            <h3>Блок открыт</h3>
+                            <img src="/img/question-answer-item.svg" alt="active" class="down">
+                        </div>
+                    </div>
+                    <div id="past_lives_panel" class="panel">
+                    </div>
+                </div>
+                <div class="delivery_block">
+                        <div class="accordion">
+                            <h2>Здоровье</h2>
+                            <div class="icon-with-text">
+                                <h3>Блок открыт</h3>
+                                <img src="/img/question-answer-item.svg" alt="active" class="down">
+                            </div>
+                        </div>
+                    <div id="health_panel" class="panel">
+                    </div>
+                </div>
+                <div class="delivery_block">
+                        <div class="accordion">
+                            <h2>Предназначение</h2>
+                            <div class="icon-with-text">
+                                <h3>Блок открыт</h3>
+                                <img src="/img/question-answer-item.svg" alt="active" class="down">
+                            </div>
+                        </div>
+                    
+                    <div id="purpose_panel" class="panel">
+                    </div>
+                </div>
+                <div class="delivery_block">
+                        <div class="accordion">
+                            <h2>Испытания</h2>
+                            <div class="icon-with-text">
+                                <h3>Блок открыт</h3>
+                                <img src="/img/question-answer-item.svg" alt="active" class="down">
+                            </div>
+                        </div>
+                
+                    <div id="tests_panel" class="panel">
+                    </div>
+                </div>
+                <div class="delivery_block">
+                        <div class="accordion">
+                            <h2>Отношения и любовь</h2>
+                            <div class="icon-with-text">
+                                <h3>Блок открыт</h3>
+                                <img src="/img/question-answer-item.svg" alt="active" class="down">
+                            </div>
+                        </div>
+                    
+
+                    <div id="love_panel" class="panel">
+                    </div>
+                </div>
+                <div class="delivery_block">
+                    <div class="accordion">
+                        <h2>Прогноз по годам</h2>
+                        <div class="icon-with-text">
+                            <h3>Блок открыт</h3>
+                            <img src="/img/question-answer-item.svg" alt="active" class="down">
+                        </div>
+                    </div>
+                    <div id="years_panel" class="panel">
+                        <div class="swiper years-swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide carousel-slide">
+                                    1-2
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    2-3
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    3-4
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    4-5
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    5-6
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    6-7
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    7-8
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    8-9
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    9-10
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    10-11
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    11-12
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    12-13
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    13-14
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    14-15
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    15-16
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    16-17
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    17-18
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    18-19
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    19-20
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    20-21
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    21-22
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    22-23
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    23-24
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    24-25
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    25-26
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    26-27
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    27-28
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    28-29
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    29-30
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    30-31
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    31-32
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    32-33
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    33-34
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    34-35
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    35-36
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    36-37
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    37-38
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    38-39
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    40-41
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    41-42
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    42-43
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    43-44
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    44-45
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    45-46
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    46-47
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    47-48
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    48-49
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    49-50
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    50-51
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    51-52
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    52-53
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    53-54
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    54-55
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    55-56
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    56-57
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    57-58
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    58-59
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    59-60
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    60-61
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    61-62
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    62-63
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    63-64
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    64-65
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    65-66
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    66-67
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    67-68
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    68-69
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    69-70
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    70-71
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    71-72
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    72-73
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    73-74
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    74-75
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    75-76
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    76-77
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    77-78
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    78-79
+                                </div>
+                                <div class="swiper-slide carousel-slide">
+                                    79-80
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="delivery_block">
+                        <div class="accordion">
+                            <h2>Деньги</h2>
+                            <div class="icon-with-text">
+                                <h3>Блок открыт</h3>
+                                <img src="/img/question-answer-item.svg" alt="active" class="down">
+                            </div>
+                        </div>
+                    
+
+                    <div id="money_panel" class="panel">
+                    </div>
+                </div>
+                <div class="delivery_block">
+                        <div class="accordion">
+                            <h2>Родители</h2>
+                            <div class="icon-with-text">
+                                <h3>Блок открыт</h3>
+                                <img src="/img/question-answer-item.svg" alt="active" class="down">
+                            </div>
+                        </div>
+                    
+
+                    <div id="parents_panel" class="panel">
+                    </div>
+                </div>
+                <div class="delivery_block">
+                        <div class="accordion">
+                            <h2>Дети</h2>
+                            <div class="icon-with-text">
+                                <h3>Блок открыт</h3>
+                                <img src="/img/question-answer-item.svg" alt="active" class="down">
+                            </div>
+                        </div>
+                    
+
+                    <div id="children_panel" class="panel">
+                    </div>
+                </div>
+                <div class="delivery_block">
+                        <div class="accordion">
+                            <h2>Руководство</h2>
+                            <div class="icon-with-text">
+                                <h3>Блок открыт</h3>
+                                <img src="/img/question-answer-item.svg" alt="active" class="down">
+                            </div>
+                        </div>
+                    
+
+                    <div id="management_panel" class="panel">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+    <footer>
+        
+    </footer>
+	<div class="copy-right" itemscope itemtype="https://schema.org/WPFooter">
+	<meta itemprop="copyrightYear" content="">
+    <meta itemprop="copyrightHolder" content="">
+		
+
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="/scripts/jquery_3.6.js"></script>
+    <script src="/script.js"></script>
+    <script src="/scripts/calculate.js"></script>
+    <script>
+        const ageForSwiper = document.querySelector('#age');
+
+        const carousel = new Swiper('.swiper', {
+            slidesPerView: 5,
+            initialSlide: parseInt(ageForSwiper.textContent) - 1,
+            centeredSlides: true,
+            direction: 'horizontal',
+            slideToClickedSlide: true,
+        })
+    </script>
+
+</body>
+
+</html>

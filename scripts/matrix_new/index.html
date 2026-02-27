@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Калькулятор матрицы</title>
+    <link rel="stylesheet" href="style-new.css">
+    <link rel="stylesheet" href="adapt.css">
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="menu-mob">
+            <div class="hamburger-menu">
+                <input id="menu__toggle" type="checkbox"/>
+                <div class="bg-for-burger">
+                    <label class="menu__btn" for="menu__toggle">
+                        <span></span>
+                    </label>
+                </div>
+                <ul class="menu__box">
+                    <li><a class="menu__item" href="/index.html">Главная</a></li>
+                    <li><a class="menu__item" href="/age-forecast.html">Прогноз по годам</a></li>
+                </ul>
+            </div>
+        </div>
+        <nav class="header-nav">
+            <ul>
+                <li><a class="active-li" href="/index.html">Главная</a></li>
+                <li><a href="/age-forecast.html">Прогноз по годам</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+
+<section id="main">
+    <div class="container">
+        <div class="first-screen-content">
+            <div class="inputs">
+                <input id="name" type="text" placeholder="Введите ваше имя*" class="inputs-header">
+                <input id="date" type="text" placeholder="Введите дату рождения*" class="inputs-header inputs-header-date">
+                <div class="inputs-gender">
+                    <span id="woman" class="inputs-gender-woman active-gender">Ж</span>
+                    <span id="man" class="inputs-gender-man">М</span>
+                </div>
+            </div>
+            <a href="calculator.html" id="calculate_button" style="cursor: pointer" class="btn-count">Рассчитать мою матрицу </a>
+        </div>
+    </div>
+</section>
+<link rel="stylesheet" href="https://snipp.ru/cdn/bootstrap/3.4.1/bootstrap.min.css">
+
+<script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://snipp.ru/cdn/maskedinput/jquery.maskedinput.min.js"></script>
+<script>$('.inputs-header-date').mask('99.99.9999');</script>
+
+
+
+
+
+<footer>
+    
+</footer>
+
+
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    
+</script>
+<script src="script.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>$('.mask-date').mask('99.99.9999');</script>
+<script>
+    const calculateButton = document.querySelector('#calculate_button');
+    const nameInput = document.querySelector('#name');
+    const dateInput = document.querySelector('#date');
+
+    const womanGenderButton = document.querySelector('#woman');
+    const manGenderButton = document.querySelector('#man');
+
+    calculateButton.addEventListener('click', (event) => {
+        if (nameInput.value.length === 0) {
+            nameInput.value = 'Аноним'
+        }
+
+        if (dateInput.value.length === 0) {
+            alert('Заполните поле Даты!');
+            event.preventDefault();
+        } else if (dateInput.value.split('-').reverse().join('.').split('.').length !== 3) {
+            alert('Заполните дату в формате "дд.мм.гггг"');
+            event.preventDefault();
+        }
+
+        const gender = document.querySelector('.active-gender').innerHTML;
+
+        if (dateInput.value.split('-').reverse().join('.').split('.').length === 3) {
+            localStorage['name'] = nameInput.value;
+            localStorage['date'] = dateInput.value.split('-').reverse().join('.').toString();
+            localStorage['gender'] = gender;
+        }
+    })
+
+    womanGenderButton.addEventListener('click', () => {
+        womanGenderButton.style.opacity = '0';
+        manGenderButton.style.opacity = '1';
+        womanGenderButton.classList.remove('active-gender');
+        manGenderButton.classList.add('active-gender');
+    })
+
+    manGenderButton.addEventListener('click', () => {
+        manGenderButton.style.opacity = '0';
+        womanGenderButton.style.opacity = '1';
+        manGenderButton.classList.remove('active-gender');
+        womanGenderButton.classList.add('active-gender');
+
+    })
+
+</script>
+</body>
+</html>

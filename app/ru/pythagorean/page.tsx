@@ -22,6 +22,7 @@ export default function PythagoreanPage() {
   const [year, setYear] = useState('');
   const [dateError, setDateError] = useState('');
   const [square, setSquare] = useState<number[] | null>(null);
+  const [downloadingPDF, setDownloadingPDF] = useState(false);
 
   // Проверяем покупки
   const hasBasic = user && hasPurchased('pythagorean_basic');
@@ -55,6 +56,52 @@ export default function PythagoreanPage() {
   const handleBuyClick = (tier: 'basic' | 'full') => {
     setSelectedTier(tier);
     setIsPaymentModalOpen(true);
+  };
+
+  const handleDownloadPDF = async (tier: 'basic' | 'full') => {
+    if (!square || !day || !month || !year) {
+      alert('Сначала выполните расчет');
+      return;
+    }
+
+    setDownloadingPDF(true);
+    try {
+      const response = await fetch('/api/pythagorean/generate-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Важно! Отправляет cookies с запросом
+        body: JSON.stringify({
+          birthDate: {
+            day: parseInt(day),
+            month: parseInt(month),
+            year: parseInt(year),
+          },
+          tier,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Ошибка при генерации PDF');
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `pythagorean-${day}-${month}-${year}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      alert(error instanceof Error ? error.message : 'Не удалось скачать PDF');
+    } finally {
+      setDownloadingPDF(false);
+    }
   };
 
   const getPaymentService = () => {
@@ -332,7 +379,7 @@ export default function PythagoreanPage() {
                   : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl hover:scale-105'
               }`}
             >
-              {hasBasic || hasFull ? 'Куплено' : 'Купить'}
+              {hasBasic || hasFull ? 'Куплено' : 'Скоро доступно'}
             </button>
           </div>
 
@@ -371,7 +418,7 @@ export default function PythagoreanPage() {
                   : 'bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-purple-950 shadow-lg hover:shadow-xl hover:scale-105'
               }`}
             >
-              {hasFull ? 'Куплено' : 'Купить'}
+              {hasFull ? 'Куплено' : 'Скоро доступно'}
             </button>
           </div>
         </div>

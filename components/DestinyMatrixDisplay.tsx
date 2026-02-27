@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Article } from '@/lib/hooks/useArticles';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { usePurchases } from '@/lib/hooks/usePurchases';
@@ -155,11 +156,12 @@ export default function DestinyMatrixDisplay({ matrix, articles }: DestinyMatrix
 
       {/* Кнопка перехода на полную страницу */}
       <div className="flex justify-center mt-6">
-        <button
-          className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+        <Link
+          href="/ru/matrix"
+          className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 inline-block text-center"
         >
           Подробнее о матрице судьбы →
-        </button>
+        </Link>
       </div>
     </div>
   );
