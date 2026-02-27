@@ -1,6 +1,9 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only if API key is available
+const resend = process.env.RESEND_API_KEY 
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
 interface ContactEmailData {
   name: string;
@@ -11,6 +14,10 @@ interface ContactEmailData {
 }
 
 export async function sendContactEmail(data: ContactEmailData): Promise<void> {
+  if (!resend) {
+    throw new Error('Email service is not configured. Please set RESEND_API_KEY environment variable.');
+  }
+  
   const { name, email, subject, message, locale } = data;
   
   const emailSubject = locale === 'ru' 
