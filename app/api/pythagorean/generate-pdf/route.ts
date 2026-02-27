@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
           serviceId: serviceId,
         },
         orderBy: {
-          purchaseDate: 'desc',
+          createdAt: 'desc',
         },
       });
     }
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
     // }
     
     // Use current date if no purchase found (for testing)
-    const purchaseDate = purchase?.purchaseDate || new Date();
+    const purchaseDate = purchase?.createdAt || new Date();
 
     // 4. Calculate Pythagorean Square
     const calculator = new PythagoreanCalculator();
