@@ -24,6 +24,8 @@
     "@prisma/client": "^5.22.0",
     "@react-pdf/renderer": "^4.3.2",
     "@sentry/nextjs": "^10.39.0",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.36.3",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.5.1",
     "lru-cache": "^11.2.6",
@@ -35,10 +37,10 @@
     "react": "^18.3.0",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^18.3.0",
-    "resend": "^3.2.0",
+    "resend": "^3.5.0",
     "use-debounce": "^10.1.0",
     "xlsx": "^0.18.5",
-    "zod": "^3.23.0"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.0",

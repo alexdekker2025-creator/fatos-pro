@@ -15,13 +15,13 @@ export default function Footer({ locale }: FooterProps) {
   const t = useTranslations('footer');
 
   return (
-    <footer className="bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900 text-white py-8 mt-auto">
+    <footer className="relative z-10 bg-gray-950 text-white py-8 mt-auto border-t-4 border-purple-600 shadow-2xl">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* О проекте */}
           <div>
             <h3 className="text-xl font-bold mb-4">FATOS.pro</h3>
-            <p className="text-purple-200 text-sm">
+            <p className="text-gray-300 text-sm">
               {t('description')}
             </p>
           </div>
@@ -33,7 +33,7 @@ export default function Footer({ locale }: FooterProps) {
               <li>
                 <Link 
                   href={`/${locale}/about`}
-                  className="text-purple-200 hover:text-white transition-colors text-sm"
+                  className="text-gray-300 hover:text-white transition-colors text-sm"
                 >
                   {t('about')}
                 </Link>
@@ -41,7 +41,7 @@ export default function Footer({ locale }: FooterProps) {
               <li>
                 <Link 
                   href={`/${locale}/faq`}
-                  className="text-purple-200 hover:text-white transition-colors text-sm"
+                  className="text-gray-300 hover:text-white transition-colors text-sm"
                 >
                   {t('faq')}
                 </Link>
@@ -49,24 +49,32 @@ export default function Footer({ locale }: FooterProps) {
             </ul>
           </div>
 
-          {/* Юридическая информация */}
+          {/* Юридическая информация и поддержка */}
           <div>
             <h3 className="text-xl font-bold mb-4">{t('legal')}</h3>
             <ul className="space-y-2">
               <li>
                 <Link 
-                  href={`/${locale}/privacy`}
-                  className="text-purple-200 hover:text-white transition-colors text-sm"
+                  href={`/${locale}/privacy-policy`}
+                  className="text-gray-300 hover:text-white transition-colors text-sm"
                 >
                   {t('privacy')}
                 </Link>
               </li>
               <li>
                 <Link 
-                  href={`/${locale}/terms`}
-                  className="text-purple-200 hover:text-white transition-colors text-sm"
+                  href={`/${locale}/terms-of-service`}
+                  className="text-gray-300 hover:text-white transition-colors text-sm"
                 >
                   {t('terms')}
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href={`/${locale}/contact`}
+                  className="text-gray-300 hover:text-white transition-colors text-sm"
+                >
+                  {t('contact')}
                 </Link>
               </li>
             </ul>
@@ -74,8 +82,8 @@ export default function Footer({ locale }: FooterProps) {
         </div>
 
         {/* Copyright */}
-        <div className="mt-8 pt-8 border-t border-purple-700 text-center">
-          <p className="text-purple-300 text-sm">
+        <div className="mt-8 pt-8 border-t border-gray-700 text-center">
+          <p className="text-gray-400 text-sm">
             © {new Date().getFullYear()} FATOS.pro. {t('copyright')}
           </p>
         </div>

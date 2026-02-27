@@ -302,3 +302,32 @@ model DailyStats {
   
   @@index([date])
 }
+
+model ContactSubmission {
+  id              String              @id @default(cuid())
+  name            String
+  email           String
+  subject         String
+  message         String              @db.Text
+  locale          String              @db.VarChar(2)
+  status          ContactStatus       @default(PENDING)
+  emailSent       Boolean             @default(false)
+  emailSentAt     DateTime?
+  emailError      String?             @db.Text
+  ipAddress       String?
+  userAgent       String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@index([emailSent])
+}
+
+enum ContactStatus {
+  PENDING
+  PROCESSED
+  SPAM
+  RESOLVED
+}
