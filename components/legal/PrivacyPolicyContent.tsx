@@ -265,14 +265,14 @@ export default function PrivacyPolicyContent({ locale }: PrivacyPolicyContentPro
           This Privacy Policy applies to all information posted on the website at www.fatos.pro (hereinafter - the Site), which the site owner (hereinafter - the Operator) may receive about the User (visitors and other users of the Site) during the use of the Site, their services, programs and products.
         </p>
         <p className="text-gray-700 leading-relaxed">
-          Use of the Site, their services, programs and products means the User's unconditional consent to this Policy and the conditions specified in it for processing their personal information.
+          Use of the Site, their services, programs and products means the User&apos;s unconditional consent to this Policy and the conditions specified in it for processing their personal information.
         </p>
       </div>
 
       <section className="mb-8">
         <h2 className="text-2xl font-semibold text-purple-600 mt-8 mb-4">1. GENERAL PROVISIONS</h2>
         <p className="text-gray-700 leading-relaxed">
-          The Site collects and stores only the personal information necessary to provide the Site's services, programs and products, except in cases where the law provides for mandatory storage of personal information for a period determined by law.
+          The Site collects and stores only the personal information necessary to provide the Site&apos;s services, programs and products, except in cases where the law provides for mandatory storage of personal information for a period determined by law.
         </p>
       </section>
 

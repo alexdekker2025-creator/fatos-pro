@@ -360,7 +360,7 @@ export default function TermsOfServiceContent({ locale }: TermsOfServiceContentP
       <section className="mb-8">
         <h2 className="text-2xl font-semibold text-purple-600 mt-8 mb-4">4. LIMITATION OF LIABILITY</h2>
         <p className="text-gray-700 leading-relaxed">
-          The service is provided "as is". The Administration is not responsible for decisions made based on numerological calculations.
+          The service is provided &quot;as is&quot;. The Administration is not responsible for decisions made based on numerological calculations.
         </p>
       </section>
 
