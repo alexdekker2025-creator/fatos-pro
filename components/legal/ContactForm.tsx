@@ -51,9 +51,9 @@ export default function ContactForm({ locale }: ContactFormProps) {
     if (!result.success) {
       const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {};
       result.error.errors.forEach((error) => {
-        const field = error.path[0] as keyof ContactFormData;
-        if (field && field !== 'locale') {
-          fieldErrors[field] = error.message;
+        const field = error.path[0] as string;
+        if (field && field !== 'locale' && field in formData) {
+          fieldErrors[field as keyof ContactFormData] = error.message;
         }
       });
       setErrors(fieldErrors);
