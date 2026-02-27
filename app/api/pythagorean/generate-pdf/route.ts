@@ -11,7 +11,7 @@ const renderPDF = async (props: any) => {
   const { PythagoreanBasicPDFNew } = await import('@/lib/pdf/PythagoreanBasicPDFNew');
   const React = await import('react');
   const doc = React.createElement(PythagoreanBasicPDFNew, props);
-  return await ReactPDF.renderToStream(doc);
+  return await ReactPDF.renderToStream(doc as any);
 };
 
 export async function POST(req: NextRequest) {
