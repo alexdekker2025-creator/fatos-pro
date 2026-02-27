@@ -472,58 +472,36 @@ export default function PremiumServices() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {services && services.length > 0 ? services.map((service, index) => (
+          {services && services.length > 0 ? services.filter(s => s.id !== 'pro_access').map((service, index) => (
           <div
             key={service.id}
-            className="glass-strong rounded-xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-fade-in-up border border-purple-400/30 flex flex-col"
+            className="glass-strong rounded-xl p-4 sm:p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-fade-in-up border border-purple-400/30 flex flex-col"
             style={{ animationDelay: `${index * 100}ms` }}
           >
             {/* Icon */}
-            <div className="text-5xl mb-4 text-center animate-float">
+            <div className="text-4xl mb-3 text-center animate-float">
               {service.icon}
             </div>
 
             {/* Service Title */}
-            <h3 className="text-2xl sm:text-3xl font-bold text-[#FFD700] mb-6 text-center">
+            <h3 className="text-xl sm:text-2xl font-bold text-[#FFD700] mb-4 text-center">
               {locale === 'ru' ? service.titleRu : service.titleEn}
             </h3>
 
             {/* Pricing Tiers */}
             <div className="space-y-4 mb-6 flex-grow">
               {/* Basic Tier */}
-              <div className="glass rounded-lg p-4 border border-purple-400/20">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="font-semibold text-white flex items-center gap-1">
+              <div className="glass rounded-lg p-3 border border-purple-400/20">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-semibold text-white text-sm">
                     🌿 {locale === 'ru' ? 'СТАРТ' : 'START'}
                   </span>
                   <div className="text-right">
-                    <div className="text-xl font-bold text-[#FFD700]">
+                    <div className="text-lg font-bold text-[#FFD700]">
                       {service.priceBasicRUB} ₽
-                    </div>
-                    <div className="text-xs text-purple-300">
-                      ${service.priceBasicUSD}
                     </div>
                   </div>
                 </div>
-                
-                {/* Tier Title */}
-                <h4 className="text-white font-semibold mb-2 text-sm">
-                  {locale === 'ru' ? service.descriptionRu : service.descriptionEn}
-                </h4>
-                
-                {/* Tier Description */}
-                <div className="space-y-2 mb-3">
-                  {service.features?.basic && service.features.basic.map((feature, i) => (
-                    <p key={i} className="text-purple-200 text-xs leading-relaxed">
-                      {feature}
-                    </p>
-                  ))}
-                </div>
-                
-                {/* Hook Text */}
-                <p className="text-purple-300 italic text-xs mb-3">
-                  {locale === 'ru' ? service.hookRu : service.hookEn}
-                </p>
                 
                 <button
                   onClick={() => handleBuyClick(service, 'basic')}
@@ -535,59 +513,19 @@ export default function PremiumServices() {
 
               {/* Full Tier */}
               {service.priceFullRUB && service.features.full && (
-                <div className="glass rounded-lg p-4 border-2 border-[#FFD700]/50 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 bg-[#FFD700] text-[#2D1B4E] text-xs font-bold px-3 py-1 rounded-bl-lg">
+                <div className="glass rounded-lg p-3 border-2 border-[#FFD700]/50 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 bg-[#FFD700] text-[#2D1B4E] text-xs font-bold px-2 py-1 rounded-bl-lg">
                     🔥
                   </div>
-                  <div className="flex justify-between items-center mb-3 mt-2">
-                    <span className="font-semibold text-white flex items-center gap-1">
+                  <div className="flex justify-between items-center mb-2 mt-2">
+                    <span className="font-semibold text-white text-sm">
                       🔥 {locale === 'ru' ? 'ГЛУБОКИЙ' : 'DEEP'}
                     </span>
                     <div className="text-right">
-                      <div className="text-xl font-bold text-[#FFD700]">
+                      <div className="text-lg font-bold text-[#FFD700]">
                         {service.priceFullRUB} ₽
                       </div>
-                      <div className="text-xs text-purple-300">
-                        ${service.priceFullUSD}
-                      </div>
                     </div>
-                  </div>
-                  
-                  {/* Tier Title (first element) */}
-                  <h4 className="text-white font-semibold mb-2 text-sm">
-                    {service.features.full[0]}
-                  </h4>
-                  
-                  {/* Tier Description (remaining elements) */}
-                  <div className="space-y-2 mb-3">
-                    {service.features.full.slice(1).map((feature, i) => {
-                      // Check if it starts with ➕ or is the last item (hook text)
-                      const isLastItem = i === service.features.full!.length - 2;
-                      const startsWithPlus = feature.startsWith('➕');
-                      
-                      if (isLastItem && !startsWithPlus) {
-                        // This is the hook text at the end
-                        return (
-                          <p key={i} className="text-purple-300 italic text-xs mt-3">
-                            {feature}
-                          </p>
-                        );
-                      } else if (startsWithPlus) {
-                        // This is a feature with ➕
-                        return (
-                          <p key={i} className="text-purple-200 text-xs leading-relaxed">
-                            {feature}
-                          </p>
-                        );
-                      } else {
-                        // Regular description text
-                        return (
-                          <p key={i} className="text-purple-200 text-xs leading-relaxed">
-                            {feature}
-                          </p>
-                        );
-                      }
-                    })}
                   </div>
                   
                   <button

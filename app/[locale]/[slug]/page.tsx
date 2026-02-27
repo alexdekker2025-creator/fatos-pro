@@ -55,7 +55,6 @@ export default async function ContentPage({ params }: PageProps) {
             href={`/${locale}`}
             className="inline-flex items-center gap-2 px-4 py-2 glass hover:glass-strong text-white rounded-lg transition-all border border-purple-400/30 hover:border-purple-400/50 active:scale-95"
           >
-            <span className="text-lg">←</span>
             <span>{backText}</span>
           </Link>
         </div>
@@ -93,17 +92,6 @@ export default async function ContentPage({ params }: PageProps) {
               prose-code:text-pink-300 prose-code:bg-purple-900/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded"
             dangerouslySetInnerHTML={{ __html: content }}
           />
-        </div>
-
-        {/* Кнопка назад внизу */}
-        <div className="mt-8 text-center animate-fade-in">
-          <Link 
-            href={`/${locale}`}
-            className="inline-flex items-center gap-2 px-6 py-3 glass hover:glass-strong text-white rounded-lg transition-all border border-purple-400/30 hover:border-purple-400/50 active:scale-95 text-lg font-medium"
-          >
-            <span className="text-xl">←</span>
-            <span>{backText}</span>
-          </Link>
         </div>
       </div>
     </main>

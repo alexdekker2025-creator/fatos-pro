@@ -17,7 +17,7 @@ import CardOfDay from './CardOfDay';
 import PythagoreanSquareDisplay from './PythagoreanSquareDisplay';
 import DestinyMatrixDisplay from './DestinyMatrixDisplay';
 import PersonalizedGreeting from './PersonalizedGreeting';
-import AdBanner from './AdBanner';
+import AdCarousel from './AdCarousel';
 import AuthModal from './AuthModal';
 
 interface CalculatorState {
@@ -575,7 +575,7 @@ export default function Calculator({ userId }: CalculatorProps = {}) {
         <div className="space-y-6 sm:space-y-8">
           {/* Ad Banner - First in results */}
           <div className="animate-fade-in">
-            <AdBanner />
+            <AdCarousel />
           </div>
 
           {/* Персонализированное приветствие */}

@@ -10,7 +10,13 @@
     "close": "Close"
   },
   "home": {
-    "subtitle": "Numerology Calculator"
+    "subtitle": "Numerology Calculator",
+    "premiumAd": {
+      "title": "Premium Access",
+      "description": "Get unlimited access to all calculations and features",
+      "title2": "Professional Tools",
+      "description2": "Advanced features for numerologists"
+    }
   },
   "calculator": {
     "title": "Numerology Calculator",
