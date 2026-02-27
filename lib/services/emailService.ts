@@ -45,7 +45,7 @@ export async function sendContactEmail(data: ContactEmailData): Promise<void> {
   const result = await resend.emails.send({
     from: 'FATOS.pro Contact Form <noreply@fatos.pro>',
     to: process.env.CONTACT_EMAIL || 'support@fatos.pro',
-    replyTo: email,
+    reply_to: email,
     subject: emailSubject,
     html: emailHtml,
   });
