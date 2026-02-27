@@ -97,6 +97,11 @@ export default function ContactForm({ locale }: ContactFormProps) {
           subject: '',
           message: '',
         });
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+        }, 5000);
       } else {
         setSubmitStatus('error');
         if (response.status === 429 && data.retryAfter) {
@@ -153,7 +158,7 @@ export default function ContactForm({ locale }: ContactFormProps) {
             value={formData.name}
             onChange={handleChange}
             placeholder={t('form.namePlaceholder')}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 bg-white ${
               errors.name ? 'border-red-500' : 'border-gray-300'
             }`}
             aria-invalid={errors.name ? 'true' : 'false'}
@@ -181,7 +186,7 @@ export default function ContactForm({ locale }: ContactFormProps) {
             value={formData.email}
             onChange={handleChange}
             placeholder={t('form.emailPlaceholder')}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 bg-white ${
               errors.email ? 'border-red-500' : 'border-gray-300'
             }`}
             aria-invalid={errors.email ? 'true' : 'false'}
@@ -209,7 +214,7 @@ export default function ContactForm({ locale }: ContactFormProps) {
             value={formData.subject}
             onChange={handleChange}
             placeholder={t('form.subjectPlaceholder')}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 bg-white ${
               errors.subject ? 'border-red-500' : 'border-gray-300'
             }`}
             aria-invalid={errors.subject ? 'true' : 'false'}
@@ -237,7 +242,7 @@ export default function ContactForm({ locale }: ContactFormProps) {
             onChange={handleChange}
             placeholder={t('form.messagePlaceholder')}
             rows={6}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none ${
+            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none text-gray-900 bg-white ${
               errors.message ? 'border-red-500' : 'border-gray-300'
             }`}
             aria-invalid={errors.message ? 'true' : 'false'}
