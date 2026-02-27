@@ -7,11 +7,11 @@ export const dynamic = 'force-dynamic';
 
 // Dynamic import for react-pdf (server-side only)
 const renderPDF = async (props: any) => {
-  const { renderToStream } = await import('@react-pdf/renderer');
+  const ReactPDF = await import('@react-pdf/renderer');
   const { PythagoreanBasicPDFNew } = await import('@/lib/pdf/PythagoreanBasicPDFNew');
   const React = await import('react');
   const doc = React.createElement(PythagoreanBasicPDFNew, props);
-  return await renderToStream(doc);
+  return await ReactPDF.renderToStream(doc);
 };
 
 export async function POST(req: NextRequest) {
