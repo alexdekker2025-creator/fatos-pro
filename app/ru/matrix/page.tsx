@@ -8,12 +8,7 @@ import AuthButton from '@/components/AuthButton';
 import { validateBirthDate } from '@/lib/validation/date';
 import { DestinyMatrixCalculator, DestinyMatrixResult } from '@/lib/calculators/destinyMatrix';
 import { calculateAge } from '@/lib/utils/ageCalculation';
-import MatrixDiagram from '@/components/matrix/MatrixDiagram';
-import HealthTable from '@/components/matrix/HealthTable';
-import InterpretationsDisplay from '@/components/matrix/InterpretationsDisplay';
-import PurposeSections from '@/components/matrix/PurposeSections';
-import ParentsSection from '@/components/matrix/ParentsSection';
-import TalentsDisplay from '@/components/matrix/TalentsDisplay';
+import MatrixWithHealth from '@/components/matrix/MatrixWithHealth';
 
 export default function MatrixPage() {
   const { user } = useAuth();
@@ -201,61 +196,13 @@ export default function MatrixPage() {
         {/* Matrix Display */}
         {matrix && (
           <div className="space-y-8 animate-fade-in">
-            {/* User Info */}
-            <div className="glass-strong rounded-lg p-6 border border-purple-400/30 text-center">
-              {name && (
-                <h2 className="text-2xl font-bold text-white mb-2">{name}</h2>
-              )}
-              <p className="text-purple-200">
-                Дата рождения: {day}.{month}.{year}
-                {age !== null && ` • Возраст: ${age} лет`}
-              </p>
-            </div>
-
-            {/* Matrix Diagram */}
-            <div className="glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30">
-              <h2 className="text-xl sm:text-2xl font-bold text-amber-400 mb-6 text-center">
-                Диаграмма Матрицы
-              </h2>
-              <MatrixDiagram result={matrix} />
-            </div>
-
-            {/* Health Table */}
-            <div className="glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30">
-              <h2 className="text-xl sm:text-2xl font-bold text-amber-400 mb-6 text-center">
-                Здоровье и Чакры
-              </h2>
-              <HealthTable result={matrix} />
-            </div>
-
-            {/* Talents */}
-            <div className="glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30">
-              <TalentsDisplay result={matrix} />
-            </div>
-
-            {/* Purpose Sections */}
-            <div className="glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30">
-              <h2 className="text-xl sm:text-2xl font-bold text-amber-400 mb-6 text-center">
-                Предназначение по возрастам
-              </h2>
-              <PurposeSections result={matrix} />
-            </div>
-
-            {/* Parents Section */}
-            <div className="glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30">
-              <h2 className="text-xl sm:text-2xl font-bold text-amber-400 mb-6 text-center">
-                Родительские энергии
-              </h2>
-              <ParentsSection result={matrix} />
-            </div>
-
-            {/* Interpretations */}
-            <div className="glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30">
-              <h2 className="text-xl sm:text-2xl font-bold text-amber-400 mb-6 text-center">
-                Расшифровка Арканов
-              </h2>
-              <InterpretationsDisplay result={matrix} />
-            </div>
+            {/* Combined Matrix and Health */}
+            <MatrixWithHealth 
+              result={matrix}
+              name={name}
+              birthDate={{ day: parseInt(day), month: parseInt(month), year: parseInt(year) }}
+              age={age}
+            />
           </div>
         )}
 

@@ -126,8 +126,11 @@ export class DestinyMatrixCalculator {
     const E = calculation(A + B);
 
     // Итоговые значения (таланты)
-    const T1 = calculation(D + D2 + B3 + X + B1 + B2 + B);
-    const T2 = calculation(A + A1 + A2 + A3 + X + C2 + C);
+    // T1 = Физика (левая сторона, столбец A)
+    const T1 = calculation(A + A1 + A2 + A3 + X + C2 + C);
+    // T2 = Энергия (правая сторона, столбец B)
+    const T2 = calculation(D + D2 + B3 + X + B1 + B2 + B);
+    // T3 = Эмоции (центральная линия)
     const T3 = calculation(E + K6 + K5 + K4 + K3 + K2 + K1);
 
     // Личное (приватное)

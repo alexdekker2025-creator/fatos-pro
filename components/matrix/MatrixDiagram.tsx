@@ -83,6 +83,8 @@ export default function MatrixDiagram({ result }: MatrixDiagramProps) {
   const G4 = calculation(result.chakra2.C2 + result.chakra2.D2);
   const L = calculation(result.chakra2.D2 + G4);
   const M = calculation(G4 + result.chakra2.C2);
+  const C2_calc = calculation(result.C + result.X);  // C2 = C + X
+  const C1 = calculation(result.C + C2_calc);  // C1 = C + C2
   
   const matrixValues: Record<string, number> = {
     // Main positions (outer ring)
@@ -94,7 +96,7 @@ export default function MatrixDiagram({ result }: MatrixDiagramProps) {
     number6: result.H,           // H - D+A (left bottom, 70 years)
     number7: result.G,           // G - C+D (right bottom, 50 years)
     number8: result.D,           // D - A+B+C (bottom, 60 years)
-    'number-center': result.X,   // X - Center
+    'number-center': result.X,   // X - Center (yellow circle)
 
     // Derived positions from chakras and calculations
     number12: result.chakra6.B1,  // B1
@@ -111,8 +113,8 @@ export default function MatrixDiagram({ result }: MatrixDiagramProps) {
     number43: result.chakra5.A2,  // A2
     number44: result.chakra4.A3,  // A3
     
-    number52: result.chakra2.C2,  // C1 (from chakra2, labeled as C2 in calculator)
-    number53: result.C,           // C2 (actually C, duplicate for position)
+    number52: C1,                 // C1 = calculation(C + C2) = 3
+    number53: C2_calc,            // C2 = calculation(C + X) = 8
     number54: result.social.Y,    // Y
     
     number62: H1,                 // H1 = calculation(H + H2)
@@ -129,7 +131,7 @@ export default function MatrixDiagram({ result }: MatrixDiagramProps) {
   };
 
   return (
-    <div className="w-full flex justify-center bg-white rounded-lg p-4">
+    <div className="w-full flex justify-center p-4">
       <div
         className="relative mx-auto"
         style={{

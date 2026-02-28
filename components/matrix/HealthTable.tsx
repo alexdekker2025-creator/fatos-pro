@@ -22,50 +22,50 @@ export default function HealthTable({ result }: HealthTableProps) {
   const chakraData = [
     {
       chakra: CHAKRAS[0], // Муладхара
-      physical: result.chakra1.D,
-      energy: result.chakra1.C,
+      physical: result.chakra1.C,
+      energy: result.chakra1.D,
       emotions: result.chakra1.K1,
     },
     {
       chakra: CHAKRAS[1], // Свадхистана
-      physical: result.chakra2.D2,
-      energy: result.chakra2.C2,
+      physical: result.chakra2.C2,
+      energy: result.chakra2.D2,
       emotions: result.chakra2.K2,
     },
     {
       chakra: CHAKRAS[2], // Манипура
-      physical: result.chakra3.X,
-      energy: result.chakra3.X2,
+      physical: result.chakra3.X2,
+      energy: result.chakra3.X,
       emotions: result.chakra3.K3,
     },
     {
       chakra: CHAKRAS[3], // Анахата
-      physical: result.chakra4.B3,
-      energy: result.chakra4.A3,
+      physical: result.chakra4.A3,
+      energy: result.chakra4.B3,
       emotions: result.chakra4.K4,
     },
     {
       chakra: CHAKRAS[4], // Вишудха
-      physical: result.chakra5.B2,
-      energy: result.chakra5.A2,
+      physical: result.chakra5.A2,
+      energy: result.chakra5.B2,
       emotions: result.chakra5.K5,
     },
     {
       chakra: CHAKRAS[5], // Аджна
-      physical: result.chakra6.B1,
-      energy: result.chakra6.A1,
+      physical: result.chakra6.A1,
+      energy: result.chakra6.B1,
       emotions: result.chakra6.K6,
     },
     {
       chakra: CHAKRAS[6], // Сахасрара
-      physical: result.chakra7.B,
-      energy: result.chakra7.A,
+      physical: result.chakra7.A,
+      energy: result.chakra7.B,
       emotions: result.chakra7.E,
     },
   ];
 
   return (
-    <div className="w-full bg-white rounded-lg p-6">
+    <div className="w-full">
       {/* Desktop/Tablet Table View */}
       <div className="hidden md:block">
         <table className="w-full max-w-[446px] mx-auto" style={{ borderSpacing: '6px' }}>
@@ -178,12 +178,12 @@ export default function HealthTable({ result }: HealthTableProps) {
               </td>
               <td className="rounded-[20px] text-center">
                 <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center text-[10px] font-semibold text-gray-600 mx-auto border border-gray-600">
-                  {result.totals.T2}
+                  {result.totals.T1}
                 </div>
               </td>
               <td className="rounded-[20px] text-center">
                 <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center text-[10px] font-semibold text-gray-600 mx-auto border border-gray-600">
-                  {result.totals.T1}
+                  {result.totals.T2}
                 </div>
               </td>
               <td className="rounded-[20px] text-center">
@@ -289,13 +289,13 @@ export default function HealthTable({ result }: HealthTableProps) {
             <div className="flex flex-col items-center gap-1">
               <span className="text-xs text-gray-600 font-semibold">Физика</span>
               <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center text-[10px] font-semibold text-gray-600 border border-gray-600">
-                {result.totals.T2}
+                {result.totals.T1}
               </div>
             </div>
             <div className="flex flex-col items-center gap-1">
               <span className="text-xs text-gray-600 font-semibold">Энергия</span>
               <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center text-[10px] font-semibold text-gray-600 border border-gray-600">
-                {result.totals.T1}
+                {result.totals.T2}
               </div>
             </div>
             <div className="flex flex-col items-center gap-1">
