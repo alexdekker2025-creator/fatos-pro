@@ -140,8 +140,8 @@ This plan implements a tier upgrade system that allows users with basic tier pur
 - [ ] 11. Checkpoint - Ensure UI components work correctly
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 12. Extend webhook handlers for upgrade fulfillment
-  - [ ] 12.1 Modify Stripe webhook handler
+- [x] 12. Extend webhook handlers for upgrade fulfillment
+  - [x] 12.1 Modify Stripe webhook handler
     - Check if order has upgrade metadata (isUpgrade flag)
     - Verify user still eligible for upgrade (idempotency check)
     - Create Purchase record with full tier serviceId
@@ -150,7 +150,7 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - Initiate refund if user no longer eligible
     - _Requirements: 6.1, 6.2, 6.3, 6.5, 8.5, 9.1, 9.2, 9.3_
   
-  - [ ] 12.2 Modify YooKassa webhook handler
+  - [x] 12.2 Modify YooKassa webhook handler
     - Check if order has upgrade metadata (isUpgrade flag)
     - Verify user still eligible for upgrade (idempotency check)
     - Create Purchase record with full tier serviceId

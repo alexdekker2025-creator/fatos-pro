@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { PaymentFactory } from '@/lib/services/payment';
+import { upgradeEligibilityService } from '@/lib/services/upgrade/UpgradeEligibilityService';
 
 export const dynamic = 'force-dynamic';
 
@@ -113,19 +114,104 @@ export async function POST(request: NextRequest) {
 
     // Если платеж успешен, создаем запись Purchase
     if (result.status === 'completed' && existingOrder.serviceId) {
-      await prisma.purchase.create({
-        data: {
+      // Проверяем, является ли это апгрейдом
+      const isUpgrade = existingOrder.metadata ? 
+        JSON.parse(existingOrder.metadata).isUpgrade === true : 
+        false;
+
+      if (isUpgrade) {
+        // Обработка апгрейда
+        console.log('Processing upgrade order', {
+          orderId: existingOrder.id,
+          userId: existingOrder.userId,
+          serviceId: existingOrder.serviceId,
+        });
+
+        // Проверяем eligibility еще раз (idempotency check)
+        const eligibilityCheck = await upgradeEligibilityService.checkEligibility(
+          existingOrder.userId,
+          existingOrder.serviceId
+        );
+
+        if (!eligibilityCheck.eligible) {
+          console.error('User no longer eligible for upgrade', {
+            orderId: existingOrder.id,
+            userId: existingOrder.userId,
+            serviceId: existingOrder.serviceId,
+            reason: eligibilityCheck.reason,
+          });
+
+          // Логируем неудачную транзакцию апгрейда
+          await prisma.upgradeTransaction.create({
+            data: {
+              userId: existingOrder.userId,
+              orderId: existingOrder.id,
+              fromServiceId: existingOrder.serviceId.replace('_full', '_basic'),
+              toServiceId: existingOrder.serviceId,
+              amount: existingOrder.amount,
+              currency: existingOrder.currency,
+              status: 'FAILED',
+              errorMessage: `User no longer eligible: ${eligibilityCheck.reason}`,
+            },
+          });
+
+          // TODO: Инициировать возврат средств
+          console.warn('Refund should be initiated for ineligible upgrade', {
+            orderId: existingOrder.id,
+          });
+
+          return NextResponse.json(
+            {
+              success: true,
+              message: 'Order processed but user ineligible - refund needed',
+            },
+            { status: 200 }
+          );
+        }
+
+        // Создаем Purchase для полного тарифа
+        await prisma.purchase.create({
+          data: {
+            userId: existingOrder.userId,
+            serviceId: existingOrder.serviceId,
+            orderId: existingOrder.id,
+          },
+        });
+
+        // Логируем успешную транзакцию апгрейда
+        await prisma.upgradeTransaction.create({
+          data: {
+            userId: existingOrder.userId,
+            orderId: existingOrder.id,
+            fromServiceId: existingOrder.serviceId.replace('_full', '_basic'),
+            toServiceId: existingOrder.serviceId,
+            amount: existingOrder.amount,
+            currency: existingOrder.currency,
+            status: 'COMPLETED',
+          },
+        });
+
+        console.log('Upgrade purchase created', {
           userId: existingOrder.userId,
           serviceId: existingOrder.serviceId,
           orderId: existingOrder.id,
-        },
-      });
+        });
+      } else {
+        // Обычная покупка
+        await prisma.purchase.create({
+          data: {
+            userId: existingOrder.userId,
+            serviceId: existingOrder.serviceId,
+            orderId: existingOrder.id,
+          },
+        });
 
-      console.log('Purchase created', {
-        userId: existingOrder.userId,
-        serviceId: existingOrder.serviceId,
-        orderId: existingOrder.id,
-      });
+        console.log('Purchase created', {
+          userId: existingOrder.userId,
+          serviceId: existingOrder.serviceId,
+          orderId: existingOrder.id,
+        });
+      }
     }
 
     console.log('Stripe webhook processed successfully', {
