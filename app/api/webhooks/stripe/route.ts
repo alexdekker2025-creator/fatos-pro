@@ -146,11 +146,10 @@ export async function POST(request: NextRequest) {
             data: {
               userId: existingOrder.userId,
               orderId: existingOrder.id,
-              fromServiceId: existingOrder.serviceId.replace('_full', '_basic'),
-              toServiceId: existingOrder.serviceId,
-              amount: existingOrder.amount,
+              serviceId: existingOrder.serviceId,
+              upgradePrice: Number(existingOrder.amount),
               currency: existingOrder.currency,
-              status: 'FAILED',
+              status: 'failed',
               errorMessage: `User no longer eligible: ${eligibilityCheck.reason}`,
             },
           });
@@ -183,11 +182,10 @@ export async function POST(request: NextRequest) {
           data: {
             userId: existingOrder.userId,
             orderId: existingOrder.id,
-            fromServiceId: existingOrder.serviceId.replace('_full', '_basic'),
-            toServiceId: existingOrder.serviceId,
-            amount: existingOrder.amount,
+            serviceId: existingOrder.serviceId,
+            upgradePrice: Number(existingOrder.amount),
             currency: existingOrder.currency,
-            status: 'COMPLETED',
+            status: 'completed',
           },
         });
 
