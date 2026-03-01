@@ -75,48 +75,48 @@ export const TABLET_POSITIONS: MatrixPositions = DESKTOP_POSITIONS;
  */
 export const MOBILE_POSITIONS: MatrixPositions = {
   // Main positions (A, B, C, D, E, F, G, H)
-  number1: { top: '27px', left: '144px' },      // B (43*0.625, 230*0.625)
-  number2: { top: '59px', left: '66px' },       // E (95*0.625, 105*0.625)
-  number3: { top: '59px', left: '221px' },      // F (95*0.625, 353*0.625)
-  number4: { top: '138px', left: '33px' },      // A (220*0.625, 53*0.625)
-  number5: { top: '138px', left: '253px' },     // C (220*0.625, 405*0.625)
-  number6: { top: '216px', left: '66px' },      // H (345*0.625, 105*0.625)
-  number7: { top: '216px', left: '221px' },     // G (345*0.625, 353*0.625)
-  number8: { top: '247px', left: '143px' },     // D (395*0.625, 228*0.625)
+  number1: { top: '29px', left: '156px' },      // B (46*0.625, 250*0.625)
+  number2: { top: '64px', left: '72px' },       // E (103*0.625, 115*0.625)
+  number3: { top: '64px', left: '239px' },      // F (103*0.625, 383*0.625)
+  number4: { top: '149px', left: '36px' },      // A (238*0.625, 58*0.625)
+  number5: { top: '149px', left: '275px' },     // C (238*0.625, 440*0.625)
+  number6: { top: '233px', left: '71px' },      // H (372*0.625, 114*0.625)
+  number7: { top: '233px', left: '239px' },     // G (372*0.625, 383*0.625)
+  number8: { top: '268px', left: '155px' },     // D (429*0.625, 248*0.625)
   
   // Center position (X)
-  'number-center': { top: '137px', left: '144px' },  // (219*0.625, 230*0.625)
+  'number-center': { top: '148px', left: '155px' },  // (237*0.625, 248*0.625)
   
   // Derived positions
-  number12: { top: '48px', left: '143px' },          // B1 (76*0.625, 228*0.625)
-  number13: { top: '64px', left: '143px', fontSize: '8px' },   // B2 (103*0.625)
-  number14: { top: '93px', left: '143px', fontSize: '8px' },   // B3 (149*0.625)
+  number12: { top: '53px', left: '155px' },          // B1 (84*0.625, 248*0.625)
+  number13: { top: '69px', left: '155px', fontSize: '8px' },   // B2 (111*0.625)
+  number14: { top: '101px', left: '156px', fontSize: '8px' },  // B3 (162*0.625, 249*0.625)
   
-  number22: { top: '75px', left: '81px' },           // (120*0.625, 130*0.625)
-  number23: { top: '86px', left: '91px', fontSize: '8px' },    // (138*0.625, 145*0.625)
+  number22: { top: '81px', left: '88px' },           // (129*0.625, 141*0.625)
+  number23: { top: '93px', left: '99px', fontSize: '8px' },    // (149*0.625, 159*0.625)
   
-  number32: { top: '75px', left: '205px' },          // (120*0.625, 328*0.625)
-  number33: { top: '86px', left: '194px', fontSize: '8px' },   // (138*0.625, 311*0.625)
+  number32: { top: '81px', left: '223px' },          // (129*0.625, 356*0.625)
+  number33: { top: '93px', left: '211px', fontSize: '8px' },   // (149*0.625, 338*0.625)
   
-  number42: { top: '138px', left: '53px' },          // (220*0.625, 85*0.625)
-  number43: { top: '138px', left: '69px', fontSize: '8px' },   // (220*0.625, 110*0.625)
-  number44: { top: '138px', left: '99px', fontSize: '8px' },   // (220*0.625, 158*0.625)
+  number42: { top: '148px', left: '59px' },          // (237*0.625, 94*0.625)
+  number43: { top: '149px', left: '76px', fontSize: '8px' },   // (239*0.625, 121*0.625)
+  number44: { top: '149px', left: '108px', fontSize: '8px' },  // (239*0.625, 172*0.625)
   
-  number52: { top: '138px', left: '233px' },         // (220*0.625, 372*0.625)
-  number53: { top: '138px', left: '218px', fontSize: '8px' },  // (220*0.625, 348*0.625)
-  number54: { top: '138px', left: '170px' },         // (220*0.625, 272*0.625)
+  number52: { top: '148px', left: '251px' },         // (237*0.625, 402*0.625)
+  number53: { top: '149px', left: '236px', fontSize: '8px' },  // (239*0.625, 377*0.625)
+  number54: { top: '148px', left: '184px' },         // (237*0.625, 295*0.625)
   
-  number62: { top: '199px', left: '81px' },          // (319*0.625, 129*0.625)
-  number63: { top: '190px', left: '91px', fontSize: '8px' },   // (304*0.625, 146*0.625)
+  number62: { top: '216px', left: '88px' },          // (345*0.625, 140*0.625)
+  number63: { top: '206px', left: '99px', fontSize: '8px' },   // (330*0.625, 159*0.625)
   
-  number72: { top: '199px', left: '206px' },         // (319*0.625, 330*0.625)
-  number73: { top: '172px', left: '176px', fontSize: '8px' },  // (275*0.625, 282*0.625)
-  number74: { top: '189px', left: '194px', fontSize: '8px' },  // (303*0.625, 311*0.625)
-  number75: { top: '189px', left: '159px', fontSize: '8px' },  // (302*0.625, 255*0.625)
-  number76: { top: '153px', left: '194px', fontSize: '8px' },  // (245*0.625, 310*0.625)
+  number72: { top: '216px', left: '223px' },         // (345*0.625, 357*0.625)
+  number73: { top: '186px', left: '192px', fontSize: '8px' },  // (297*0.625, 307*0.625)
+  number74: { top: '205px', left: '212px', fontSize: '8px' },  // (328*0.625, 339*0.625)
+  number75: { top: '204px', left: '173px', fontSize: '8px' },  // (326*0.625, 277*0.625)
+  number76: { top: '166px', left: '209px', fontSize: '8px' },  // (266*0.625, 335*0.625)
   
-  number82: { top: '211px', left: '143px' },         // (338*0.625, 228*0.625)
-  number83: { top: '227px', left: '143px', fontSize: '8px' },  // (363*0.625, 228*0.625)
+  number82: { top: '228px', left: '155px' },         // (365*0.625, 248*0.625)
+  number83: { top: '246px', left: '155px', fontSize: '8px' },  // (393*0.625, 248*0.625)
 };
 
 /**
@@ -124,48 +124,48 @@ export const MOBILE_POSITIONS: MatrixPositions = {
  */
 export const SMALL_MOBILE_POSITIONS: MatrixPositions = {
   // Main positions (A, B, C, D, E, F, G, H)
-  number1: { top: '23px', left: '123px', fontSize: '14px' },    // B (43*0.533, 230*0.533)
-  number2: { top: '51px', left: '56px', fontSize: '14px' },     // E (95*0.533, 105*0.533)
-  number3: { top: '51px', left: '188px', fontSize: '14px' },    // F (95*0.533, 353*0.533)
-  number4: { top: '117px', left: '28px', fontSize: '14px' },    // A (220*0.533, 53*0.533)
-  number5: { top: '117px', left: '216px', fontSize: '14px' },   // C (220*0.533, 405*0.533)
-  number6: { top: '184px', left: '56px', fontSize: '14px' },    // H (345*0.533, 105*0.533)
-  number7: { top: '184px', left: '188px', fontSize: '14px' },   // G (345*0.533, 353*0.533)
-  number8: { top: '211px', left: '122px', fontSize: '14px' },   // D (395*0.533, 228*0.533)
+  number1: { top: '25px', left: '133px', fontSize: '14px' },    // B (46*0.533, 250*0.533)
+  number2: { top: '55px', left: '61px', fontSize: '14px' },     // E (103*0.533, 115*0.533)
+  number3: { top: '55px', left: '204px', fontSize: '14px' },    // F (103*0.533, 383*0.533)
+  number4: { top: '127px', left: '31px', fontSize: '14px' },    // A (238*0.533, 58*0.533)
+  number5: { top: '127px', left: '235px', fontSize: '14px' },   // C (238*0.533, 440*0.533)
+  number6: { top: '198px', left: '61px', fontSize: '14px' },    // H (372*0.533, 114*0.533)
+  number7: { top: '198px', left: '204px', fontSize: '14px' },   // G (372*0.533, 383*0.533)
+  number8: { top: '229px', left: '132px', fontSize: '14px' },   // D (429*0.533, 248*0.533)
   
   // Center position (X)
-  'number-center': { top: '117px', left: '123px' },  // (219*0.533, 230*0.533)
+  'number-center': { top: '126px', left: '132px' },  // (237*0.533, 248*0.533)
   
   // Derived positions
-  number12: { top: '41px', left: '122px' },          // B1 (76*0.533, 228*0.533)
-  number13: { top: '55px', left: '122px', fontSize: '7px' },   // B2 (103*0.533)
-  number14: { top: '79px', left: '122px', fontSize: '7px' },   // B3 (149*0.533)
+  number12: { top: '45px', left: '132px' },          // B1 (84*0.533, 248*0.533)
+  number13: { top: '59px', left: '132px', fontSize: '7px' },   // B2 (111*0.533)
+  number14: { top: '86px', left: '133px', fontSize: '7px' },   // B3 (162*0.533, 249*0.533)
   
-  number22: { top: '64px', left: '69px' },           // (120*0.533, 130*0.533)
-  number23: { top: '74px', left: '77px', fontSize: '7px' },    // (138*0.533, 145*0.533)
+  number22: { top: '69px', left: '75px' },           // (129*0.533, 141*0.533)
+  number23: { top: '79px', left: '85px', fontSize: '7px' },    // (149*0.533, 159*0.533)
   
-  number32: { top: '64px', left: '175px' },          // (120*0.533, 328*0.533)
-  number33: { top: '74px', left: '166px', fontSize: '7px' },   // (138*0.533, 311*0.533)
+  number32: { top: '69px', left: '190px' },          // (129*0.533, 356*0.533)
+  number33: { top: '79px', left: '180px', fontSize: '7px' },   // (149*0.533, 338*0.533)
   
-  number42: { top: '117px', left: '45px' },          // (220*0.533, 85*0.533)
-  number43: { top: '117px', left: '59px', fontSize: '7px' },   // (220*0.533, 110*0.533)
-  number44: { top: '117px', left: '84px', fontSize: '7px' },   // (220*0.533, 158*0.533)
+  number42: { top: '126px', left: '50px' },          // (237*0.533, 94*0.533)
+  number43: { top: '127px', left: '65px', fontSize: '7px' },   // (239*0.533, 121*0.533)
+  number44: { top: '127px', left: '92px', fontSize: '7px' },   // (239*0.533, 172*0.533)
   
-  number52: { top: '117px', left: '198px' },         // (220*0.533, 372*0.533)
-  number53: { top: '117px', left: '185px', fontSize: '7px' },  // (220*0.533, 348*0.533)
-  number54: { top: '117px', left: '145px' },         // (220*0.533, 272*0.533)
+  number52: { top: '126px', left: '214px' },         // (237*0.533, 402*0.533)
+  number53: { top: '127px', left: '201px', fontSize: '7px' },  // (239*0.533, 377*0.533)
+  number54: { top: '126px', left: '157px' },         // (237*0.533, 295*0.533)
   
-  number62: { top: '170px', left: '69px' },          // (319*0.533, 129*0.533)
-  number63: { top: '162px', left: '78px', fontSize: '7px' },   // (304*0.533, 146*0.533)
+  number62: { top: '184px', left: '75px' },          // (345*0.533, 140*0.533)
+  number63: { top: '176px', left: '85px', fontSize: '7px' },   // (330*0.533, 159*0.533)
   
-  number72: { top: '170px', left: '176px' },         // (319*0.533, 330*0.533)
-  number73: { top: '147px', left: '150px', fontSize: '7px' },  // (275*0.533, 282*0.533)
-  number74: { top: '161px', left: '166px', fontSize: '7px' },  // (303*0.533, 311*0.533)
-  number75: { top: '161px', left: '136px', fontSize: '7px' },  // (302*0.533, 255*0.533)
-  number76: { top: '131px', left: '165px', fontSize: '7px' },  // (245*0.533, 310*0.533)
+  number72: { top: '184px', left: '190px' },         // (345*0.533, 357*0.533)
+  number73: { top: '158px', left: '164px', fontSize: '7px' },  // (297*0.533, 307*0.533)
+  number74: { top: '175px', left: '181px', fontSize: '7px' },  // (328*0.533, 339*0.533)
+  number75: { top: '174px', left: '148px', fontSize: '7px' },  // (326*0.533, 277*0.533)
+  number76: { top: '142px', left: '179px', fontSize: '7px' },  // (266*0.533, 335*0.533)
   
-  number82: { top: '180px', left: '122px' },         // (338*0.533, 228*0.533)
-  number83: { top: '194px', left: '122px', fontSize: '7px' },  // (363*0.533, 228*0.533)
+  number82: { top: '195px', left: '132px' },         // (365*0.533, 248*0.533)
+  number83: { top: '209px', left: '132px', fontSize: '7px' },  // (393*0.533, 248*0.533)
 };
 
 /**
