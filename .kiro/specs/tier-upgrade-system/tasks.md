@@ -175,15 +175,15 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - **Property 14: Webhook Refund for Ineligible Payments**
     - **Validates: Requirements 8.5**
 
-- [ ] 13. Implement PDF generation for upgrades
-  - [ ] 13.1 Create generateUpgradePDF function
+- [x] 13. Implement PDF generation for upgrades
+  - [x] 13.1 Create generateUpgradePDF function
     - Retrieve user's original calculation data from basic tier purchase
     - Determine service type (Pythagorean or Destiny Matrix)
     - Call appropriate full tier PDF generator
     - Store PDF reference in database or file system
     - _Requirements: 7.1, 7.2, 7.3_
   
-  - [ ] 13.2 Integrate PDF generation into webhook handlers
+  - [x] 13.2 Integrate PDF generation into webhook handlers
     - Call generateUpgradePDF after Purchase record creation
     - Handle PDF generation errors with retry logic
     - Log PDF generation status

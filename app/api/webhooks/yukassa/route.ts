@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { PaymentFactory } from '@/lib/services/payment';
 import { upgradeEligibilityService } from '@/lib/services/upgrade/UpgradeEligibilityService';
+import { upgradePDFService } from '@/lib/services/upgrade/UpgradePDFService';
 
 export const dynamic = 'force-dynamic';
 
@@ -174,6 +175,15 @@ export async function POST(request: NextRequest) {
             currency: existingOrder.currency,
             status: 'completed',
           },
+        });
+
+        // Generate PDF for upgrade (async, don't block webhook response)
+        upgradePDFService.generateUpgradePDF(
+          existingOrder.userId,
+          existingOrder.serviceId
+        ).catch((error) => {
+          console.error('Failed to generate upgrade PDF:', error);
+          // Log error but don't fail the webhook
         });
 
         console.log('Upgrade purchase created', {
