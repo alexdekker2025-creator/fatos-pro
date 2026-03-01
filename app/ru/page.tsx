@@ -101,22 +101,21 @@ export default function RuPage() {
             </Link>
 
             {/* Денежная Нумерология */}
-            <div 
-              className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-600/20 to-amber-900/20 backdrop-blur-sm border border-amber-400/30 opacity-60 cursor-not-allowed"
+            <Link 
+              href="/ru/money-numerology"
+              className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-600/20 to-amber-900/20 backdrop-blur-sm border border-amber-400/30 hover:border-amber-400/60 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/50"
             >
               <div className="p-6">
                 <div className="text-4xl mb-3">💰</div>
-                <h3 className="text-xl font-bold text-white mb-2">
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-amber-300 transition-colors">
                   Денежная Нумерология
                 </h3>
                 <p className="text-amber-200 text-sm">
                   Откройте путь к финансовому успеху
                 </p>
-                <span className="inline-block mt-2 px-3 py-1 bg-amber-500/20 text-amber-300 text-xs rounded-full">
-                  Скоро
-                </span>
               </div>
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/0 to-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </Link>
 
             {/* Годовой Прогноз */}
             <div 
