@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { PaymentFactory } from '@/lib/services/payment';
 import { upgradeEligibilityService } from '@/lib/services/upgrade/UpgradeEligibilityService';
 import { upgradePDFService } from '@/lib/services/upgrade/UpgradePDFService';
+import { upgradeTransactionLogger } from '@/lib/services/upgrade/UpgradeTransactionLogger';
 
 export const dynamic = 'force-dynamic';
 
@@ -129,17 +130,14 @@ export async function POST(request: NextRequest) {
             reason: eligibilityCheck.reason,
           });
 
-          // Логируем неудачную транзакцию апгрейда
-          await prisma.upgradeTransaction.create({
-            data: {
-              userId: existingOrder.userId,
-              orderId: existingOrder.id,
-              serviceId: existingOrder.serviceId,
-              upgradePrice: Number(existingOrder.amount),
-              currency: existingOrder.currency,
-              status: 'failed',
-              errorMessage: `User no longer eligible: ${eligibilityCheck.reason}`,
-            },
+          // Log failed upgrade transaction
+          await upgradeTransactionLogger.logRefund({
+            userId: existingOrder.userId,
+            orderId: existingOrder.id,
+            serviceId: existingOrder.serviceId,
+            upgradePrice: Number(existingOrder.amount),
+            currency: existingOrder.currency,
+            reason: eligibilityCheck.reason || 'User no longer eligible',
           });
 
           // TODO: Инициировать возврат средств
@@ -165,16 +163,13 @@ export async function POST(request: NextRequest) {
           },
         });
 
-        // Логируем успешную транзакцию апгрейда
-        await prisma.upgradeTransaction.create({
-          data: {
-            userId: existingOrder.userId,
-            orderId: existingOrder.id,
-            serviceId: existingOrder.serviceId,
-            upgradePrice: Number(existingOrder.amount),
-            currency: existingOrder.currency,
-            status: 'completed',
-          },
+        // Log successful upgrade transaction
+        await upgradeTransactionLogger.logCompletion({
+          userId: existingOrder.userId,
+          orderId: existingOrder.id,
+          serviceId: existingOrder.serviceId,
+          upgradePrice: Number(existingOrder.amount),
+          currency: existingOrder.currency,
         });
 
         // Generate PDF for upgrade (async, don't block webhook response)

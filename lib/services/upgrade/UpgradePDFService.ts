@@ -124,15 +124,19 @@ export class UpgradePDFService {
     }
 
     // Get user's most recent Destiny Matrix calculation
-    const calculation = await prisma.calculation.findFirst({
+    // Find calculation where matrix field is not null
+    const calculations = await prisma.calculation.findMany({
       where: {
         userId,
-        matrix: { not: null },
       },
       orderBy: {
         createdAt: 'desc',
       },
+      take: 10, // Get last 10 calculations
     });
+
+    // Filter for calculations with matrix data
+    const calculation = calculations.find(calc => calc.matrix !== null);
 
     if (!calculation) {
       throw new Error('No matrix calculation found for user');

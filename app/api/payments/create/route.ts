@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { AuthService } from '@/lib/services/auth/AuthService';
 import { PaymentFactory } from '@/lib/services/payment';
 import { upgradeEligibilityService } from '@/lib/services/upgrade/UpgradeEligibilityService';
+import { upgradeTransactionLogger } from '@/lib/services/upgrade/UpgradeTransactionLogger';
 import { withSecurityMiddleware, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit';
 import { z } from 'zod';
 
@@ -157,6 +158,17 @@ async function createPaymentHandler(request: NextRequest) {
       where: { id: order.id },
       data: { externalId: session.id },
     });
+
+    // Log upgrade initiation if this is an upgrade
+    if (isUpgrade) {
+      await upgradeTransactionLogger.logInitiation({
+        userId: user.id,
+        orderId: order.id,
+        serviceId,
+        upgradePrice: finalAmount,
+        currency,
+      });
+    }
 
     // Возвращаем успешный ответ
     return NextResponse.json(

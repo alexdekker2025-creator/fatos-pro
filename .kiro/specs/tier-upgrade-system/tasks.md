@@ -204,14 +204,14 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - _Requirements: 7.1, 7.2, 7.5_
 
 - [ ] 14. Implement transaction logging service
-  - [ ] 14.1 Create UpgradeTransactionLogger class
+  - [x] 14.1 Create UpgradeTransactionLogger class
     - Implement logInitiation method
     - Implement logCompletion method
     - Implement logFailure method with error details
     - Store logs in UpgradeTransaction table
     - _Requirements: 9.1, 9.2, 9.3, 9.4_
   
-  - [ ] 14.2 Integrate logging into all upgrade operations
+  - [x] 14.2 Integrate logging into all upgrade operations
     - Log payment initiation in payment creation endpoint
     - Log completion in webhook handlers
     - Log failures with stack traces
