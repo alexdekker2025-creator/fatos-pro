@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/auth/session';
+import { AuthService } from '@/lib/services/auth/AuthService';
 import { upgradeEligibilityService } from '@/lib/services/upgrade/UpgradeEligibilityService';
+
+export const dynamic = 'force-dynamic';
+
+const authService = new AuthService();
 
 /**
  * GET /api/upgrades/eligibility
@@ -9,11 +13,22 @@ import { upgradeEligibilityService } from '@/lib/services/upgrade/UpgradeEligibi
  */
 export async function GET(request: NextRequest) {
   try {
-    // Get session
-    const session = await getSession();
-    if (!session) {
+    // Get sessionId from Authorization header
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
+        { success: false, error: 'Authorization header is required' },
+        { status: 401 }
+      );
+    }
+
+    const sessionId = authHeader.substring(7);
+
+    // Verify session
+    const user = await authService.verifySession(sessionId);
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid or expired session' },
         { status: 401 }
       );
     }
@@ -31,7 +46,7 @@ export async function GET(request: NextRequest) {
 
     // Check eligibility
     const result = await upgradeEligibilityService.checkEligibility(
-      session.userId,
+      user.id,
       serviceId
     );
 
