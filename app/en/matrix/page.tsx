@@ -3,8 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { usePurchases } from '@/lib/hooks/usePurchases';
+import { useUpgradeEligibility } from '@/lib/hooks/useUpgradeEligibility';
 import StarryBackground from '@/components/StarryBackground';
 import AuthButton from '@/components/AuthButton';
+import UpgradeButton from '@/components/UpgradeButton';
 import { validateBirthDate } from '@/lib/validation/date';
 import { DestinyMatrixCalculator, DestinyMatrixResult } from '@/lib/calculators/destinyMatrix';
 import { calculateAge } from '@/lib/utils/ageCalculation';
@@ -12,6 +15,7 @@ import MatrixWithHealth from '@/components/matrix/MatrixWithHealth';
 
 export default function MatrixPage() {
   const { user } = useAuth();
+  const { hasPurchased } = usePurchases();
   const [name, setName] = useState('');
   const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
@@ -19,6 +23,13 @@ export default function MatrixPage() {
   const [dateError, setDateError] = useState('');
   const [matrix, setMatrix] = useState<DestinyMatrixResult | null>(null);
   const [age, setAge] = useState<number | null>(null);
+  
+  // Check purchases
+  const hasBasic = user && hasPurchased('matrix_basic');
+  const hasFull = user && hasPurchased('matrix_full');
+  
+  // Check upgrade eligibility
+  const { isEligible: isUpgradeEligible, upgradePrice } = useUpgradeEligibility('matrix_full');
 
   const handleCalculate = () => {
     const birthDate = {
@@ -167,9 +178,34 @@ export default function MatrixPage() {
                 Full analysis including ancestral square, karmic tail, money zone, relationships zone, and practical recommendations.
               </p>
             </div>
-            <button disabled className="w-full py-3 px-6 rounded-lg font-semibold bg-gray-600 text-gray-400 cursor-not-allowed">
-              Coming Soon
-            </button>
+            {/* Conditional button rendering based on purchase status and upgrade eligibility */}
+            {hasFull ? (
+              <div className="w-full py-3 px-6 rounded-lg font-semibold text-center bg-green-600 text-white">
+                ✅ You have access
+              </div>
+            ) : hasBasic && isUpgradeEligible && upgradePrice ? (
+              <UpgradeButton
+                serviceId="matrix_full"
+                price={upgradePrice}
+                currency="USD"
+                locale="en"
+                onUpgradeClick={() => {}}
+              />
+            ) : !hasBasic && !hasFull ? (
+              <button
+                disabled={true}
+                className="w-full py-3 px-6 rounded-lg font-semibold transition-all bg-gray-600 text-gray-400 cursor-not-allowed"
+              >
+                Coming Soon
+              </button>
+            ) : (
+              <button
+                disabled={true}
+                className="w-full py-3 px-6 rounded-lg font-semibold transition-all bg-gray-600 text-gray-400 cursor-not-allowed"
+              >
+                Coming Soon
+              </button>
+            )}
           </div>
         </div>
       </div>

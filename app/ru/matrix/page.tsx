@@ -3,8 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { usePurchases } from '@/lib/hooks/usePurchases';
+import { useUpgradeEligibility } from '@/lib/hooks/useUpgradeEligibility';
 import StarryBackground from '@/components/StarryBackground';
 import AuthButton from '@/components/AuthButton';
+import UpgradeButton from '@/components/UpgradeButton';
 import { validateBirthDate } from '@/lib/validation/date';
 import { DestinyMatrixCalculator, DestinyMatrixResult } from '@/lib/calculators/destinyMatrix';
 import { calculateAge } from '@/lib/utils/ageCalculation';
@@ -12,6 +15,7 @@ import MatrixWithHealth from '@/components/matrix/MatrixWithHealth';
 
 export default function MatrixPage() {
   const { user } = useAuth();
+  const { hasPurchased } = usePurchases();
   
   // Calculator state
   const [name, setName] = useState('');
@@ -21,6 +25,13 @@ export default function MatrixPage() {
   const [dateError, setDateError] = useState('');
   const [matrix, setMatrix] = useState<DestinyMatrixResult | null>(null);
   const [age, setAge] = useState<number | null>(null);
+  
+  // Check purchases
+  const hasBasic = user && hasPurchased('matrix_basic');
+  const hasFull = user && hasPurchased('matrix_full');
+  
+  // Check upgrade eligibility
+  const { isEligible: isUpgradeEligible, upgradePrice } = useUpgradeEligibility('matrix_full');
 
   const handleCalculate = () => {
     // Validate date
@@ -349,12 +360,34 @@ export default function MatrixPage() {
               </div>
             </div>
             
-            <button
-              disabled
-              className="w-full py-3 px-6 rounded-lg font-semibold bg-gray-600 text-gray-400 cursor-not-allowed"
-            >
-              Скоро доступно
-            </button>
+            {/* Conditional button rendering based on purchase status and upgrade eligibility */}
+            {hasFull ? (
+              <div className="w-full py-3 px-6 rounded-lg font-semibold text-center bg-green-600 text-white">
+                ✅ У вас есть доступ
+              </div>
+            ) : hasBasic && isUpgradeEligible && upgradePrice ? (
+              <UpgradeButton
+                serviceId="matrix_full"
+                price={upgradePrice}
+                currency="RUB"
+                locale="ru"
+                onUpgradeClick={() => {}}
+              />
+            ) : !hasBasic && !hasFull ? (
+              <button
+                disabled={true}
+                className="w-full py-3 px-6 rounded-lg font-semibold transition-all bg-gray-600 text-gray-400 cursor-not-allowed"
+              >
+                Скоро доступно
+              </button>
+            ) : (
+              <button
+                disabled={true}
+                className="w-full py-3 px-6 rounded-lg font-semibold transition-all bg-gray-600 text-gray-400 cursor-not-allowed"
+              >
+                Скоро доступно
+              </button>
+            )}
           </div>
         </div>
       </div>

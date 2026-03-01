@@ -4,9 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { usePurchases } from '@/lib/hooks/usePurchases';
+import { useUpgradeEligibility } from '@/lib/hooks/useUpgradeEligibility';
 import StarryBackground from '@/components/StarryBackground';
 import AuthButton from '@/components/AuthButton';
 import PaymentModal from '@/components/PaymentModal';
+import UpgradeButton from '@/components/UpgradeButton';
 import { validateBirthDate } from '@/lib/validation/date';
 import { PythagoreanCalculator } from '@/lib/calculators/pythagorean';
 
@@ -27,6 +29,9 @@ export default function PythagoreanPage() {
   // Проверяем покупки
   const hasBasic = user && hasPurchased('pythagorean_basic');
   const hasFull = user && hasPurchased('pythagorean_full');
+  
+  // Проверяем возможность апгрейда
+  const { isEligible: isUpgradeEligible, upgradePrice } = useUpgradeEligibility('pythagorean_full');
 
   const handleCalculate = () => {
     // Validate date
@@ -327,7 +332,7 @@ export default function PythagoreanPage() {
           <div className="glass-strong rounded-xl p-6 sm:p-8 border border-purple-400/30 flex flex-col">
             <div className="text-center mb-4">
               <div className="text-4xl mb-3">🔮</div>
-              <h3 className="text-xl font-bold text-white mb-2">КВАДРАТ ПИФАГОРА — БАЗОВЫЙ РАЗБОР</h3>
+              <h3 className="text-xl font-bold text-white mb-2">КВАДРАТ ПИФАГОРА — ТАРИФ СТАРТ</h3>
               <div className="text-3xl font-bold text-amber-400 mb-1">2900 ₽</div>
             </div>
             
@@ -428,12 +433,35 @@ export default function PythagoreanPage() {
               </p>
             </div>
             
-            <button
-              disabled={true}
-              className="w-full py-3 px-6 rounded-lg font-semibold transition-all bg-gray-600 text-gray-400 cursor-not-allowed"
-            >
-              Скоро доступно
-            </button>
+            {/* Conditional button rendering based on purchase status and upgrade eligibility */}
+            {hasFull ? (
+              <div className="w-full py-3 px-6 rounded-lg font-semibold text-center bg-green-600 text-white">
+                ✅ У вас есть доступ
+              </div>
+            ) : hasBasic && isUpgradeEligible && upgradePrice ? (
+              <UpgradeButton
+                serviceId="pythagorean_full"
+                price={upgradePrice}
+                currency="RUB"
+                locale="ru"
+                onUpgradeClick={() => handleBuyClick('full')}
+              />
+            ) : !hasBasic && !hasFull ? (
+              <button
+                onClick={() => handleBuyClick('full')}
+                disabled={true}
+                className="w-full py-3 px-6 rounded-lg font-semibold transition-all bg-gray-600 text-gray-400 cursor-not-allowed"
+              >
+                Скоро доступно
+              </button>
+            ) : (
+              <button
+                disabled={true}
+                className="w-full py-3 px-6 rounded-lg font-semibold transition-all bg-gray-600 text-gray-400 cursor-not-allowed"
+              >
+                Скоро доступно
+              </button>
+            )}
           </div>
         </div>
 

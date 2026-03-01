@@ -331,3 +331,21 @@ enum ContactStatus {
   SPAM
   RESOLVED
 }
+
+model UpgradeTransaction {
+  id              String   @id @default(cuid())
+  userId          String
+  serviceId       String
+  orderId         String
+  status          String   // 'initiated', 'completed', 'failed', 'refunded'
+  upgradePrice    Int
+  currency        String
+  errorMessage    String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([orderId])
+  @@index([status])
+  @@index([createdAt])
+}
