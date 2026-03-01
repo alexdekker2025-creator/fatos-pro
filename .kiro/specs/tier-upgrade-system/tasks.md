@@ -62,7 +62,7 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - **Property 7: Payment Session Metadata Completeness**
     - **Validates: Requirements 5.1, 5.2, 5.3**
 
-- [ ] 5. Checkpoint - Ensure backend services work correctly
+- [x] 5. Checkpoint - Ensure backend services work correctly
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 6. Create React hook for upgrade eligibility
@@ -137,7 +137,7 @@ This plan implements a tier upgrade system that allows users with basic tier pur
   - Pass userId and locale props
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 11. Checkpoint - Ensure UI components work correctly
+- [x] 11. Checkpoint - Ensure UI components work correctly
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 12. Extend webhook handlers for upgrade fulfillment
@@ -221,7 +221,7 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - **Property 15: Transaction Logging Completeness**
     - **Validates: Requirements 9.1, 9.2, 9.3, 9.5**
 
-- [ ] 15. Checkpoint - Ensure webhook and fulfillment work correctly
+- [x] 15. Checkpoint - Ensure webhook and fulfillment work correctly
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 16. Implement price consistency validation
@@ -290,7 +290,7 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - Test PDF availability
     - _Requirements: 12.1, 12.2, 12.3, 12.4, 12.5_
 
-- [ ] 19. Implement eligibility verification at all layers
+- [x] 19. Implement eligibility verification at all layers
   - [ ]* 19.1 Write property test for eligibility verification before actions
     - **Property 3: Eligibility Verification Before Actions**
     - **Validates: Requirements 2.4, 2.5, 8.4**
@@ -301,8 +301,8 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - Test eligibility check in webhook layer
     - _Requirements: 2.4, 2.5, 8.4_
 
-- [ ] 20. Final integration and wiring
-  - [ ] 20.1 Verify all components integrated correctly
+- [x] 20. Final integration and wiring
+  - [x] 20.1 Verify all components integrated correctly
     - Test end-to-end upgrade flow from calculator page
     - Test end-to-end upgrade flow from profile page
     - Verify payment processing works with both Stripe and YooKassa
@@ -315,7 +315,7 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - Test error scenarios and refunds
     - _Requirements: All_
 
-- [ ] 21. Final checkpoint - Ensure all tests pass
+- [x] 21. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
