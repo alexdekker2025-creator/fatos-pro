@@ -46,8 +46,8 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - Test error handling for invalid requests
     - _Requirements: 2.4, 8.1, 8.2, 8.3_
 
-- [ ] 4. Extend payment creation endpoint for upgrades
-  - [ ] 4.1 Modify POST /api/payments/create endpoint
+- [x] 4. Extend payment creation endpoint for upgrades
+  - [x] 4.1 Modify POST /api/payments/create endpoint
     - Add isUpgrade boolean field to request body
     - Validate upgrade eligibility before creating payment session
     - Calculate amount based on upgrade price if isUpgrade=true

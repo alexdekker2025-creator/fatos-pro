@@ -15,11 +15,12 @@ interface PaymentModalProps {
     priceEUR: number;
   };
   onSuccess: () => void;
+  isUpgrade?: boolean;
 }
 
 type PaymentProvider = 'yukassa' | 'stripe';
 
-export default function PaymentModal({ isOpen, onClose, service, onSuccess }: PaymentModalProps) {
+export default function PaymentModal({ isOpen, onClose, service, onSuccess, isUpgrade = false }: PaymentModalProps) {
   const t = useTranslations();
   const { user } = useAuth();
   const [selectedProvider, setSelectedProvider] = useState<PaymentProvider | null>(null);
@@ -65,6 +66,7 @@ export default function PaymentModal({ isOpen, onClose, service, onSuccess }: Pa
           currency,
           countryCode: selectedProvider === 'yukassa' ? 'RU' : 'OTHER',
           serviceId: service.id,
+          isUpgrade,
         }),
       });
 

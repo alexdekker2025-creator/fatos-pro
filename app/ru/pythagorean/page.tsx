@@ -17,6 +17,7 @@ export default function PythagoreanPage() {
   const { hasPurchased } = usePurchases();
   const [selectedTier, setSelectedTier] = useState<'basic' | 'full' | null>(null);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isUpgradePayment, setIsUpgradePayment] = useState(false);
   
   // Calculator state
   const [day, setDay] = useState('');
@@ -60,6 +61,13 @@ export default function PythagoreanPage() {
 
   const handleBuyClick = (tier: 'basic' | 'full') => {
     setSelectedTier(tier);
+    setIsUpgradePayment(false);
+    setIsPaymentModalOpen(true);
+  };
+
+  const handleUpgradeClick = () => {
+    setSelectedTier('full');
+    setIsUpgradePayment(true);
     setIsPaymentModalOpen(true);
   };
 
@@ -111,6 +119,16 @@ export default function PythagoreanPage() {
 
   const getPaymentService = () => {
     if (!selectedTier) return null;
+    
+    // Если это апгрейд, используем upgrade price
+    if (isUpgradePayment && upgradePrice) {
+      return {
+        id: 'pythagorean_full',
+        titleKey: 'Квадрат Пифагора (Апгрейд до Полного)',
+        priceRUB: upgradePrice,
+        priceEUR: Math.round(upgradePrice / 90), // Примерный курс
+      };
+    }
     
     return {
       id: selectedTier === 'basic' ? 'pythagorean_basic' : 'pythagorean_full',
@@ -444,7 +462,7 @@ export default function PythagoreanPage() {
                 price={upgradePrice}
                 currency="RUB"
                 locale="ru"
-                onUpgradeClick={() => handleBuyClick('full')}
+                onUpgradeClick={handleUpgradeClick}
               />
             ) : !hasBasic && !hasFull ? (
               <button
@@ -610,12 +628,15 @@ export default function PythagoreanPage() {
           onClose={() => {
             setIsPaymentModalOpen(false);
             setSelectedTier(null);
+            setIsUpgradePayment(false);
           }}
           service={getPaymentService()!}
           onSuccess={() => {
             setIsPaymentModalOpen(false);
             setSelectedTier(null);
+            setIsUpgradePayment(false);
           }}
+          isUpgrade={isUpgradePayment}
         />
       )}
     </main>

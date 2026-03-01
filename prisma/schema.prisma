@@ -81,6 +81,7 @@ model Order {
   paymentProvider String
   externalId      String?
   serviceId       String?
+  metadata        String?       @db.Text
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
   

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { AuthService } from '@/lib/services/auth/AuthService';
 import { PaymentFactory } from '@/lib/services/payment';
+import { upgradeEligibilityService } from '@/lib/services/upgrade/UpgradeEligibilityService';
 import { withSecurityMiddleware, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit';
 import { z } from 'zod';
 
@@ -17,6 +18,7 @@ const CreatePaymentSchema = z.object({
   currency: z.string().length(3, 'Currency must be 3 characters (ISO 4217)'),
   countryCode: z.string().length(2, 'Country code must be 2 characters (ISO 3166-1 alpha-2)'),
   serviceId: z.string().min(1, 'Service ID is required'),
+  isUpgrade: z.boolean().optional().default(false),
 });
 
 /**
@@ -79,7 +81,42 @@ async function createPaymentHandler(request: NextRequest) {
     const body = await request.json();
     const validatedData = CreatePaymentSchema.parse(body);
 
-    const { amount, currency, countryCode, serviceId } = validatedData;
+    const { amount, currency, countryCode, serviceId, isUpgrade } = validatedData;
+
+    // Если это апгрейд, проверяем eligibility и используем upgrade price
+    let finalAmount = amount;
+    let upgradeMetadata = null;
+
+    if (isUpgrade) {
+      // Проверяем eligibility для апгрейда
+      const eligibilityResult = await upgradeEligibilityService.checkEligibility(
+        user.id,
+        serviceId
+      );
+
+      if (!eligibilityResult.eligible) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Not eligible for upgrade',
+            reason: eligibilityResult.reason,
+          },
+          { status: 403 }
+        );
+      }
+
+      // Используем upgrade price вместо переданной суммы
+      if (eligibilityResult.upgradePrice) {
+        finalAmount = eligibilityResult.upgradePrice;
+      }
+
+      // Сохраняем метаданные апгрейда
+      upgradeMetadata = {
+        isUpgrade: true,
+        originalServiceId: serviceId,
+        upgradePrice: finalAmount,
+      };
+    }
 
     // Определяем регион и провайдера
     const region = PaymentFactory.getRegionFromCountryCode(countryCode);
@@ -89,11 +126,12 @@ async function createPaymentHandler(request: NextRequest) {
     const order = await prisma.order.create({
       data: {
         userId: user.id,
-        amount,
+        amount: finalAmount,
         currency,
         status: 'PENDING',
         paymentProvider: providerType,
         serviceId,
+        metadata: upgradeMetadata ? JSON.stringify(upgradeMetadata) : null,
       },
     });
 
@@ -106,7 +144,7 @@ async function createPaymentHandler(request: NextRequest) {
 
     // Создаем платежную сессию
     const session = await provider.createSession(
-      amount,
+      finalAmount,
       currency,
       user.id,
       order.id,
