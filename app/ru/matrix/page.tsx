@@ -281,7 +281,6 @@ export default function MatrixPage() {
             <div className="text-center mb-4 mt-2">
               <div className="text-4xl mb-3">🔥</div>
               <h3 className="text-xl font-bold text-white mb-2">МАТРИЦА СУДЬБЫ — ГЛУБОКИЙ РАЗБОР</h3>
-              <p className="text-purple-200 text-sm mb-3">Это не просто «больше страниц». Это ответ на вопрос «что со всем этим делать»</p>
               <div className="text-3xl font-bold text-amber-400 mb-1">5500 ₽</div>
             </div>
             
