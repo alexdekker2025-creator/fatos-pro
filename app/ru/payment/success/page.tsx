@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui';
+import { usePurchases } from '@/lib/hooks/usePurchases';
 
 /**
  * Контент страницы успешной оплаты
@@ -12,6 +13,7 @@ import { Button } from '@/components/ui';
 function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { refresh } = usePurchases();
   const [loading, setLoading] = useState(true);
   const [orderInfo, setOrderInfo] = useState<{
     orderId: string;
@@ -29,8 +31,11 @@ function PaymentSuccessContent() {
       setOrderInfo({ orderId, serviceId, amount });
     }
 
+    // Refresh purchases to update UI immediately
+    refresh();
+
     setLoading(false);
-  }, [searchParams]);
+  }, [searchParams, refresh]);
 
   const getServiceName = (serviceId: string) => {
     switch (serviceId) {

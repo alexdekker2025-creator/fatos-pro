@@ -97,5 +97,6 @@ export function usePurchases() {
     hasPurchased,
     getPurchase,
     refetch: fetchPurchases,
+    refresh: fetchPurchases, // Alias for refetch
   };
 }

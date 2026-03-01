@@ -203,7 +203,7 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - Test error handling
     - _Requirements: 7.1, 7.2, 7.5_
 
-- [ ] 14. Implement transaction logging service
+- [x] 14. Implement transaction logging service
   - [x] 14.1 Create UpgradeTransactionLogger class
     - Implement logInitiation method
     - Implement logCompletion method
@@ -256,26 +256,26 @@ This plan implements a tier upgrade system that allows users with basic tier pur
     - Test terminology consistency
     - _Requirements: 11.1, 11.2, 11.3, 11.4_
 
-- [ ] 18. Implement post-upgrade access verification
-  - [ ] 18.1 Update usePurchases hook to refresh after upgrade
+- [x] 18. Implement post-upgrade access verification
+  - [x] 18.1 Update usePurchases hook to refresh after upgrade
     - Add refresh method to usePurchases hook
     - Call refresh after successful upgrade payment
     - Update UI to reflect new purchase state
     - _Requirements: 12.1, 12.2, 12.3_
   
-  - [ ] 18.2 Update calculator pages to hide upgrade button after purchase
+  - [x] 18.2 Update calculator pages to hide upgrade button after purchase
     - Check for full tier ownership in useEffect
     - Remove upgrade button when full tier detected
     - Display full tier content
     - _Requirements: 12.2, 12.4_
   
-  - [ ] 18.3 Update profile page to show full tier ownership
+  - [x] 18.3 Update profile page to show full tier ownership
     - Refresh purchases after upgrade
     - Display full tier badge
     - Remove from upgrade list
     - _Requirements: 12.3_
   
-  - [ ] 18.4 Ensure PDF download available immediately
+  - [x] 18.4 Ensure PDF download available immediately
     - Add PDF download link to success message
     - Verify PDF accessible within 10 seconds
     - _Requirements: 12.5_
