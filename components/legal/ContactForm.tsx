@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { contactSchema } from '@/lib/validations/contactSchema';
 
 interface ContactFormProps {
@@ -19,6 +20,7 @@ type SubmitStatus = 'idle' | 'success' | 'error';
 
 export default function ContactForm({ locale }: ContactFormProps) {
   const t = useTranslations('contact');
+  const router = useRouter();
   
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
@@ -121,6 +123,27 @@ export default function ContactForm({ locale }: ContactFormProps) {
 
   return (
     <div className="max-w-2xl mx-auto">
+      {/* Back Button */}
+      <button
+        onClick={() => router.back()}
+        className="mb-6 flex items-center text-purple-600 hover:text-purple-700 transition-colors"
+      >
+        <svg 
+          className="w-5 h-5 mr-2" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth={2} 
+            d="M10 19l-7-7m0 0l7-7m-7 7h18" 
+          />
+        </svg>
+        {locale === 'ru' ? 'Назад' : 'Back'}
+      </button>
+
       <h1 className="text-4xl font-bold text-purple-700 mb-4">{t('title')}</h1>
       <p className="text-gray-600 mb-8">{t('description')}</p>
 

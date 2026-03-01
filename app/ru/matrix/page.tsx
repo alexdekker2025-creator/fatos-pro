@@ -7,6 +7,7 @@ import { usePurchases } from '@/lib/hooks/usePurchases';
 import { useUpgradeEligibility } from '@/lib/hooks/useUpgradeEligibility';
 import StarryBackground from '@/components/StarryBackground';
 import AuthButton from '@/components/AuthButton';
+import AuthModal from '@/components/AuthModal';
 import UpgradeButton from '@/components/UpgradeButton';
 import { validateBirthDate } from '@/lib/validation/date';
 import { DestinyMatrixCalculator, DestinyMatrixResult } from '@/lib/calculators/destinyMatrix';
@@ -16,6 +17,7 @@ import MatrixWithHealth from '@/components/matrix/MatrixWithHealth';
 export default function MatrixPage() {
   const { user } = useAuth();
   const { hasPurchased } = usePurchases();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   
   // Calculator state
   const [name, setName] = useState('');
@@ -34,6 +36,12 @@ export default function MatrixPage() {
   const { isEligible: isUpgradeEligible, upgradePrice } = useUpgradeEligibility('matrix_full');
 
   const handleCalculate = () => {
+    // Check if user is logged in
+    if (!user) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    
     // Validate date
     const birthDate = {
       day: parseInt(day),
@@ -391,6 +399,12 @@ export default function MatrixPage() {
           </div>
         </div>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
     </main>
   );
 }

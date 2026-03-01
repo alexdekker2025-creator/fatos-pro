@@ -7,6 +7,7 @@ import { usePurchases } from '@/lib/hooks/usePurchases';
 import { useUpgradeEligibility } from '@/lib/hooks/useUpgradeEligibility';
 import StarryBackground from '@/components/StarryBackground';
 import AuthButton from '@/components/AuthButton';
+import AuthModal from '@/components/AuthModal';
 import PaymentModal from '@/components/PaymentModal';
 import UpgradeButton from '@/components/UpgradeButton';
 import { validateBirthDate } from '@/lib/validation/date';
@@ -18,6 +19,7 @@ export default function PythagoreanPage() {
   const [selectedTier, setSelectedTier] = useState<'basic' | 'full' | null>(null);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isUpgradePayment, setIsUpgradePayment] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   
   // Calculator state
   const [day, setDay] = useState('');
@@ -35,6 +37,12 @@ export default function PythagoreanPage() {
   const { isEligible: isUpgradeEligible, upgradePrice } = useUpgradeEligibility('pythagorean_full');
 
   const handleCalculate = () => {
+    // Check if user is logged in
+    if (!user) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    
     // Validate date
     const birthDate = {
       day: parseInt(day),
@@ -482,144 +490,13 @@ export default function PythagoreanPage() {
             )}
           </div>
         </div>
-
-        {/* Interpretations Section (shown after purchase) */}
-        {square && (
-          <div className="glass-strong rounded-lg p-6 sm:p-8 border border-purple-400/30 animate-fade-in">
-            <h2 className="text-xl sm:text-2xl font-bold text-amber-400 mb-6 text-center">
-              Расшифровка вашего квадрата
-            </h2>
-            
-            <div className="space-y-4">
-              {/* Basic Interpretations - Available with basic tier */}
-              <div className={`relative ${!hasBasic && !hasFull ? 'pointer-events-none' : ''}`}>
-                <h3 className="text-lg font-semibold text-white mb-4">
-                  📋 Базовая расшифровка ячеек
-                </h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {gridNumbers.map((num) => {
-                    const count = square[num - 1];
-                    const isLocked = !hasBasic && !hasFull;
-                    
-                    return (
-                      <div
-                        key={num}
-                        className={`bg-white/5 rounded-lg p-4 border border-purple-400/20 relative ${
-                          isLocked ? 'overflow-hidden' : ''
-                        }`}
-                      >
-                        {isLocked && (
-                          <>
-                            {/* Blur overlay */}
-                            <div className="absolute inset-0 backdrop-blur-md bg-black/30 rounded-lg z-10 flex items-center justify-center">
-                              <div className="text-center">
-                                <div className="text-4xl mb-2">🔒</div>
-                                <p className="text-white text-sm font-semibold">Доступно после покупки</p>
-                              </div>
-                            </div>
-                          </>
-                        )}
-                        
-                        <h4 className="text-white font-semibold mb-2">
-                          {cellNames[num]} ({num}): {count > 0 ? num.toString().repeat(count) : '---'}
-                        </h4>
-                        <p className="text-purple-200 text-sm">
-                          {isLocked 
-                            ? 'Здесь будет краткое описание значения этой ячейки в вашем квадрате Пифагора...'
-                            : `Краткое описание ячейки ${cellNames[num]}. Количество цифр: ${count}. Это влияет на...`
-                          }
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Full Interpretations - Available only with full tier */}
-              <div className={`relative ${!hasFull ? 'pointer-events-none' : ''}`}>
-                <h3 className="text-lg font-semibold text-white mb-4 mt-8">
-                  🔥 Полная расшифровка (только в тарифе &quot;Глубокий&quot;)
-                </h3>
-                
-                <div className="space-y-4">
-                  {/* Lines Analysis */}
-                  <div className={`bg-white/5 rounded-lg p-4 border border-purple-400/20 relative ${
-                    !hasFull ? 'overflow-hidden' : ''
-                  }`}>
-                    {!hasFull && (
-                      <div className="absolute inset-0 backdrop-blur-md bg-black/30 rounded-lg z-10 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-4xl mb-2">🔒</div>
-                          <p className="text-white text-sm font-semibold">Доступно в тарифе &quot;Глубокий&quot;</p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    <h4 className="text-white font-semibold mb-2">
-                      📊 Линии силы
-                    </h4>
-                    <p className="text-purple-200 text-sm">
-                      {!hasFull
-                        ? 'Детальный анализ строк, столбцов и диагоналей вашего квадрата. Узнайте о своих скрытых способностях...'
-                        : 'Анализ линий силы в вашем квадрате Пифагора показывает...'
-                      }
-                    </p>
-                  </div>
-
-                  {/* Empty Cells Analysis */}
-                  <div className={`bg-white/5 rounded-lg p-4 border border-purple-400/20 relative ${
-                    !hasFull ? 'overflow-hidden' : ''
-                  }`}>
-                    {!hasFull && (
-                      <div className="absolute inset-0 backdrop-blur-md bg-black/30 rounded-lg z-10 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-4xl mb-2">🔒</div>
-                          <p className="text-white text-sm font-semibold">Доступно в тарифе &quot;Глубокий&quot;</p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    <h4 className="text-white font-semibold mb-2">
-                      ⚠️ Пустые ячейки
-                    </h4>
-                    <p className="text-purple-200 text-sm">
-                      {!hasFull
-                        ? 'Что означают пустые ячейки в вашем квадрате и как с ними работать...'
-                        : 'Анализ пустых ячеек показывает области, требующие развития...'
-                      }
-                    </p>
-                  </div>
-
-                  {/* Personal Recommendations */}
-                  <div className={`bg-white/5 rounded-lg p-4 border border-purple-400/20 relative ${
-                    !hasFull ? 'overflow-hidden' : ''
-                  }`}>
-                    {!hasFull && (
-                      <div className="absolute inset-0 backdrop-blur-md bg-black/30 rounded-lg z-10 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-4xl mb-2">🔒</div>
-                          <p className="text-white text-sm font-semibold">Доступно в тарифе &quot;Глубокий&quot;</p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    <h4 className="text-white font-semibold mb-2">
-                      💡 Персональные рекомендации
-                    </h4>
-                    <p className="text-purple-200 text-sm">
-                      {!hasFull
-                        ? 'Конкретные советы по развитию ваших сильных сторон и работе со слабыми...'
-                        : 'Рекомендации специально для вашего квадрата Пифагора...'
-                      }
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
 
       {/* Payment Modal */}
       {selectedTier && (
