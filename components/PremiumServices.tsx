@@ -472,7 +472,9 @@ export default function PremiumServices() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {services && services.length > 0 ? services.filter(s => s.id !== 'pro_access').map((service, index) => (
+          {services && services.length > 0 ? services
+            .filter(s => s.id !== 'pro_access' && s.id !== 'gift_certificate' && s.id !== 'consultation')
+            .map((service, index) => (
           <div
             key={service.id}
             className="glass-strong rounded-xl p-4 sm:p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-fade-in-up border border-purple-400/30 flex flex-col"
