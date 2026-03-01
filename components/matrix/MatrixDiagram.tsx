@@ -85,6 +85,7 @@ export default function MatrixDiagram({ result }: MatrixDiagramProps) {
   const M = calculation(G4 + result.chakra2.C2);
   const C2_calc = calculation(result.C + result.X);  // C2 = C + X
   const C1 = calculation(result.C + C2_calc);  // C1 = C + C2
+  const D1 = calculation(result.D + result.chakra2.D2);  // D1 = D + D2
   
   const matrixValues: Record<string, number> = {
     // Main positions (outer ring)
@@ -126,8 +127,8 @@ export default function MatrixDiagram({ result }: MatrixDiagramProps) {
     number75: L,                  // L = calculation(D2 + G4)
     number76: M,                  // M = calculation(G4 + C2)
     
-    number82: result.chakra2.D2,  // D1 (from chakra2, labeled as D2 in calculator)
-    number83: result.D,           // D2 (actually D, duplicate for position)
+    number82: result.chakra2.D2,  // D2 = calculation(D + X) = 6
+    number83: D1,                 // D1 = calculation(D + D2) = 17
   };
 
   return (

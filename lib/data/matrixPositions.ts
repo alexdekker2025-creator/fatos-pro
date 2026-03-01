@@ -20,48 +20,48 @@ export interface MatrixPositions {
  */
 export const DESKTOP_POSITIONS: MatrixPositions = {
   // Main positions (A, B, C, D, E, F, G, H) - large circles on outer ring
-  number1: { top: '43px', left: '230px' },      // B - Top (20 years)
-  number2: { top: '95px', left: '105px' },   // E - Left top (10 years)
-  number3: { top: '95px', left: '353px' },     // C - Right top (30 years)
-  number4: { top: '220px', left: '53px' },     // D - Left center (0 years)
-  number5: { top: '220px', left: '405px' },       // E - Right center (40 years)
-  number6: { top: '345px', left: '105px' },       // F - Left bottom (70 years)
-  number7: { top: '345px', left: '353px' },       // G - Right bottom (50 years)
-  number8: { top: '395px', left: '228px' },       // H - Bottom (60 years)
+  number1: { top: '46px', left: '250px' },      // B - Top (20 years)
+  number2: { top: '103px', left: '115px' },   // E - Left top (10 years)
+  number3: { top: '103px', left: '383px' },     // C - Right top (30 years)
+  number4: { top: '238px', left: '58px' },     // D - Left center (0 years)
+  number5: { top: '238px', left: '440px' },       // E - Right center (40 years)
+  number6: { top: '372px', left: '114px' },       // F - Left bottom (70 years)
+  number7: { top: '372px', left: '383px' },       // G - Right bottom (50 years)
+  number8: { top: '429px', left: '248px' },       // H - Bottom (60 years)
   
   // Center position (X) - yellow circle
-  'number-center': { top: '219px', left: '230px' },
+  'number-center': { top: '237px', left: '248px' },
   
   // Derived positions
-  number12: { top: '76px', left: '228px' },      // B1
-  number13: { top: '103px', left: '228px', fontSize: '12px' },  // B2
-  number14: { top: '149px', left: '228px' },   // B3 - поднят вверх
+  number12: { top: '84px', left: '248px' },      // B1
+  number13: { top: '111px', left: '248px', fontSize: '12px' },  // B2
+  number14: { top: '162px', left: '249px' },   // B3 - поднят вверх
   
-  number22: { top: '120px', left: '130px' },
-  number23: { top: '138px', left: '145px', fontSize: '12px' },
+  number22: { top: '129px', left: '141px' },
+  number23: { top: '149px', left: '159px', fontSize: '12px' },
   
-  number32: { top: '120px', left: '328px' },
-  number33: { top: '138px', left: '311px', fontSize: '12px' },
+  number32: { top: '129px', left: '356px' },
+  number33: { top: '149px', left: '338px', fontSize: '12px' },
   
-  number42: { top: '220px', left: '85px' },
-  number43: { top: '220px', left: '110px', fontSize: '12px' },
-  number44: { top: '220px', left: '158px', fontSize: '12px' },
+  number42: { top: '237px', left: '94px' },
+  number43: { top: '239px', left: '121px', fontSize: '12px' },
+  number44: { top: '239px', left: '172px', fontSize: '12px' },
   
-  number52: { top: '220px', left: '372px' },
-  number53: { top: '220px', left: '348px', fontSize: '12px' },
-  number54: { top: '220px', left: '272px' },
+  number52: { top: '237px', left: '402px' },
+  number53: { top: '239px', left: '377px', fontSize: '12px' },
+  number54: { top: '237px', left: '295px' },
   
-  number62: { top: '319px', left: '129px' },
-  number63: { top: '304px', left: '146px', fontSize: '12px' },
+  number62: { top: '345px', left: '140px' },
+  number63: { top: '330px', left: '159px', fontSize: '12px' },
   
-  number72: { top: '319px', left: '330px' },
-  number73: { top: '275px', left: '282px', fontSize: '12px' },
-  number74: { top: '303px', left: '311px' },
-  number75: { top: '302px', left: '255px', fontSize: '12px' },
-  number76: { top: '245px', left: '310px' },
+  number72: { top: '345px', left: '357px' },
+  number73: { top: '297px', left: '307px', fontSize: '12px' },
+  number74: { top: '328px', left: '339px' },
+  number75: { top: '326px', left: '277px', fontSize: '12px' },
+  number76: { top: '266px', left: '335px' },
   
-  number82: { top: '338px', left: '228px' },
-  number83: { top: '363px', left: '228px', fontSize: '12px' },
+  number82: { top: '365px', left: '248px' },
+  number83: { top: '393px', left: '248px', fontSize: '12px' },
 };
 
 /**
