@@ -158,10 +158,10 @@ export default function EnPage() {
               <div className="p-6">
                 <div className="text-4xl mb-3">👶</div>
                 <h3 className="text-xl font-bold text-white mb-2">
-                  Children's Numerology
+                  Children&apos;s Numerology
                 </h3>
                 <p className="text-cyan-200 text-sm">
-                  Unlock your child's potential
+                  Unlock your child&apos;s potential
                 </p>
                 <span className="inline-block mt-2 px-3 py-1 bg-cyan-500/20 text-cyan-300 text-xs rounded-full">
                   Coming Soon
